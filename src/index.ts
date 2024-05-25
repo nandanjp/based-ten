@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import express, { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import prisma from "../lib/db";
 
 const app = express();
 
@@ -21,19 +22,26 @@ app.use(`/api/health`, (_req: Request, res: Response) => {
   });
 });
 
-app.get(`/api/games`, (_req: Request, res: Response) =>
-{
-    console.log("games");
-    res.send('games');
+app.get(`/api/games`, (_req: Request, res: Response) => {
+  console.log("games");
+  res.send("games");
 });
 
-app.post(`/api/usergames`, (req: Request, res: Response) =>
-{
-    console.log(req.body);
-    res.send('User games received');
+app.post(`/api/usergames`, (req: Request, res: Response) => {
+  console.log(req.body);
+  res.send("User games received");
 });
 
-app.listen(process.env.PORT, () =>
-{
-    console.log(`Now listening on port: ${process.env.PORT}`);
+app.use("/api/videogames", (_req: Request, res: Response) => {
+  console.log("Requesting all video games");
+  const allVideoGames = prisma.videoGame.findMany();
+  res.send(allVideoGames);
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`Now listening on port: ${process.env.PORT}`);
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(`Now listening on port: ${process.env.PORT}`);
 });

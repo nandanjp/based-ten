@@ -4,7 +4,7 @@
   "description": "a based data intensive application (???)",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc-watch --onSuccess \"node ./dist/index.js\"",
+    "dev": "tsc-watch --onSuccess \"node ./dist/src/index.js\"",
     "build": "tsc",
     "postinstall": "npm run build"
   },
