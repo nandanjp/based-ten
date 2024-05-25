@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import express, { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import prisma from "../lib/db";
 
 const app = express();
 
@@ -19,6 +20,12 @@ app.use(`/api/health`, (_req: Request, res: Response) => {
     status: StatusCodes.OK,
     message: "server is healthy and running!",
   });
+});
+
+app.use("/api/videogames", (_req: Request, res: Response) => {
+  console.log("Requesting all video games");
+  const allVideoGames = prisma.videoGame.findMany();
+  res.send(allVideoGames);
 });
 
 app.listen(process.env.PORT, () => {
