@@ -13,13 +13,12 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 
-app.use(`/api/health`, (_req: Request, res: Response) =>
-{
-    console.log("Server is Healthy");
-    res.status(StatusCodes.OK).json({
-        status: StatusCodes.OK,
-        message: "server is healthy and running!"
-    });
+app.use(`/api/health`, (_req: Request, res: Response) => {
+  console.log("Server is Healthy");
+  res.status(StatusCodes.OK).json({
+    status: StatusCodes.OK,
+    message: "server is healthy and running!",
+  });
 });
 
 app.get(`/api/games`, (_req: Request, res: Response) =>
