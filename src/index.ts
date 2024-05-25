@@ -21,6 +21,19 @@ app.use(`/api/health`, (_req: Request, res: Response) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Now listening on port: ${process.env.PORT}`);
+app.get(`/api/games`, (_req: Request, res: Response) =>
+{
+    console.log("games");
+    res.send('games');
+});
+
+app.post(`/api/usergames`, (req: Request, res: Response) =>
+{
+    console.log(req.body);
+    res.send('User games received');
+});
+
+app.listen(process.env.PORT, () =>
+{
+    console.log(`Now listening on port: ${process.env.PORT}`);
 });
