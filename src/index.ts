@@ -22,24 +22,44 @@ app.use(`/api/health`, (_req: Request, res: Response) => {
   });
 });
 
-app.get(`/api/games`, (_req: Request, res: Response) => {
-  console.log("games");
-  res.send("games");
+app.get(`/api/manga`, async (_req: Request, res: Response) => {
+  const manga = await prisma.manga.findMany();
+  if (!manga) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      status: StatusCodes.BAD_REQUEST,
+      manga,
+      message: "Failed to retrieve all manga currently in the database",
+    });
+    return;
+  }
+  res.status(StatusCodes.OK).json({
+    status: StatusCodes.OK,
+    manga,
+    message: "Received all manga currently in the database",
+  });
 });
 
-app.post(`/api/usergames`, (req: Request, res: Response) => {
-  console.log(req.body);
-  res.send("User games received");
+app.get(`/api/anime`, async (_req: Request, res: Response) => {
+  const anime = await prisma.anime.findMany();
+  if (!anime) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      status: StatusCodes.BAD_REQUEST,
+      anime,
+      message: "Failed to retrieve all manga currently in the database",
+    });
+    return;
+  }
+  res.status(StatusCodes.OK).json({
+    status: StatusCodes.OK,
+    anime,
+    message: "Received all manga currently in the database",
+  });
 });
 
 app.use("/api/videogames", (_req: Request, res: Response) => {
   console.log("Requesting all video games");
   const allVideoGames = prisma.videoGame.findMany();
   res.send(allVideoGames);
-});
-
-app.listen(process.env.PORT, () => {
-  console.log(`Now listening on port: ${process.env.PORT}`);
 });
 
 app.listen(process.env.PORT, () => {
