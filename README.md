@@ -22,7 +22,8 @@ We will use the cloud hosting service Vercel to host our PostgreSQL database alo
 
 ### Endpoints
 
-Note that on the local development server, we are running on `localhost:3000`!
+Note that on the local development server, we are running on `localhost:3000`!:
+
 `/api/manga` => Retrieves all manga in from the database
 `/api/anime` => Retrieves all anime in from the database
 
