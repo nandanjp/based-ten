@@ -1,0 +1,4 @@
+DROP TABLE Movies;
+DROP TABLE Songs;
+DROP TABLE VideoGames;
+DROP TABLE Anime;
