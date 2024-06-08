@@ -1,54 +1,62 @@
-import "dotenv/config";
 import "module-alias/register";
+import env from "./env";
 
-import cors from "cors";
-import helmet from "helmet";
-import morgan from "morgan";
-import express, { Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
+import { feathers } from "@feathersjs/feathers";
+import {
+  koa,
+  rest,
+  bodyParser,
+  errorHandler,
+  serveStatic,
+} from "@feathersjs/koa";
+import socketio from "@feathersjs/socketio";
+import pg from "../lib/db";
 
-const app = express();
+interface Message {
+  id?: number;
+  text: string;
+}
 
-app.use(cors());
-app.use(helmet());
-app.use(morgan("dev"));
+class MessageService {
+  messages: Message[] = [];
 
-app.use(`/api/health`, (_req: Request, res: Response) => {
-  console.log("Server is Healthy");
-  res.status(StatusCodes.OK).json({
-    status: StatusCodes.OK,
-    message: "server is healthy and running!",
-  });
+  async find() {
+    return this.messages;
+  }
+
+  async get() {
+    return pg.select("*").from("anime");
+  }
+
+  async create(data: Pick<Message, "text">) {
+    const message: Message = {
+      id: this.messages.length,
+      text: data.text,
+    };
+    this.messages.push(message);
+    return message;
+  }
+}
+
+type ServiceTypes = {
+  messages: MessageService;
+};
+
+const app = koa<ServiceTypes>(feathers());
+
+// Middleware
+app.use(serveStatic("./public")); //public folder as static file host
+app.use(errorHandler());
+app.use(bodyParser());
+// Configuration
+app.configure(rest()); // Register REST service handler
+//register message service on Feathers application
+app.use("messages", new MessageService());
+
+app.listen(env?.PORT).then(() => {
+  console.log(`Feathers server listening on localhost:${process.env.PORT}`);
 });
 
-app.get(`/api/manga`, async (_req: Request, res: Response) => {
-  res.status(StatusCodes.OK).json({
-    status: StatusCodes.OK,
-    message: "Received all manga currently in the database",
-  });
-});
-
-app.get(`/api/manga`, async (_req: Request, res: Response) => {
-  res.status(StatusCodes.OK).json({
-    status: StatusCodes.OK,
-    message: "Received all manga currently in the database",
-  });
-});
-
-app.get(`/api/anime`, async (_req: Request, res: Response) => {
-  res.status(StatusCodes.OK).json({
-    status: StatusCodes.OK,
-    message: "Received all anime currently in the database",
-  });
-});
-
-app.use("/api/videogames", (_req: Request, res: Response) => {
-  res.status(StatusCodes.OK).json({
-    status: StatusCodes.OK,
-    message: "Received all video games currently in the database",
-  });
-});
-
-app.listen(process.env.PORT, () => {
-  console.log(`Now listening on port: ${process.env.PORT}`);
+app.service("messages").create({
+  text: "Hello world from the server",
 });
