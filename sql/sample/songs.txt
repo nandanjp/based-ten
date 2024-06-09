@@ -3,3 +3,8 @@
 3,My Way,Frank Sinatra,My Way,1969
 4,One Kiss,Dua Lipa,One Kiss,2018
 5,Lost,Frank Ocean,Channel Orange,2012
+6,Scott Street,Phoebe Bridgers,Stranger in the Alps,2017
+7,Francis Forever,Mitski,Bury Me at Makeout Creek,2014
+8,Motion Sickness,Phoebe Bridgers,Stranger in the Alps,2017
+9,EARFQUAKE,Tyler the Creator,Igor,2019
+10,See You Again,Tyler the Creator,Flower Boy,2017
