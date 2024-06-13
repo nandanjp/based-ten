@@ -60,5 +60,3 @@ app.listen(env?.PORT).then(() => {
 app.service("messages").create({
   text: "Hello world from the server",
 });
-
-console.log("This is just here so that frickin discord can get pinged lmao");
