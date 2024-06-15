@@ -1,0 +1,10 @@
+1,First Love / Late Spring,Mitski,Bury Me at Makeout Creek,https://upload.wikimedia.org/wikipedia/en/9/95/Bury_Me_At_Makeout_Creek.jpg,2014
+2,NEW MAGIC WAND,Tyler the Creator,Igor,https://upload.wikimedia.org/wikipedia/en/5/51/Igor_-_Tyler%2C_the_Creator.jpg,2019
+3,My Way,Frank Sinatra,My Way,https://upload.wikimedia.org/wikipedia/en/b/b2/My_Way_-_Frank_Sinatra.jpg,1969
+4,One Kiss,Dua Lipa,One Kiss,https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Calvin_Harris_and_Dua_Lipa_One_Kiss.png/220px-Calvin_Harris_and_Dua_Lipa_One_Kiss.png,2018
+5,Lost,Frank Ocean,Channel Orange,https://upload.wikimedia.org/wikipedia/en/2/28/Channel_ORANGE.jpg,2012
+6,Scott Street,Phoebe Bridgers,Stranger in the Alps,https://upload.wikimedia.org/wikipedia/en/f/f2/Phoebe_Bridgers_%E2%80%93_Stranger_in_the_Alps.png,2017
+7,Francis Forever,Mitski,Bury Me at Makeout Creek,https://upload.wikimedia.org/wikipedia/en/9/95/Bury_Me_At_Makeout_Creek.jpg,2014
+8,Motion Sickness,Phoebe Bridgers,Stranger in the Alps,https://upload.wikimedia.org/wikipedia/en/f/f2/Phoebe_Bridgers_%E2%80%93_Stranger_in_the_Alps.png,2017
+9,EARFQUAKE,Tyler the Creator,Igor,https://upload.wikimedia.org/wikipedia/en/5/51/Igor_-_Tyler%2C_the_Creator.jpg,2019
+10,See You Again,Tyler the Creator,https://upload.wikimedia.org/wikipedia/en/c/c3/Tyler%2C_the_Creator_-_Flower_Boy.png,Flower Boy,2017
