@@ -1,10 +1,14 @@
 import { Router } from 'express'
+import { createUser, getUserById, getUsers } from '../services/users/users.handlers'
+import { validate } from '../middleware/validate-schema'
+import { ParamsSchema } from '../services/general.types'
+import { CreateUserSchema } from '../services/users/users.schema'
 
 const router = Router()
 
-router.get('/')
-router.get('/:id')
-router.post('/')
+router.get('/', getUsers)
+router.get('/:id', validate({ params_schema: ParamsSchema }), getUserById)
+router.post('/', validate({ body_schema: CreateUserSchema }), createUser)
 
 export default router
 

@@ -40,3 +40,15 @@ $ npx feathers generate service               # Generate a new Service
 ## Help
 
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
+
+### API Endpoints Currently Functioning
+- `/api/video-game`
+- `/api/video-game/:id`
+- `/api/anime`
+- `/api/anime/:id`
+- `/api/song`
+- `/api/song/:id`
+- `/api/movie`
+- `/api/movie/:id`
+- `/api/user`
+- `/api/user/:id`

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const ParamsSchema = z.object({
+export const ParamsSchema = z.object({
   id: z.string()
 })
 

@@ -17,3 +17,5 @@ export const CreateUserSchema = z
       path: ['display_name'] //error path for clarity
     }
   )
+
+export type CreateUserType = z.infer<typeof CreateUserSchema>

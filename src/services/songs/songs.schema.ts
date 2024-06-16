@@ -6,3 +6,11 @@ export const CreateSongsSchema = z.object({
   creators: z.array(z.string()),
   album: z.string()
 })
+
+export const FilterSongsSchema = z.object({
+  album: z.string().optional(),
+  creator: z.string().optional()
+})
+
+export type CreateSongType = z.infer<typeof CreateSongsSchema>
+export type FilterSongType = z.infer<typeof FilterSongsSchema>
