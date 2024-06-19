@@ -7,6 +7,107 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model anime {
+  id          Int       @id
+  title       String    @db.VarChar(30)
+  mediaimega  String?
+  createdon   DateTime? @db.Date
+  numepisodes Int?
+}
+
+model follows {
+  followeremail                       String @db.VarChar(30)
+  followingemail                      String @db.VarChar(30)
+  users_follows_followeremailTousers  users  @relation("follows_followeremailTousers", fields: [followeremail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  users_follows_followingemailTousers users  @relation("follows_followingemailTousers", fields: [followingemail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([followeremail, followingemail])
+}
+
+model groupmembers {
+  email  String @db.VarChar(30)
+  gid    Int
+  users  users  @relation(fields: [email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  groups groups @relation(fields: [gid], references: [gid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([email, gid])
+}
+
+model groups {
+  gid          Int            @id
+  groupname    String         @db.VarChar(30)
+  ownedby      String         @db.VarChar(30)
+  groupmembers groupmembers[]
+  users        users          @relation(fields: [ownedby], references: [email], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model likes {
+  likeremail  String    @db.VarChar(30)
+  likingemail String    @db.VarChar(30)
+  listname    String    @db.VarChar(30)
+  users       users     @relation(fields: [likeremail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  listitems   listitems @relation(fields: [likingemail, listname], references: [email, listname], onDelete: NoAction, onUpdate: NoAction)
+
+  @@ignore
+}
+
+model listitems {
+  email    String  @db.VarChar(30)
+  listname String  @db.VarChar(30)
+  itemid   Int
+  likes    likes[] @ignore
+  lists    lists   @relation(fields: [email, listname], references: [email, listname], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([email, listname])
+}
+
+model lists {
+  email     String     @db.VarChar(30)
+  listname  String     @db.VarChar(30)
+  listtype  listtype
+  listitems listitems?
+  users     users      @relation(fields: [email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([email, listname])
+}
+
+model movies {
+  id         Int       @id
+  title      String    @db.VarChar(30)
+  mediaimega String?
+  createdon  DateTime? @db.Date
+}
+
+model songs {
+  id         Int       @id
+  title      String    @db.VarChar(30)
+  author     String?   @db.VarChar(30)
+  album      String?   @db.VarChar(30)
+  mediaimega String?
+  createdon  DateTime? @db.Date
+}
+
+model users {
+  email                                 String         @id @db.VarChar(30)
+  displayname                           String         @db.VarChar(20)
+  userpassword                          String         @db.VarChar(30)
+  follows_follows_followeremailTousers  follows[]      @relation("follows_followeremailTousers")
+  follows_follows_followingemailTousers follows[]      @relation("follows_followingemailTousers")
+  groupmembers                          groupmembers[]
+  groups                                groups[]
+  likes                                 likes[]        @ignore
+  lists                                 lists[]
+}
+
+model videogames {
+  id         Int       @id
+  title      String    @db.VarChar(30)
+  mediaimega String?
+  createdon  DateTime? @db.Date
+  console    String?   @db.VarChar(30)
+}
+
 enum Platforms {
   NINTENDO_SWITCH
   NINTENDO_WIIU
@@ -30,106 +131,9 @@ enum ListType {
   VideoGames
 }
 
-model User {
-  user_id        String     @id @default(cuid())
-  name           String
-  display_name   String
-  email          String     @unique
-  password       String
-  owned_groups   Group[]
-  member_of      MemberOf[]
-  authored_lists List[]
-  liked_lists    Likes[]
-  followers      Follow[]   @relation("FollowedUsers")
-  following      Follow[]   @relation("FollowingUsers")
-
-  created_at DateTime @default(now())
-}
-
-model Likes {
-  user_id   String
-  list_name String
-  user      User   @relation(fields: [user_id], references: [user_id])
-  list      List   @relation(fields: [list_name, user_id], references: [name, author_id])
-
-  @@id([user_id, list_name])
-  @@unique([user_id, list_name])
-}
-
-model Follow {
-  following_id String
-  followed_id  String
-  following    User   @relation("FollowingUsers", fields: [following_id], references: [user_id])
-  followed     User   @relation("FollowedUsers", fields: [followed_id], references: [user_id])
-
-  @@id([followed_id, following_id])
-  @@unique([followed_id, following_id])
-}
-
-model MemberOf {
-  user_id  String
-  user     User   @relation(fields: [user_id], references: [user_id])
-  group_id String
-  group    Group  @relation(fields: [group_id], references: [group_id])
-
-  @@id([user_id, group_id])
-  @@unique([user_id, group_id])
-}
-
-model Group {
-  group_id   String     @id @default(cuid())
-  group_name String
-  owner_id   String
-  owner      User       @relation(fields: [owner_id], references: [user_id])
-  members    MemberOf[]
-}
-
-model List {
-  name       String        @unique
-  author_id  String
-  type       ListType
-  author     User          @relation(fields: [author_id], references: [user_id])
-  media      MediaInList[]
-  likes      Likes[]
-  created_at DateTime      @default(now())
-
-  @@id([author_id, name])
-}
-
-model MediaInList {
-  media_id  String
-  media     Media  @relation(fields: [media_id], references: [id])
-  list_name String
-  list      List   @relation(fields: [list_name], references: [name])
-
-  @@id([media_id, list_name])
-  @@unique([media_id, list_name])
-}
-
-model Media {
-  id         String        @id @default(cuid())
-  title      String
-  image      String
-  creators   String[]
-  in_lists   MediaInList[]
-  created_at DateTime      @default(now())
-}
-
-model Anime {
-  anime_id String @id @default(cuid())
-  episodes Int
-}
-
-model Movies {
-  movie_id String @id @default(cuid())
-}
-
-model Songs {
-  song_id String @id @default(cuid())
-  album   String
-}
-
-model VideoGames {
-  video_game_id String      @id @default(cuid())
-  platforms     Platforms[]
+enum listtype {
+  anime
+  movies
+  songs
+  videogames
 }
