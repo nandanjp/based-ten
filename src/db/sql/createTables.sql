@@ -61,6 +61,7 @@ CREATE TABLE Likes(
     likingEmail VARCHAR(30) NOT NULL,
     listName VARCHAR(30) NOT NULL,
     PRIMARY KEY (likerEmail, likingEmail, listName),
+    UNIQUE (likerEmail, likingEmail, listName),
     FOREIGN KEY (likingEmail, listName) REFERENCES ListItems(email, listName)
 );
 CREATE TABLE Follows(
