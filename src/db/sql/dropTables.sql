@@ -1,4 +1,12 @@
-DROP TABLE Anime;
+DROP TABLE Follows;
+DROP TABLE Likes;
+DROP TABLE ListItems;
+DROP TABLE Lists;
+DROP TABLE GroupMembers;
+DROP TABLE Groups;
+DROP TABLE Users;
 DROP TABLE Movies;
 DROP TABLE Songs;
 DROP TABLE VideoGames;
+DROP TABLE Anime;
+DROP TYPE IF EXISTS ListType;
