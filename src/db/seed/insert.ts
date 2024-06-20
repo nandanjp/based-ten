@@ -5,9 +5,10 @@ import { z } from 'zod'
 import { QueryConfig } from 'pg'
 
 const insertAnime = async () => {
-  await insert(SeedAnime, (anime) => ({
+  const seed_data = await SeedAnime()
+  await insert(seed_data, (anime) => ({
     text: 'INSERT INTO Anime(title, mediaImage, numEpisodes, createdOn) VALUES($1, $2, $3, $4) RETURNING id, title, mediaImage, numEpisodes;',
-    values: [anime.name, anime.image, anime.episodes, anime.created_at]
+    values: [anime.title, anime.image, anime.episodes, anime.created_at]
   }))
 }
 

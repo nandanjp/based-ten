@@ -1,0 +1,3 @@
+john.doe@example.com,Favorite Anime,anime
+jane.smith@example.net,Top Movies of 2024,movies
+michael.brown@example.org,Best Video Games,videogames

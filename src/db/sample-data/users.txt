@@ -1,0 +1,10 @@
+john.doe@example.com,John Doe,password123
+jane.smith@example.net,Jane Smith,securePass!
+michael.brown@example.org,MikeBrown,m1chael2021
+sarah.jones@example.com,SarahJ,S@rah_4567
+david.wilson@example.net,DaveW,D@v1d_Wils0n
+emily.davis@example.org,EmilyD,EmsD#2022
+chris.moore@example.com,ChrisM,Chr!sM123
+natalie.lee@example.net,NatalieL,N@tLee_2023
+joshua.white@example.org,JoshW,JoshW_Pass
+amanda.taylor@example.com,AmandaT,AmanD@_789
