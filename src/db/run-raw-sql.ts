@@ -12,15 +12,10 @@ const ProvidedCorrectFile = z.enum([
   'drop-tables',
   'delete-rows',
   'create-list/test-sample',
-  'sample-queries/get_list_likes',
-  'sample-queries/get_lists_for_group',
-  'sample-queries/insert_into_users',
-  'sample-queries/join_group',
-  'sample-queries/leave_group',
-  'sample-queries/like_list',
-  'sample-queries/login',
-  'sample-queries/remove_like',
-  'sample-queries/update_username'
+  'sample-queries/feature1',
+  'sample-queries/feature2',
+  'sample-queries/feature3',
+  'sample-queries/feature4'
 ])
 ProvidedCorrectFile.parse(process.argv[2])
 
