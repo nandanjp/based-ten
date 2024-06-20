@@ -1,8 +1,11 @@
+import dotenv from "dotenv"
 import { client } from './db'
 import format from 'pg-format'
 import { readFile } from 'fs/promises'
 import * as path from 'path'
 import { z } from 'zod'
+
+dotenv.config()
 
 const ProcessArgSchema = z.array(z.string()).min(3)
 ProcessArgSchema.parse(process.argv)

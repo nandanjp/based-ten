@@ -1,38 +1,38 @@
 WITH ListsWithItemIDs AS (
-    SELECT Lists.email,
-        Lists.listName,
-        itemID,
-        listType as itemType
-    FROM ListItems
-        JOIN Lists ON ListItems.email = Lists.email
-        AND ListItems.listName = Lists.listName
+    SELECT l.email,
+        l.listName,
+        li.itemID,
+        l.listType as itemType
+    FROM ListItems li
+        JOIN Lists l ON li.email = l.email
+        AND li.listName = l.listName
+),
+ListsWithLikes AS (
+    SELECT l.*
+    FROM Lists l
+        JOIN Likes lk on l.listName = lk.listName
 ),
 ListLikeCounts AS (
-    SELECT Lists.email,
-        Lists.listName,
-        listType,
+    SELECT lwl.email,
+        lwl.listName,
         COUNT(*) as likeCount
-    FROM (
-            SELECT *
-            FROM Lists
-                JOIN Likes on Lists.listName = Likes.listName
-        )
-    GROUP BY Lists.email,
-        Lists.listName,
-        listType
+    FROM ListsWithLikes lwl
+    GROUP BY lwl.email,
+        lwl.listName
 ),
 TotalLikesByItem AS (
-    SELECT itemID,
-        itemType,
-        SUM(likeCount) as totalLikes
+    SELECT lwi.itemID,
+        lwi.itemType,
+        SUM(llc.likeCount) as totalLikes
     FROM ListsWithItemIDs lwi
         JOIN ListLikeCounts llc ON lwi.email = llc.email
         AND lwi.listName = llc.listName
-    GROUP BY itemID,
-        itemType
+    GROUP BY lwi.itemID,
+        lwi.itemType
 )
 SELECT *
 FROM Media m
-    JOIN TotaLikesByItem l ON m.itemID = l.itemID
+    JOIN TotalLikesByItem l ON m.id = l.itemID
     AND m.type = l.itemType
-WHERE m.type = 'movie';
+WHERE m.type = 'movies'::ListType
+ORDER BY l.totalLikes DESC;

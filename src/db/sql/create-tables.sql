@@ -71,3 +71,31 @@ CREATE TABLE Follows (
     followingEmail VARCHAR(30) NOT NULL REFERENCES Users(email),
     PRIMARY KEY (followerEmail, followingEmail)
 );
+CREATE VIEW Media AS
+SELECT id,
+    title,
+    mediaImage,
+    createdOn,
+    'movies'::ListType AS type
+FROM Movies
+UNION
+SELECT id,
+    title,
+    mediaImage,
+    createdOn,
+    'songs'::ListType AS type
+FROM Songs
+UNION
+SELECT id,
+    title,
+    mediaImage,
+    createdOn,
+    'videogames'::ListType AS type
+FROM VideoGames
+UNION
+SELECT id,
+    title,
+    mediaImage,
+    createdOn,
+    'anime'::ListType AS type
+FROM Anime;
