@@ -1,1 +1,0 @@
-INSERT INTO Users ('zasalman@uwaterloo.ca', 'Zain', 'password123');
