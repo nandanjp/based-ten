@@ -5,6 +5,7 @@ export const AnimeFileSchema = z.object({
   anime_id: z.number().positive(),
   title: z.string(),
   image: z.string().url(),
+  episodes: z.number().positive(),
   released_on: z.string().date()
 })
 

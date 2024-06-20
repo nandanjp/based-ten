@@ -8,35 +8,39 @@ const insertAnime = async () => {
   const seed_data = await SeedAnime()
   await insert(seed_data, (anime) => ({
     text: 'INSERT INTO Anime(title, mediaImage, numEpisodes, createdOn) VALUES($1, $2, $3, $4) RETURNING id, title, mediaImage, numEpisodes;',
-    values: [anime.title, anime.image, anime.episodes, anime.created_at]
+    values: [anime.title, anime.image, anime.episodes, anime.released_on]
   }))
 }
 
 const insertGames = async () => {
-  await insert(SeedGames, (game) => ({
+  const seed_data = await SeedGames()
+  await insert(seed_data, (game) => ({
     text: 'INSERT INTO VideoGames(title, mediaImage, console, createdOn) VALUES($1, $2, $3, $4) RETURNING id, title, mediaImage, console;',
-    values: [game.name, game.image, game.console, game.created_at]
+    values: [game.title, game.image, game.platform, game.released_on]
   }))
 }
 
 const insertMovies = async () => {
-  await insert(SeedMovies, (movie) => ({
+  const seed_data = await SeedMovies()
+  await insert(seed_data, (movie) => ({
     text: 'INSERT INTO Movies(title, mediaImage, createdOn) VALUES($1, $2, $3) RETURNING id, title, mediaImage;',
-    values: [movie.name, movie.image, movie.created_at]
+    values: [movie.title, movie.image, movie.released_on]
   }))
 }
 
 const insertSongs = async () => {
-  await insert(SeedSongs, (song) => ({
+  const seed_data = await SeedSongs()
+  await insert(seed_data, (song) => ({
     text: 'INSERT INTO Songs(title, author, album, mediaImage, createdOn) VALUES($1, $2, $3, $4, $5) RETURNING id, author, album, title, mediaImage;',
-    values: [song.name, song.creator, song.album, song.image, song.created_at]
+    values: [song.title, song.writer, song.album, song.image, song.released_in_year]
   }))
 }
 
 const insertUsers = async () => {
-  await insert(SeedUsers, (user) => ({
+  const seed_data = await SeedUsers()
+  await insert(seed_data, (user) => ({
     text: 'INSERT INTO Users(email, displayName, userPassword) VALUES($1, $2, $3) RETURNING email, displayName, userPassword;',
-    values: [user.email, user.display_name, user.password]
+    values: [user.user_email, user.user_name, user.password]
   }))
 }
 

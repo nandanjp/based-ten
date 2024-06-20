@@ -10,6 +10,7 @@ ProcessArgSchema.parse(process.argv)
 const ProvidedCorrectFile = z.enum([
   'create-tables',
   'drop-tables',
+  'delete-rows',
   'create-list/test-sample',
   'sample-queries/get_list_likes',
   'sample-queries/get_lists_for_group',
