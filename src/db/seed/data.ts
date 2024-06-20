@@ -52,74 +52,74 @@ function ParseSeedData<T extends AggregateFileType>(
 }
 
 const seed_data_paths = {
-  anime: 'anime.txt',
-  groupMembers: 'group-members.txt',
-  groups: 'groups.txt',
-  likes: 'likes.txt',
-  listItems: 'list-items.txt',
-  lists: 'lists.txt',
-  movies: 'movies.txt',
-  songs: 'songs.txt',
-  users: 'users.txt',
-  games: 'video-games.txt'
+  anime: 'anime.csv',
+  groupMembers: 'group-members.csv',
+  groups: 'groups.csv',
+  likes: 'likes.csv',
+  listItems: 'list-items.csv',
+  lists: 'lists.csv',
+  movies: 'movies.csv',
+  songs: 'songs.csv',
+  users: 'users.csv',
+  games: 'video-games.csv'
 }
 
 export const SeedAnime = async () =>
   await ParseSeedData<AnimeFilesType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.anime),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.anime),
     AnimeFileSchema
   )
 
 export const SeedGames = async () =>
   await ParseSeedData<VideoGamesFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.games),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.games),
     VideoGamesFileSchema
   )
 
 export const SeedMovies = async () =>
   await ParseSeedData<MoviesFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.movies),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.movies),
     MoviesFileSchema
   )
 
 export const SeedSongs = async () =>
   await ParseSeedData<SongsFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.songs),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.songs),
     SongsFileSchema
   )
 
 export const SeedUsers = async () =>
   await ParseSeedData<UsersFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.users),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.users),
     UsersFileSchema
   )
 
 export const SeedGroupMembers = async () =>
   await ParseSeedData<GroupMembersFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.groupMembers),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.groupMembers),
     GroupMembersFileSchema
   )
 
 export const SeedGroups = async () =>
   await ParseSeedData<GroupsFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.groups),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.groups),
     GroupsFileSchema
   )
 
 export const SeedLikes = async () =>
   await ParseSeedData<LikesFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.likes),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.likes),
     LikesFileSchema
   )
 
 export const SeedLists = async () =>
   await ParseSeedData<ListsFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.lists),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.lists),
     ListsFileSchema
   )
 
 export const SeedListItems = async () =>
   await ParseSeedData<ListItemsFileType>(
-    path.join(__dirname, 'sample-data', seed_data_paths.listItems),
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.listItems),
     ListItemsFileSchema
   )

@@ -53,9 +53,10 @@ CREATE TABLE Lists (
 CREATE TABLE ListItems (
     email VARCHAR(30) NOT NULL,
     listName VARCHAR(30) NOT NULL,
+    rankingInList INT NOT NULL,
     itemID INT NOT NULL,
-    FOREIGN KEY (email, listName) REFERENCES Lists(email, listName),
-    UNIQUE (email, listName)
+    PRIMARY KEY(email, listName, itemID),
+    FOREIGN KEY (email, listName) REFERENCES Lists(email, listName)
 );
 CREATE TABLE Likes (
     likerEmail VARCHAR(30) NOT NULL REFERENCES Users(email),
@@ -63,7 +64,7 @@ CREATE TABLE Likes (
     listName VARCHAR(30) NOT NULL,
     PRIMARY KEY (likerEmail, likingEmail, listName),
     UNIQUE (likerEmail, likingEmail, listName),
-    FOREIGN KEY (likingEmail, listName) REFERENCES ListItems(email, listName)
+    FOREIGN KEY (likingEmail, listName) REFERENCES Lists(email, listName)
 );
 CREATE TABLE Follows (
     followerEmail VARCHAR(30) NOT NULL REFERENCES Users(email),

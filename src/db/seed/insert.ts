@@ -1,6 +1,17 @@
 import format from 'pg-format'
 import { client } from '../db'
-import { SeedAnime, SeedGames, SeedMovies, SeedSongs, SeedUsers } from './data'
+import {
+  SeedAnime,
+  SeedGames,
+  SeedGroupMembers,
+  SeedGroups,
+  SeedLikes,
+  SeedListItems,
+  SeedLists,
+  SeedMovies,
+  SeedSongs,
+  SeedUsers
+} from './data'
 import { z } from 'zod'
 import { QueryConfig } from 'pg'
 
@@ -44,9 +55,48 @@ const insertUsers = async () => {
   }))
 }
 
+const insertGroups = async () => {
+  const seed_data = await SeedGroups()
+  await insert(seed_data, (group) => ({
+    text: 'INSERT INTO Groups(groupName,ownedBy) VALUES($1, $2) RETURNING gid, groupName, ownedBy;',
+    values: [group.name, group.user_email]
+  }))
+}
+
+const insertGroupMembers = async () => {
+  const seed_data = await SeedGroupMembers()
+  await insert(seed_data, (group_member) => ({
+    text: 'INSERT INTO GroupMembers(gid, email) VALUES($1, $2) RETURNING gid, email;',
+    values: [group_member.group_id, group_member.member_email]
+  }))
+}
+
+const insertLikes = async () => {
+  const seed_data = await SeedLikes()
+  await insert(seed_data, (like) => ({
+    text: 'INSERT INTO Likes(likerEmail, likingEmail, listName) VALUES($1, $2, $3) RETURNING likerEmail, likingEmail, listName;',
+    values: [like.liker_email, like.liking_email, like.list_name]
+  }))
+}
+
+const insertLists = async () => {
+  const seed_data = await SeedLists()
+  await insert(seed_data, (list) => ({
+    text: 'INSERT INTO Lists(email, listName, listType) VALUES($1, $2, $3) RETURNING email, listName, listType;',
+    values: [list.user_email, list.list_name, list.list_type]
+  }))
+}
+
+const insertListItems = async () => {
+  const seed_data = await SeedListItems()
+  await insert(seed_data, (list) => ({
+    text: 'INSERT INTO ListItems(email, listName, itemID, rankingInList) VALUES($1, $2, $3, $4) RETURNING email, listName, itemID, rankingInList;',
+    values: [list.user_email, list.list_name, list.item_id, list.rank_in_list]
+  }))
+}
+
 async function insert<T>(values: Array<T>, map_fn: (t: T) => QueryConfig) {
   try {
-    await client.connect()
     for (const query of values.map(map_fn)) {
       const res = await client.query({
         text: format(query.text),
@@ -56,15 +106,25 @@ async function insert<T>(values: Array<T>, map_fn: (t: T) => QueryConfig) {
     }
   } catch (error) {
     console.error('Error executing SQL:', error)
-  } finally {
-    await client.end()
   }
 }
 
 const ProcessArgSchema = z.array(z.string()).min(3)
 ProcessArgSchema.parse(process.argv)
 
-const ProvidedCorrectInsert = z.enum(['anime', 'games', 'movies', 'songs', 'users', 'all'])
+const ProvidedCorrectInsert = z.enum([
+  'anime',
+  'games',
+  'movies',
+  'songs',
+  'users',
+  'groups',
+  'group-members',
+  'likes',
+  'lists',
+  'list-items',
+  'all'
+])
 ProvidedCorrectInsert.parse(process.argv[2])
 
 declare global {
@@ -74,6 +134,7 @@ declare global {
 }
 
 async function main() {
+  await client.connect()
   switch (process.argv[2] as z.infer<typeof ProvidedCorrectInsert>) {
     case 'anime':
       await insertAnime()
@@ -90,18 +151,39 @@ async function main() {
     case 'users':
       await insertUsers()
       break
+    case 'groups':
+      await insertGroups()
+      break
+    case 'group-members':
+      await insertGroupMembers()
+      break
+    case 'likes':
+      await insertLikes()
+      break
+    case 'lists':
+      await insertLists()
+      break
+    case 'list-items':
+      await insertListItems()
+      break
     case 'all':
       await insertAnime()
       await insertGames()
       await insertMovies()
       await insertSongs()
       await insertUsers()
+      await insertGroups()
+      await insertGroupMembers()
+      await insertLists()
+      await insertLikes()
+      await insertListItems()
       break
     default:
       console.error(
         `This should have been flagged as you did not provided a correct insert table name: ${process.argv[2]}`
       )
   }
+  client.end()
 }
 
 main()

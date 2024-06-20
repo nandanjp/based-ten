@@ -2,20 +2,20 @@
 import { z } from 'zod'
 
 export const AnimeFileSchema = z.object({
-  anime_id: z.number().positive(),
+  anime_id: z.string().refine((val) => !isNaN(parseInt(val))),
   title: z.string(),
   image: z.string().url(),
-  episodes: z.number().positive(),
+  episodes: z.string().refine((val) => !isNaN(parseInt(val))),
   released_on: z.string().date()
 })
 
 export const GroupMembersFileSchema = z.object({
-  member_email: z.string().email(),
-  group_id: z.number().positive()
+  group_id: z.string().refine((val) => !isNaN(parseInt(val))),
+  member_email: z.string().email()
 })
 
 export const GroupsFileSchema = z.object({
-  group_id: z.number().positive(),
+  group_id: z.string().refine((val) => !isNaN(parseInt(val))),
   name: z.string(),
   user_email: z.string().email()
 })
@@ -29,7 +29,11 @@ export const LikesFileSchema = z.object({
 export const ListItemsFileSchema = z.object({
   user_email: z.string().email(),
   list_name: z.string(),
-  rank_in_list: z.number().positive().min(1).max(10)
+  item_id: z.string().refine((val) => !isNaN(parseInt(val))),
+  rank_in_list: z
+    .string()
+    .refine((val) => !isNaN(parseInt(val)))
+    .refine((val) => parseInt(val) >= 1 && parseInt(val) <= 10)
 })
 
 export const ListsFileSchema = z.object({
@@ -39,14 +43,14 @@ export const ListsFileSchema = z.object({
 })
 
 export const MoviesFileSchema = z.object({
-  movie_id: z.number().positive(),
+  movie_id: z.string().refine((val) => !isNaN(parseInt(val))),
   title: z.string(),
   image: z.string().url(),
   released_on: z.string().date()
 })
 
 export const SongsFileSchema = z.object({
-  song_id: z.number().positive(),
+  song_id: z.string().refine((val) => !isNaN(parseInt(val))),
   title: z.string(),
   writer: z.string(),
   album: z.string(),
@@ -61,7 +65,7 @@ export const UsersFileSchema = z.object({
 })
 
 export const VideoGamesFileSchema = z.object({
-  game_id: z.number().positive(),
+  game_id: z.string().refine((val) => !isNaN(parseInt(val))),
   title: z.string(),
   image: z.string().url(),
   released_on: z.string().date(),
