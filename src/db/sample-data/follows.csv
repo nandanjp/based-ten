@@ -1,1 +1,10 @@
-follower
+follower_email,following_email
+jane.smith@example.net,michael.brown@example.org
+jane.smith@example.net,sarah.jones@example.com
+jane.smith@example.net,david.wilson@example.net
+jane.smith@example.net,amanda.taylor@example.com
+amanda.taylor@example.com,sarah.jones@example.com
+amanda.taylor@example.com,joshua.white@example.org
+joshua.white@example.org,jane.smith@example.net
+amanda.taylor@example.com,jane.smith@example.net
+sarah.jones@example.com,jane.smith@example.net
