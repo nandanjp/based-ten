@@ -8,16 +8,11 @@ const router = Router()
 
 router.get('/', getUsers)
 router.get('/:id', validate({ params_schema: ParamsSchema }), getUserById)
+router.get('/:id/groups', validate({ params_schema: ParamsSchema }))
+router.get('/:id/lists', validate({ params_schema: ParamsSchema }))
+router.get('/:id/lists/:id', validate({ params_schema: ParamsSchema }))
 router.post('/', validate({ body_schema: CreateUserSchema }), createUser)
+router.post('/:id/groups', validate({ body_schema: CreateUserSchema }), createUser)
+router.post('/:id/lists', validate({ body_schema: CreateUserSchema }), createUser)
 
 export default router
-
-/*
-Still to implement:
-/api/users/:id/groups
-/api/users/:id/lists
-/api/users/:id/lists/:id
-POST:
-/api/users/:id/groups
-/api/users/:id/lists
-*/

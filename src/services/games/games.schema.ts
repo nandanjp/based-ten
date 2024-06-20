@@ -1,4 +1,3 @@
-import { Platforms } from '@prisma/client'
 import { z } from 'zod'
 
 const platform = z.union([
@@ -17,6 +16,16 @@ const platform = z.union([
   z.literal('XBOX')
 ])
 
+export const GetVideoGameSchema = z.object({
+  id: z.number(),
+  slug: z.string(),
+  name: z.string(),
+  released: z.string().date(),
+  background_image: z.string(),
+  rating: z.number(),
+  metacritic: z.number()
+})
+
 export const CreateVideoGameSchema = z.object({
   title: z.string(),
   image: z.string().url(),
@@ -31,3 +40,6 @@ export const FilterVideoGameSchema = z.object({
 
 export type CreateVideoGameType = z.infer<typeof CreateVideoGameSchema>
 export type FilterVideoGameType = z.infer<typeof FilterVideoGameSchema>
+export type Platforms = z.infer<typeof platform>
+
+//https://api.rawg.io/api/games?key=2153728e163f4fb4866e0df8ca39d168

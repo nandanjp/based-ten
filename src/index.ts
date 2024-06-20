@@ -19,7 +19,10 @@ const env_schema = z.object({
   VERCEL_USER: z.string(),
   VERCEL_HOST: z.string(),
   VERCEL_PASSWORD: z.string(),
-  VERCEL_DATABASE: z.string()
+  VERCEL_DATABASE: z.string(),
+  OMDB_API_KEY: z.string(),
+  SPOTIFY_CLIENT_ID: z.string(),
+  RAWG_API_KEY: z.string()
 })
 
 env_schema.parse(process.env)

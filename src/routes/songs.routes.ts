@@ -6,6 +6,7 @@ import { ParamsSchema } from '../services/general.types'
 
 const router = Router()
 
+router.get('/data')
 router.get('/', validate({ query_schema: FilterSongsSchema }), getSongs)
 router.get('/:id', validate({ params_schema: ParamsSchema }), getSongById)
 router.post('/', validate({ body_schema: CreateSongsSchema }), createSong)

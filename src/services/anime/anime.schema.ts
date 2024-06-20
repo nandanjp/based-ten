@@ -1,5 +1,22 @@
 import { z } from 'zod'
 
+export const RetrieveAnimeSchema = z.object({
+  mal_id: z.number(),
+  url: z.string(),
+  images: z.array(z.string()),
+  title: z.string(),
+  title_english: z.string(),
+  title_japanese: z.string(),
+  type: z.string(),
+  episodes: z.number(),
+  status: z.string(),
+  rating: z.string(),
+  score: z.number(),
+  rank: z.number(),
+  synopsis: z.string(),
+  year: z.number()
+})
+
 export const CreateAnimeSchema = z.object({
   title: z.string(),
   image: z.string().url(),
@@ -13,5 +30,8 @@ export const FilterAnimeSchema = z.object({
   creator: z.string().optional()
 })
 
+export type RetrieveAnimeType = z.infer<typeof RetrieveAnimeSchema>
 export type CreateAnimeType = z.infer<typeof CreateAnimeSchema>
 export type FilterAnimeType = z.infer<typeof FilterAnimeSchema>
+
+//https://api.jikan.moe/v4/anime/55791/full

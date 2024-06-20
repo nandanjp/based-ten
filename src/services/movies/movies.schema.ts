@@ -12,3 +12,5 @@ export const FilterMoviesSchema = z.object({
 
 export type CreateMovieType = z.infer<typeof CreateMoviesSchema>
 export type FilterMovieType = z.infer<typeof FilterMoviesSchema>
+
+// http://www.omdbapi.com/?i=tt3896198&apikey=f739aef6&t=avengers

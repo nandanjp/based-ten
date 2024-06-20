@@ -52,3 +52,16 @@ For more information on all the things you can do with Feathers visit [docs.feat
 - `/api/movie/:id`
 - `/api/user`
 - `/api/user/:id`
+
+
+### TODOS - Required Queries:
+1. Select all media from all media tables
+2. Select all media from a media table of a specific type
+3. Create a list with a given name
+4. Add all selected items to the list
+5. User can create an account
+6. Users can select ten items and create a list out of them
+7. In a given group, users can view all lists created by group members, sorted by who created the list
+
+### Create a List Feature
+Users can create a top ten list. Initially, users can search in a search box for any type of media available. Once the user selects the first item, they can then continue selecting up to a total of ten items of the same type of media as their original item. Once a user has selected all items, they can give their list a name, and then the list is created and associated with their account.
