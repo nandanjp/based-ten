@@ -56,7 +56,12 @@ CREATE TABLE ListItems (
     rankingInList INT NOT NULL,
     itemID INT NOT NULL,
     PRIMARY KEY(email, listName, itemID),
-    FOREIGN KEY (email, listName) REFERENCES Lists(email, listName)
+    FOREIGN KEY (email, listName) REFERENCES Lists(email, listName),
+    CHECK(rankingInList <= 10 AND rankingInList >= 1 AND 1 = (
+      SELECT COUNT(*)
+      FROM ListItems li
+      WHERE li.email = email AND li.listName = listName AND li.rankingInList = rankingInList
+    )),
 );
 CREATE TABLE Likes (
     likerEmail VARCHAR(30) NOT NULL REFERENCES Users(email),
