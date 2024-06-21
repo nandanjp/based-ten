@@ -49,10 +49,22 @@ To run SQL files, first ensure that the SQL file to run is in the \src\db\sql fo
 $ npx ts-node .\run-raw-sql.ts <sql file path relative to sql folder>
 ```
 
+For example, to create tables for our database, run the following:
+
+```
+$ npx ts-node .\run-raw-sql.ts create-tables
+```
+
 To insert data from the sample data from \src\db\sample-data into the tables (available tables are shown in the /src/db/seed/insert.ts file in the ProvidedCorrectInsert enum, option all will insert data for all tables), run the following command from \src\db\seed:
 
 ```
 $ npx ts-node .\insert.ts <table to insert into>
+```
+
+For example, to insert data for all tables, run the following:
+
+```
+$ npx ts-node .\insert.ts all
 ```
 
 ### API Endpoints Currently Functioning
