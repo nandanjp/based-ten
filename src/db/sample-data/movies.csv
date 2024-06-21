@@ -1,0 +1,13 @@
+movie_id,title,image,released_on
+1,Oppenheimer,https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg,2023-07-21
+2,Barbie,https://m.media-amazon.com/images/M/MV5BNjU3N2QxNzYtMjk1NC00MTc4LTk1NTQtMmUxNTljM2I0NDA5XkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_.jpg,2023-07-21
+3,Top Gun: Maverick,https://m.media-amazon.com/images/M/MV5BZWYzOGEwNTgtNWU3NS00ZTQ0LWJkODUtMmVhMjIwMjA1ZmQwXkEyXkFqcGdeQXVyMjkwOTAyMDU@._V1_.jpg,2022-05-27
+4,Everything Everywhere All at Once,https://m.media-amazon.com/images/M/MV5BYTdiOTIyZTQtNmQ1OS00NjZlLWIyMTgtYzk5Y2M3ZDVmMDk1XkEyXkFqcGdeQXVyMTAzMDg4NzU0._V1_FMjpg_UX1000_.jpg,2022-03-11
+5,Toy Story,https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_.jpg,1995-11-22
+6,Five Nights at Freddy's,https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Five_Nights_At_Freddy%27s_poster.jpeg/220px-Five_Nights_At_Freddy%27s_poster.jpeg,2023-10-27
+7,Spider-Man: Across the Spider-Verse,https://upload.wikimedia.org/wikipedia/en/b/b4/Spider-Man-_Across_the_Spider-Verse_poster.jpg,2023-06-02
+8,Avengers: Endgame,https://upload.wikimedia.org/wikipedia/en/0/0d/Avengers_Endgame_poster.jpg,2019-04-26
+9,Forrest Gump,https://upload.wikimedia.org/wikipedia/en/thumb/6/67/Forrest_Gump_poster.jpg/220px-Forrest_Gump_poster.jpg,1994-07-06
+10,Green Book,https://upload.wikimedia.org/wikipedia/en/5/5b/Green_Book_%282018_poster%29.png,2018-09-11
+11,Iron Man,https://upload.wikimedia.org/wikipedia/en/0/02/Iron_Man_%282008_film%29_poster.jpg,2008-04-14
+12,Parasite,https://upload.wikimedia.org/wikipedia/en/5/53/Parasite_%282019_film%29.png,2019-05-21

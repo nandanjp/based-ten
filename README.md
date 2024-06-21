@@ -1,30 +1,113 @@
-# Based-Ten (Another Title Go Here)
+# server
 
-## Group Members
+> The API service for the based-ten application
 
-Zain Salman
-Nandan Patel
-Jessie Zhang
-Justin Lin
-Emily Wang
+## About
 
-# An Application About Based Data
+This project uses [Feathers](http://feathersjs.com). An open source framework for building APIs and real-time applications.
 
-Our application will allow users to create and share top ten lists for various forms of media including movies, songs, and animes. Additionally, we plan to allow users to browse other users’ public lists and view trending media that other users have in their lists. Data will be taken from publicly available datasets, including the IMDb dataset, a manga dataset from Kaggle, an anime dataset from Kaggle, and a video game dataset provided on Kaggle.
+## Getting Started
 
-## Figure Out What Tech Stack to Describe
+1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
+2. Install your dependencies
 
-We will use the cloud hosting service Vercel to host our PostgreSQL database along with our web-based user interface, built using Next.js. The interface will have a search bar in the main page, allowing users to search for any movie, song, anime, or game that is included within our datasets to create a top ten list. Once a user selects something, the search bar will automatically show more options from the same media type for the user to continue to add to their top ten list. Users will have the option to view, update and share their lists under their profiles. There will be a separate section where users will be able to search for other profiles and lists.
+    ```
+    cd path/to/server
+    npm install
+    ```
 
-## Front End - Info
+3. Start your app
 
-## Back End - Info
+    ```
+    npm run compile # Compile TypeScript source
+    npm run migrate # Run migrations to set up the database
+    npm start
+    ```
 
-### Endpoints
+## Testing
 
-Note that on the local development server, we are running on `localhost:3000`!:
+Run `npm test` and all your tests in the `test/` directory will be run.
 
-- `/api/manga` => Retrieves all manga in from the database
-- `/api/anime` => Retrieves all anime in from the database
+## Scaffolding
 
-### Usage
+This app comes with a powerful command line interface for Feathers. Here are a few things it can do:
+
+```
+$ npx feathers help                           # Show all commands
+$ npx feathers generate service               # Generate a new Service
+```
+
+## Help
+
+For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
+
+## Loading the Sample Database
+
+To load the sample database, first we want to ensure that we drop all existing tables by running the following command from src\db:
+
+```
+$ npx ts-node .\run-raw-sql.ts drop-tables
+```
+
+Then we want to create the tables by running the following command from src\db:
+
+```
+$ npx ts.node .\run-raw-sql.ts create-tables
+```
+
+Then we want to populate all the tables with the sample data by going into src\db\seed and running the following command:
+
+```
+$ npx ts.node .\insert.ts all
+```
+
+## Running SQL
+
+To run SQL files, first ensure that the SQL file is included in the src\db\sql folder and the file path relative to the sql folder is included in src\db\run-raw-sql.ts in the ProvidedCorrectFile enum. Then we can run the SQL file with the following command from src\db:
+
+```
+$ npx ts-node .\run-raw-sql.ts <sql file path relative to sql folder>
+```
+
+For example, to run the sample queries for feature1 in the database, run the following:
+
+```
+$ npx ts-node .\run-raw-sql.ts sample-queries/feature1
+```
+
+To insert data from the sample data from src\db\sample-data into the tables (available tables are shown in the /src/db/seed/insert.ts file in the ProvidedCorrectInsert enum, option all will insert data for all tables), run the following command from src\db\seed:
+
+```
+$ npx ts-node .\insert.ts <table to insert into>
+```
+
+For example, to insert data for all tables, run the following:
+
+```
+$ npx ts-node .\insert.ts all
+```
+
+### API Endpoints Currently Functioning
+- `/api/video-game`
+- `/api/video-game/:id`
+- `/api/anime`
+- `/api/anime/:id`
+- `/api/song`
+- `/api/song/:id`
+- `/api/movie`
+- `/api/movie/:id`
+- `/api/user`
+- `/api/user/:id`
+
+
+### TODOS - Required Queries:
+1. Select all media from all media tables
+2. Select all media from a media table of a specific type
+3. Create a list with a given name
+4. Add all selected items to the list
+5. User can create an account
+6. Users can select ten items and create a list out of them
+7. In a given group, users can view all lists created by group members, sorted by who created the list
+
+### Create a List Feature
+Users can create a top ten list. Initially, users can search in a search box for any type of media available. Once the user selects the first item, they can then continue selecting up to a total of ten items of the same type of media as their original item. Once a user has selected all items, they can give their list a name, and then the list is created and associated with their account.
