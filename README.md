@@ -41,18 +41,38 @@ $ npx feathers generate service               # Generate a new Service
 
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
+## Loading the Sample Database
+
+To load the sample database, first we want to ensure that we drop all existing tables by running the following command from \src\db:
+
+```
+$ npx ts-node .\run-raw-sql.ts drop-tables
+```
+
+Then we want to create the tables by running the following command from \src\db:
+
+```
+$ npx ts.node .\run-raw-sql.ts create-tables
+```
+
+Then we want to populate all the tables with the sample data by going into \src\db\seed and running the following command:
+
+```
+$ npx ts.node .\insert.ts all
+```
+
 ## Running SQL
 
-To run SQL files, first ensure that the SQL file to run is in the \src\db\sql folder and the file path relative to the sql folder is included in \src\db\run-raw-sql.ts in the ProvidedCorrectFile enum. Then we can run the SQL file with the following command:
+To run SQL files, first ensure that the SQL file is included in the \src\db\sql folder and the file path relative to the sql folder is included in \src\db\run-raw-sql.ts in the ProvidedCorrectFile enum. Then we can run the SQL file with the following command from \src\db:
 
 ```
 $ npx ts-node .\run-raw-sql.ts <sql file path relative to sql folder>
 ```
 
-For example, to create tables for our database, run the following:
+For example, to run the sample queries for feature1 in the database, run the following:
 
 ```
-$ npx ts-node .\run-raw-sql.ts create-tables
+$ npx ts-node .\run-raw-sql.ts sample-queries/feature1
 ```
 
 To insert data from the sample data from \src\db\sample-data into the tables (available tables are shown in the /src/db/seed/insert.ts file in the ProvidedCorrectInsert enum, option all will insert data for all tables), run the following command from \src\db\seed:
