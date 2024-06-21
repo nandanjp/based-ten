@@ -28,10 +28,7 @@ import {
 } from './data-schemas'
 import { ZodSchema } from 'zod'
 
-function ParseSeedData<T extends AggregateFileType>(
-  seed_file_path: string,
-  schema: ZodSchema<T>
-): Promise<Array<T>> {
+function ParseSeedData<T extends AggregateFileType>(seed_file_path: string, schema: ZodSchema<T>): Promise<Array<T>> {
   const res: Array<T> = []
   return new Promise((resolve, reject) => {
     fs.createReadStream(seed_file_path)
@@ -65,70 +62,17 @@ const seed_data_paths = {
   users: 'users.csv',
   games: 'video-games.csv',
   follows: 'follows.csv'
-}
+} as const
+const get_path = (table: keyof typeof seed_data_paths) => path.join(__dirname, '..', 'sample-data', seed_data_paths[table])
 
-export const SeedAnime = async () =>
-  await ParseSeedData<AnimeFilesType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.anime),
-    AnimeFileSchema
-  )
-
-export const SeedGames = async () =>
-  await ParseSeedData<VideoGamesFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.games),
-    VideoGamesFileSchema
-  )
-
-export const SeedMovies = async () =>
-  await ParseSeedData<MoviesFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.movies),
-    MoviesFileSchema
-  )
-
-export const SeedSongs = async () =>
-  await ParseSeedData<SongsFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.songs),
-    SongsFileSchema
-  )
-
-export const SeedUsers = async () =>
-  await ParseSeedData<UsersFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.users),
-    UsersFileSchema
-  )
-
-export const SeedGroupMembers = async () =>
-  await ParseSeedData<GroupMembersFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.groupMembers),
-    GroupMembersFileSchema
-  )
-
-export const SeedGroups = async () =>
-  await ParseSeedData<GroupsFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.groups),
-    GroupsFileSchema
-  )
-
-export const SeedLikes = async () =>
-  await ParseSeedData<LikesFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.likes),
-    LikesFileSchema
-  )
-
-export const SeedFollows = async() =>
-  await ParseSeedData<FollowsFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.follows),
-    FollowsFileSchema
-  )
-
-export const SeedLists = async () =>
-  await ParseSeedData<ListsFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.lists),
-    ListsFileSchema
-  )
-
-export const SeedListItems = async () =>
-  await ParseSeedData<ListItemsFileType>(
-    path.join(__dirname, '..', 'sample-data', seed_data_paths.listItems),
-    ListItemsFileSchema
-  )
+export const SeedAnime = async () => await ParseSeedData<AnimeFilesType>(get_path('anime'), AnimeFileSchema)
+export const SeedGames = async () => await ParseSeedData<VideoGamesFileType>(get_path('games'), VideoGamesFileSchema)
+export const SeedMovies = async () => await ParseSeedData<MoviesFileType>(get_path('movies'), MoviesFileSchema)
+export const SeedSongs = async () => await ParseSeedData<SongsFileType>(get_path('songs'), SongsFileSchema)
+export const SeedUsers = async () => await ParseSeedData<UsersFileType>(get_path('users'), UsersFileSchema)
+export const SeedGroupMembers = async () => await ParseSeedData<GroupMembersFileType>(get_path('groupMembers'), GroupMembersFileSchema)
+export const SeedGroups = async () => await ParseSeedData<GroupsFileType>(get_path('groups'), GroupsFileSchema)
+export const SeedLikes = async () => await ParseSeedData<LikesFileType>(get_path('likes'), LikesFileSchema)
+export const SeedFollows = async () => await ParseSeedData<FollowsFileType>(get_path('follows'), FollowsFileSchema)
+export const SeedLists = async () => await ParseSeedData<ListsFileType>(get_path('lists'), ListsFileSchema)
+export const SeedListItems = async () => await ParseSeedData<ListItemsFileType>(get_path('listItems'), ListItemsFileSchema)

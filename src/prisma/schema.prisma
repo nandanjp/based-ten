@@ -8,11 +8,11 @@ datasource db {
 }
 
 model anime {
-  id          Int       @id
-  title       String    @db.VarChar(30)
-  mediaimega  String?
-  createdon   DateTime? @db.Date
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  mediaimage  String?
   numepisodes Int?
+  createdon   DateTime? @db.Date
 }
 
 model follows {
@@ -34,57 +34,58 @@ model groupmembers {
 }
 
 model groups {
-  gid          Int            @id
+  gid          Int            @id @default(autoincrement())
   groupname    String         @db.VarChar(30)
   ownedby      String         @db.VarChar(30)
   groupmembers groupmembers[]
   users        users          @relation(fields: [ownedby], references: [email], onDelete: NoAction, onUpdate: NoAction)
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model likes {
-  likeremail  String    @db.VarChar(30)
-  likingemail String    @db.VarChar(30)
-  listname    String    @db.VarChar(30)
-  users       users     @relation(fields: [likeremail], references: [email], onDelete: NoAction, onUpdate: NoAction)
-  listitems   listitems @relation(fields: [likingemail, listname], references: [email, listname], onDelete: NoAction, onUpdate: NoAction)
+  likeremail  String @db.VarChar(30)
+  likingemail String @db.VarChar(30)
+  listname    String @db.VarChar(30)
+  users       users  @relation(fields: [likeremail], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  listitems   lists  @relation(fields: [likingemail, listname], references: [email, listname], onDelete: NoAction, onUpdate: NoAction)
 
-  @@ignore
+  @@id([likeremail, likingemail, listname])
+  @@unique([likeremail, listname])
 }
 
 model listitems {
-  email    String  @db.VarChar(30)
-  listname String  @db.VarChar(30)
-  itemid   Int
-  likes    likes[] @ignore
-  lists    lists   @relation(fields: [email, listname], references: [email, listname], onDelete: NoAction, onUpdate: NoAction)
+  email         String @db.VarChar(30)
+  listname      String @db.VarChar(30)
+  rankinginlist Int
+  itemid        Int
+  lists         lists  @relation(fields: [email, listname], references: [email, listname], onDelete: NoAction, onUpdate: NoAction)
 
-  @@unique([email, listname])
+  @@id([email, listname, itemid])
 }
 
 model lists {
-  email     String     @db.VarChar(30)
-  listname  String     @db.VarChar(30)
+  email     String      @db.VarChar(30)
+  listname  String      @db.VarChar(30)
   listtype  listtype
-  listitems listitems?
-  users     users      @relation(fields: [email], references: [email], onDelete: NoAction, onUpdate: NoAction)
+  likes     likes[]
+  listitems listitems[]
+  users     users       @relation(fields: [email], references: [email], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([email, listname])
 }
 
 model movies {
-  id         Int       @id
-  title      String    @db.VarChar(30)
-  mediaimega String?
+  id         Int       @id @default(autoincrement())
+  title      String    @db.VarChar(255)
+  mediaimage String?
   createdon  DateTime? @db.Date
 }
 
 model songs {
-  id         Int       @id
+  id         Int       @id @default(autoincrement())
   title      String    @db.VarChar(30)
   author     String?   @db.VarChar(30)
   album      String?   @db.VarChar(30)
-  mediaimega String?
+  mediaimage String?
   createdon  DateTime? @db.Date
 }
 
@@ -92,20 +93,21 @@ model users {
   email                                 String         @id @db.VarChar(30)
   displayname                           String         @db.VarChar(20)
   userpassword                          String         @db.VarChar(30)
+  createdat                             DateTime?      @default(now()) @db.Timestamptz(6)
   follows_follows_followeremailTousers  follows[]      @relation("follows_followeremailTousers")
   follows_follows_followingemailTousers follows[]      @relation("follows_followingemailTousers")
   groupmembers                          groupmembers[]
   groups                                groups[]
-  likes                                 likes[]        @ignore
+  likes                                 likes[]
   lists                                 lists[]
 }
 
 model videogames {
-  id         Int       @id
-  title      String    @db.VarChar(30)
-  mediaimega String?
-  createdon  DateTime? @db.Date
+  id         Int       @id @default(autoincrement())
+  title      String    @db.VarChar(255)
+  mediaimage String?
   console    String?   @db.VarChar(30)
+  createdon  DateTime? @db.Date
 }
 
 enum Platforms {

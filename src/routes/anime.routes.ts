@@ -6,6 +6,13 @@ import { ParamsSchema } from '../services/general.types'
 
 const router = Router()
 
+router.get('/') //get all anime
+router.get('/:id') //get anime
+router.post('/') //create anime
+router.patch('/:id') //update anime
+router.delete('/:id') //delete anime
+router.get('/query/:name') //search for anime from external API
+
 router.get('/data')
 router.get('/', validate({ query_schema: FilterAnimeSchema }), getAnime)
 router.get('/:id', validate({ params_schema: ParamsSchema }), getAnimeById)

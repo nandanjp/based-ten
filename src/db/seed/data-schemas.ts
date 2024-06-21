@@ -28,7 +28,7 @@ export const LikesFileSchema = z.object({
 
 export const FollowsFileSchema = z.object({
   follower_email: z.string().email(),
-  following_email: z.string().email(),
+  following_email: z.string().email()
 })
 
 export const ListItemsFileSchema = z.object({
@@ -74,15 +74,7 @@ export const VideoGamesFileSchema = z.object({
   title: z.string(),
   image: z.string().url(),
   released_on: z.string().date(),
-  platform: z.enum([
-    'PlayStation 3',
-    'Xbox',
-    'Nintendo Switch',
-    'PlayStation',
-    'Xbox',
-    'PlayStation 4',
-    'PlayStation 5'
-  ])
+  platform: z.enum(['PlayStation 3', 'Xbox', 'Nintendo Switch', 'PlayStation', 'Xbox', 'PlayStation 4', 'PlayStation 5'])
 })
 
 export type AnimeFilesType = z.infer<typeof AnimeFileSchema>
