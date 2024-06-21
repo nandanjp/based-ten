@@ -5,6 +5,8 @@ import {
   AggregateFileType,
   AnimeFileSchema,
   AnimeFilesType,
+  FollowsFileSchema,
+  FollowsFileType,
   GroupMembersFileSchema,
   GroupMembersFileType,
   GroupsFileSchema,
@@ -61,7 +63,8 @@ const seed_data_paths = {
   movies: 'movies.csv',
   songs: 'songs.csv',
   users: 'users.csv',
-  games: 'video-games.csv'
+  games: 'video-games.csv',
+  follows: 'follows.csv'
 }
 
 export const SeedAnime = async () =>
@@ -110,6 +113,12 @@ export const SeedLikes = async () =>
   await ParseSeedData<LikesFileType>(
     path.join(__dirname, '..', 'sample-data', seed_data_paths.likes),
     LikesFileSchema
+  )
+
+export const SeedFollows = async() =>
+  await ParseSeedData<FollowsFileType>(
+    path.join(__dirname, '..', 'sample-data', seed_data_paths.follows),
+    FollowsFileSchema
   )
 
 export const SeedLists = async () =>

@@ -10,7 +10,8 @@ import {
   SeedLists,
   SeedMovies,
   SeedSongs,
-  SeedUsers
+  SeedUsers,
+  SeedFollows
 } from './data'
 import { z } from 'zod'
 import { QueryConfig } from 'pg'
@@ -95,6 +96,14 @@ const insertListItems = async () => {
   }))
 }
 
+const insertFollows = async () => {
+  const seed_data = await SeedFollows()
+  await insert(seed_data, (follow) => ({
+    text: 'INSERT INTO Follows(followerEmail, followingEmail) VALUES($1, $2) RETURNING followerEmail, followingEmail;',
+    values: [follow.follower_email, follow.following_email]
+  }))
+}
+
 async function insert<T>(values: Array<T>, map_fn: (t: T) => QueryConfig) {
   try {
     for (const query of values.map(map_fn)) {
@@ -123,6 +132,7 @@ const ProvidedCorrectInsert = z.enum([
   'likes',
   'lists',
   'list-items',
+  'follows',
   'all'
 ])
 ProvidedCorrectInsert.parse(process.argv[2])
@@ -165,6 +175,9 @@ async function main() {
       break
     case 'list-items':
       await insertListItems()
+      break
+    case 'follows':
+      await insertFollows()
       break
     case 'all':
       await insertAnime()

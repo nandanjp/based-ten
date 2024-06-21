@@ -26,6 +26,11 @@ export const LikesFileSchema = z.object({
   list_name: z.string()
 })
 
+export const FollowsFileSchema = z.object({
+  follower_email: z.string().email(),
+  following_email: z.string().email(),
+})
+
 export const ListItemsFileSchema = z.object({
   user_email: z.string().email(),
   list_name: z.string(),
@@ -90,6 +95,7 @@ export type MoviesFileType = z.infer<typeof MoviesFileSchema>
 export type SongsFileType = z.infer<typeof SongsFileSchema>
 export type UsersFileType = z.infer<typeof UsersFileSchema>
 export type VideoGamesFileType = z.infer<typeof VideoGamesFileSchema>
+export type FollowsFileType = z.infer<typeof FollowsFileSchema>
 
 export type AggregateFileType =
   | AnimeFilesType
@@ -102,3 +108,4 @@ export type AggregateFileType =
   | SongsFileType
   | UsersFileType
   | VideoGamesFileType
+  | FollowsFileType
