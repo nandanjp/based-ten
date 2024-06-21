@@ -41,6 +41,20 @@ $ npx feathers generate service               # Generate a new Service
 
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
+## Running SQL
+
+To run SQL files, first ensure that the SQL file to run is in the \src\db\sql folder and the file path relative to the sql folder is included in \src\db\run-raw-sql.ts in the ProvidedCorrectFile enum. Then we can run the SQL file with the following command:
+
+```
+$ npx ts-node .\run-raw-sql.ts <sql file path relative to sql folder>
+```
+
+To insert data from the sample data from \src\db\sample-data into the tables (available tables are shown in the /src/db/seed/insert.ts file in the ProvidedCorrectInsert enum, option all will insert data for all tables), run the following command from \src\db\seed:
+
+```
+$ npx ts-node .\insert.ts <table to insert into>
+```
+
 ### API Endpoints Currently Functioning
 - `/api/video-game`
 - `/api/video-game/:id`
