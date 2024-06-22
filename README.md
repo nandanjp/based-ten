@@ -111,3 +111,9 @@ $ npx ts-node .\insert.ts all
 
 ### Create a List Feature
 Users can create a top ten list. Initially, users can search in a search box for any type of media available. Once the user selects the first item, they can then continue selecting up to a total of ten items of the same type of media as their original item. Once a user has selected all items, they can give their list a name, and then the list is created and associated with their account.
+
+### Open APIs being used to retrieve and add new data
+[Spotify API](https://developer.spotify.com/documentation/web-api)
+[OMDb API](http://www.omdbapi.com/)
+[Jikan API](https://docs.api.jikan.moe/)
+[RAWG API](https://rawg.io/apidocs)
