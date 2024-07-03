@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import features_router from './features.routes'
 import anime_router from './anime.routes'
 import movie_router from './movies.routes'
 import song_router from './songs.routes'
@@ -13,5 +14,6 @@ router.use('/api/search', search_router)
 // router.use('/api/song', song_router)
 router.use('/api/user', user_router)
 // router.use('/api/video-game', games_router)
+router.use('/api/features', features_router)
 
 export default router
