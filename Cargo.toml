@@ -1,0 +1,16 @@
+[package]
+name = "based-ten"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = { version = "0.7.5", features = ["macros"] }
+dotenvy = "0.15.7"
+futures = "0.3.30"
+http = "1.1.0"
+serde = { version = "1.0.203", features = ["derive"] }
+sqlx = { version = "0.7.4", features = ["json", "macros", "postgres", "runtime-tokio-native-tls"] }
+tokio = { version = "1.38.0", features = ["full"] }
+tower-http = { version = "0.5.2", features = ["cors", "limit", "timeout", "trace"] }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
