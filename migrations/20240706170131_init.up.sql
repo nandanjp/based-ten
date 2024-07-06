@@ -61,14 +61,7 @@ CREATE TABLE ListItems (
     CHECK(
         rankingInList <= 10
         AND rankingInList >= 1
-        AND 1 = (
-            SELECT COUNT(*)
-            FROM ListItems li
-            WHERE li.email = email
-                AND li.listName = listName
-                AND li.rankingInList = rankingInList
-        )
-    ),
+    )
 );
 CREATE TABLE Likes (
     likerEmail VARCHAR(30) NOT NULL REFERENCES Users(email),
@@ -111,3 +104,17 @@ SELECT id,
     createdOn,
     'anime'::ListType AS type
 FROM Anime;
+-- Checking if a listitem is being added to a list that already contains the same rank
+CREATE OR REPLACE FUNCTION check_rank_exists() RETURNS TRIGGER AS $$ BEGIN IF EXISTS (
+        SELECT 1
+        FROM ListItems
+        WHERE email = NEW.email
+            AND listName = NEW.listName
+            AND rankingInList = NEW.rankingInList
+    ) THEN RAISE EXCEPTION 'An item with the same rank has already been added to the list';
+END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER ItemRankIsUnique BEFORE
+INSERT ON ListItems FOR EACH ROW EXECUTE FUNCTION check_rank_exists();

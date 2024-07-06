@@ -1,7 +1,10 @@
-use std::time::Duration;
+mod handlers;
+mod models;
+use handlers::anime::get_all_anime;
 
 use axum::{routing::get, Router};
 use sqlx::postgres::PgPoolOptions;
+use std::time::Duration;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
@@ -42,6 +45,10 @@ async fn main() {
         .route(
             "/health",
             get(|| async { "Server is healthy and running!" }),
+        )
+        .nest(
+            "/api",
+            Router::new().nest("/anime", Router::new().route("/", get(get_all_anime))),
         )
         .layer(tower_http::timeout::TimeoutLayer::new(Duration::from_secs(
             10,
