@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { ParamsType } from '../general.types'
-import prisma from '../../db/db'
+import { prisma } from '../../db/db'
 import { FilterMovieType } from './movies.schema'
 
 export const getMovies = async (req: Request<{}, {}, {}, FilterMovieType>, res: Response) => {
