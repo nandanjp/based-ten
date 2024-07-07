@@ -1,7 +1,7 @@
 WITH RECURSIVE Circles AS (
     (SELECT 1 AS level, g.gid, g.groupName, g.ownedBy
     FROM Groups g
-    WHERE g.gid = 999)
+    WHERE g.gid = 1)
     UNION
     (
         SELECT c.level + 1, gm.gid, g.groupName, g.ownedBy
@@ -11,7 +11,7 @@ WITH RECURSIVE Circles AS (
         AND gm.email IN (
             SELECT u.email
             FROM Users u JOIN GroupMembers gm ON u.email = gm.email
-            WHERE gm.gid = 999 AND u.email != 'your_own'
+            WHERE gm.gid = 1 AND u.email != 'john.doe@example.com'
             LIMIT 3
         )
     )
