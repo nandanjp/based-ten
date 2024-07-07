@@ -20,6 +20,7 @@ SimilarLists AS (
             FROM YourRankedItems yri
         )
     )
+    AND l.email != yri.email
     GROUP BY l.email, l.listName
 ),
 SimilarListsWithSimilarity AS (
