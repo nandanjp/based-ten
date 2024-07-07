@@ -19,7 +19,8 @@ const ProvidedCorrectFile = z.enum([
   'sample-queries/feature2',
   'sample-queries/feature3',
   'sample-queries/feature4',
-  'sample-queries/feature5'
+  'sample-queries/feature5',
+  'sample-queries/feature6'
 ])
 ProvidedCorrectFile.parse(process.argv[2])
 
