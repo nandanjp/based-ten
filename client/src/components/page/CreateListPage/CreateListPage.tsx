@@ -1,3 +1,4 @@
+'use client'
 import { AddListItem } from '@/components/blocks/AddListItem/AddListItem'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
