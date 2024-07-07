@@ -32,10 +32,6 @@ RecommendedLists AS (
     )
     GROUP BY sl.email, sl.listName, sl.likes
 )
--- ListsBySimilarity AS (
---     SELECT sl.email, sl.listName, sl.similarity, sl.likes
---     FROM RecommendedLists sl
--- )
 
 SELECT * FROM RecommendedLists
 ORDER BY similarity DESC, likes DESC;
