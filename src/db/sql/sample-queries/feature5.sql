@@ -9,18 +9,13 @@ WITH YourRankedItems AS (
     WHERE l.email = 'example_email'
 ),
 SimilarLists AS (
-    SELECT l.email, l.listName, COUNT(lk.likerEmail) AS likes
-    FROM Lists l JOIN Likes lk ON l.email = lk.likingEmail AND l.listName = lk.listName
-    JOIN YourRankedItems yri ON l.listType = yri.listType
-    WHERE EXISTS (
-        SELECT 1
-        FROM ListItems li
-        WHERE li.email = l.email AND li.listName = l.listName AND li.itemID IN (
-            SELECT yri.itemID
-            FROM YourRankedItems yri
-        )
+    SELECT li.email, li.listName, COUNT(li.itemID) AS similarity, COUNT(lk.likerEmail) AS likes
+    FROM ListItems li LEFT JOIN Likes lk ON li.email = lk.likingEmail AND li.listName = lk.listName
+    WHERE li.itemID IN (
+        SELECT yri.itemID
+        FROM YourRankedItems yri
     )
-    GROUP BY l.email, l.listName
+    GROUP BY li.email, li.listName
 ),
 SimilarListsWithSimilarity AS (
     SELECT sl.email, sl.listName, sl.likes, COUNT(li.itemID) AS similarity
