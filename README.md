@@ -52,13 +52,13 @@ $ npx ts-node .\run-raw-sql.ts drop-tables
 Then we want to create the tables by running the following command from src\db:
 
 ```
-$ npx ts.node .\run-raw-sql.ts create-tables
+$ npx ts-node .\run-raw-sql.ts create-tables
 ```
 
 Then we want to populate all the tables with the sample data by going into src\db\seed and running the following command:
 
 ```
-$ npx ts.node .\insert.ts all
+$ npx ts-node .\insert.ts all
 ```
 
 ## Running SQL
