@@ -23,7 +23,7 @@ SimilarLists AS (
     AND l.email != yri.email
     GROUP BY l.email, l.listName
 ),
-SimilarListsWithSimilarity AS (
+RecommendedLists AS (
     SELECT sl.email, sl.listName, sl.likes, COUNT(li.itemID) AS similarity
     FROM SimilarLists sl JOIN ListItems li ON sl.email = li.email AND sl.listName = li.listName
     WHERE li.itemID IN (
@@ -31,17 +31,14 @@ SimilarListsWithSimilarity AS (
         FROM YourRankedItems yri
     )
     GROUP BY sl.email, sl.listName, sl.likes
-),
-TotalUsers AS (
-    SELECT COUNT(DISTINCT email) AS totalUsers
-    FROM Users
-),
-ListsByScore AS (
-    SELECT sl.email, sl.listName, (sl.similarity / 10) + (sl.likes / tu.totalUsers) AS score
-    FROM SimilarListsWithSimilarity sl, TotalUsers tu
 )
+-- ListsBySimilarity AS (
+--     SELECT sl.email, sl.listName, sl.similarity, sl.likes
+--     FROM RecommendedLists sl
+-- )
 
-SELECT * FROM SimilarLists;
+SELECT * FROM RecommendedLists
+ORDER BY similarity DESC, likes DESC;
 
 -- SELECT lbs.email, lbs.listName, lbs.score
 -- FROM ListsByScore lbs
