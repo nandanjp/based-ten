@@ -8,10 +8,7 @@ use serde::Serialize;
 use sqlx::PgPool;
 
 use crate::{
-    models::{
-        anime::AnimeSerial,
-        songs::{CreateSong, QuerySong, SongError, SongSerial, UpdateSong},
-    },
+    models::songs::{CreateSong, QuerySong, SongSerial, UpdateSong},
     services::songs::SongService,
     utils::traits::{GeneralService, IntoSerial},
 };
@@ -20,14 +17,14 @@ use crate::{
 struct SongResponse {
     success: bool,
     song: Option<SongSerial>,
-    error: Option<SongError>,
+    error: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
 struct ListSongResponse {
     success: bool,
     songs: Option<Vec<SongSerial>>,
-    error: Option<SongError>,
+    error: Option<String>,
 }
 
 pub async fn get_all_songs(
@@ -43,7 +40,7 @@ pub async fn get_all_songs(
                     songs
                         .into_iter()
                         .map(|s| s.to_serial())
-                        .collect::<Vec<AnimeSerial>>(),
+                        .collect::<Vec<SongSerial>>(),
                 ),
                 error: None,
             }),
@@ -153,7 +150,7 @@ pub async fn delete_song(State(pool): State<PgPool>, Path(id): Path<i32>) -> imp
                 success: false,
                 song: None,
                 error: Some(format!(
-                    "failed to update song with given details due to the following error: {err:#?}"
+                    "failed to delete song with given details due to the following error: {err:#?}"
                 )),
             }),
         ),

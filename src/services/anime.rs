@@ -3,8 +3,6 @@ use crate::{
     utils::{functions::convert_date, traits::GeneralService},
 };
 use axum::async_trait;
-use serde::Deserialize;
-use time::{macros::format_description, Date};
 
 pub struct AnimeService;
 #[async_trait]
@@ -89,11 +87,7 @@ impl GeneralService for AnimeService {
         pool: &sqlx::PgPool,
         create_obj: Self::CreateObject,
     ) -> Result<Self::Response, Self::Error> {
-        let date = convert_date::<AnimeError>(
-            update_obj
-                .created_on
-                .unwrap_or(anime.created_on.to_string()),
-        )?;
+        let date = convert_date::<AnimeError>(create_obj.created_on)?;
         sqlx::query!(r#"INSERT INTO Anime(id, title, mediaimage, numepisodes, createdon) VALUES($1, $2, $3, $4, $5) RETURNING id, title, mediaimage, numepisodes, createdon"#, create_obj.id, create_obj.title, create_obj.media_image, create_obj.num_episodes, date).fetch_one(pool).await.map(|a| Self::Response {
             id: a.id,
             num_episodes: a.numepisodes.unwrap(),
@@ -108,22 +102,7 @@ impl GeneralService for AnimeService {
         update_obj: Self::UpdateObject,
         id: i32,
     ) -> Result<Self::Response, Self::Error> {
-        let anime = sqlx::query!(r#"SELECT * FROM Anime WHERE id = $1"#, id)
-            .fetch_one(pool)
-            .await
-            .map(|a| Self::Response {
-                id: a.id,
-                title: a.title,
-                num_episodes: a.numepisodes.unwrap(),
-                media_image: a.mediaimage.unwrap(),
-                created_on: a.createdon.unwrap(),
-            })
-            .map_err(|e| {
-                AnimeError(format!(
-                    "failed to find an anime with the id = {id} due to the following error: {e:#?}"
-                ))
-            })?;
-
+        let anime = Self::get_by_id(&pool, id).await?;
         let title = update_obj.title.unwrap_or(anime.title);
         let num_episodes = update_obj.num_episodes.unwrap_or(anime.num_episodes);
         let media_image = update_obj.media_image.unwrap_or(anime.media_image);

@@ -5,7 +5,7 @@ mod utils;
 use handlers::{
     anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime},
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
-    movies::{delete_movie, get_all_movies, get_movie_by_id, update_movie},
+    movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
 };
 
@@ -73,7 +73,7 @@ async fn main() {
                     "/movies",
                     Router::new()
                         .route("/", get(get_all_movies))
-                        .route("/", post(create_game))
+                        .route("/", post(create_movie))
                         .route("/:id", get(get_movie_by_id))
                         .route("/:id", patch(update_movie))
                         .route("/:id", delete(delete_movie)),

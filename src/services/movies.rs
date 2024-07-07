@@ -1,51 +1,25 @@
 use crate::{
-    models::anime::{Anime, AnimeError, AnimeQuery, CreateAnime, UpdateAnime},
+    models::movies::{CreateMovie, ErrorMovie, Movie, QueryMovie, UpdateMovie},
     utils::{functions::convert_date, traits::GeneralService},
 };
 use axum::async_trait;
-use serde::Deserialize;
-use time::{macros::format_description, Date};
 
 pub struct MovieService;
 #[async_trait]
 impl GeneralService for MovieService {
-    type Response = Anime;
-    type ListResponse = Vec<Anime>;
-    type QueryObject = AnimeQuery;
-    type CreateObject = CreateAnime;
-    type UpdateObject = UpdateAnime;
-    type Error = AnimeError;
+    type Response = Movie;
+    type ListResponse = Vec<Movie>;
+    type QueryObject = QueryMovie;
+    type CreateObject = CreateMovie;
+    type UpdateObject = UpdateMovie;
+    type Error = ErrorMovie;
 
     async fn get_all(
         pool: &sqlx::PgPool,
         query_obj: Self::QueryObject,
     ) -> Result<Self::ListResponse, Self::Error> {
         match query_obj {
-            AnimeQuery {
-                num_episodes: Some(num_episodes),
-            } => sqlx::query!(
-                r#"SELECT * FROM Anime WHERE numepisodes = $1"#,
-                num_episodes
-            )
-            .fetch_all(pool)
-            .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| Self::Response {
-                        id: a.id,
-                        title: a.title,
-                        media_image: a.mediaimage.unwrap(),
-                        num_episodes,
-                        created_on: a.createdon.unwrap(),
-                    })
-                    .collect::<Self::ListResponse>()
-            })
-            .map_err(|e| {
-                AnimeError(format!(
-                    "failed to retrieve all anime due to the following error: {e:#?}"
-                ))
-            }),
-            _ => sqlx::query!(r#"SELECT * FROM Anime"#,)
+            _ => sqlx::query!(r#"SELECT * FROM Movies"#)
                 .fetch_all(pool)
                 .await
                 .map(|a| {
@@ -54,33 +28,31 @@ impl GeneralService for MovieService {
                             id: a.id,
                             title: a.title,
                             media_image: a.mediaimage.unwrap(),
-                            num_episodes: a.numepisodes.unwrap(),
                             created_on: a.createdon.unwrap(),
                         })
-                        .collect::<Self::ListResponse>()
+                        .collect::<Vec<Movie>>()
                 })
                 .map_err(|e| {
-                    AnimeError(format!(
-                        "failed to retrieve all anime due to the following error: {e:#?}"
+                    ErrorMovie(format!(
+                        "failed to retrieve all movies due to the following error: {e:#?}"
                     ))
                 }),
         }
     }
 
     async fn get_by_id(pool: &sqlx::PgPool, id: i32) -> Result<Self::Response, Self::Error> {
-        sqlx::query!(r#"SELECT * FROM Anime WHERE id = $1"#, id)
+        sqlx::query!("SELECT * FROM Movies WHERE id = $1", id)
             .fetch_one(pool)
             .await
             .map(|a| Self::Response {
                 id: a.id,
                 title: a.title,
                 media_image: a.mediaimage.unwrap(),
-                num_episodes: a.numepisodes.unwrap(),
                 created_on: a.createdon.unwrap(),
             })
             .map_err(|e| {
-                AnimeError(format!(
-                    "failed to retrieve an anime with id = {id} due to the following error: {e:#?}"
+                ErrorMovie(format!(
+                    "failed to retrieve movie with id = {id} due to the following error: {e:#?}"
                 ))
             })
     }
@@ -89,18 +61,13 @@ impl GeneralService for MovieService {
         pool: &sqlx::PgPool,
         create_obj: Self::CreateObject,
     ) -> Result<Self::Response, Self::Error> {
-        let date = convert_date::<AnimeError>(
-            update_obj
-                .created_on
-                .unwrap_or(anime.created_on.to_string()),
-        )?;
-        sqlx::query!(r#"INSERT INTO Anime(id, title, mediaimage, numepisodes, createdon) VALUES($1, $2, $3, $4, $5) RETURNING id, title, mediaimage, numepisodes, createdon"#, create_obj.id, create_obj.title, create_obj.media_image, create_obj.num_episodes, date).fetch_one(pool).await.map(|a| Self::Response {
+        let date = convert_date::<ErrorMovie>(create_obj.created_on)?;
+        sqlx::query!("INSERT INTO MOVIES(id, title, mediaimage, createdon) VALUES($1, $2, $3, $4) RETURNING id, title, mediaimage, createdon", create_obj.id, create_obj.title, create_obj.media_image, date).fetch_one(pool).await.map(|a| Self::Response {
             id: a.id,
-            num_episodes: a.numepisodes.unwrap(),
             title: a.title,
             media_image: a.mediaimage.unwrap(),
             created_on: a.createdon.unwrap()
-        }).map_err(|e| AnimeError(format!("failed to create anime with the provided details due to the following error: {e:#?}")))
+        }).map_err(|e| ErrorMovie(format!("failed to create a movie with the given values due to the following error: {e:#?}")))
     }
 
     async fn update(
@@ -108,47 +75,39 @@ impl GeneralService for MovieService {
         update_obj: Self::UpdateObject,
         id: i32,
     ) -> Result<Self::Response, Self::Error> {
-        let anime = sqlx::query!(r#"SELECT * FROM Anime WHERE id = $1"#, id)
-            .fetch_one(pool)
-            .await
-            .map(|a| Self::Response {
-                id: a.id,
-                title: a.title,
-                num_episodes: a.numepisodes.unwrap(),
-                media_image: a.mediaimage.unwrap(),
-                created_on: a.createdon.unwrap(),
-            })
-            .map_err(|e| {
-                AnimeError(format!(
-                    "failed to find an anime with the id = {id} due to the following error: {e:#?}"
-                ))
-            })?;
-
-        let title = update_obj.title.unwrap_or(anime.title);
-        let num_episodes = update_obj.num_episodes.unwrap_or(anime.num_episodes);
-        let media_image = update_obj.media_image.unwrap_or(anime.media_image);
-        let date = convert_date::<AnimeError>(
+        let movie = Self::get_by_id(&pool, id).await?;
+        let title = update_obj.title.unwrap_or(movie.title);
+        let media_image = update_obj.media_image.unwrap_or(movie.media_image);
+        let created_on = convert_date::<ErrorMovie>(
             update_obj
                 .created_on
-                .unwrap_or(anime.created_on.to_string()),
+                .unwrap_or(movie.created_on.to_string()),
         )?;
-
-        sqlx::query!(r#"UPDATE Anime SET title = $1, numepisodes = $2, mediaimage = $3, createdon = $4 WHERE id = $5 RETURNING id, title, numepisodes, mediaimage, createdon"#, title, num_episodes, media_image, date, id).fetch_one(pool).await.map(|a| Self::Response {
+        sqlx::query!("UPDATE Movies SET title = $1, mediaimage = $2, createdon = $3 WHERE id = $4 RETURNING id, title, mediaimage, createdon", title, media_image, created_on, id).fetch_one(pool).await.map(|a| Self::Response {
             id: a.id,
             title: a.title,
             media_image: a.mediaimage.unwrap(),
-            num_episodes: a.numepisodes.unwrap(),
             created_on: a.createdon.unwrap()
-        }).map_err(|e| AnimeError(format!("failed to update anime with the provided details due to the following error: {e:#?}")))
+        }).map_err(|e| ErrorMovie(format!("failed to update movie due to the following error: {e:#?}")))
     }
 
     async fn delete(pool: &sqlx::PgPool, id: i32) -> Result<Self::Response, Self::Error> {
-        sqlx::query!(r#"DELETE FROM Anime WHERE id = $1 RETURNING id, title, numepisodes, mediaimage, createdon"#, id).fetch_one(pool).await.map(|a| Self::Response {
+        sqlx::query!(
+            "DELETE FROM Movies WHERE id = $1 RETURNING id, title, mediaimage, createdon",
+            id
+        )
+        .fetch_one(pool)
+        .await
+        .map(|a| Self::Response {
             id: a.id,
             title: a.title,
             media_image: a.mediaimage.unwrap(),
-            num_episodes: a.numepisodes.unwrap(),
-            created_on: a.createdon.unwrap()
-        }).map_err(|e| AnimeError(format!("failed to delete anime with the given id = {id} due to the following error: {e:#?}")))
+            created_on: a.createdon.unwrap(),
+        })
+        .map_err(|e| {
+            ErrorMovie(format!(
+                "failed to delete movie due to the following error: {e:#?}"
+            ))
+        })
     }
 }

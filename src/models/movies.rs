@@ -31,7 +31,7 @@ impl IntoSerial for Movie {
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
-pub struct MovieQuery;
+pub struct QueryMovie {}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateMovie {
@@ -49,14 +49,14 @@ pub struct UpdateMovie {
 }
 
 #[derive(Debug, Clone, Serialize)]
-pub struct MovieError(pub String);
+pub struct ErrorMovie(pub String);
 
-impl Error for MovieError {
+impl Error for ErrorMovie {
     fn new(err: String) -> Self {
         Self(err)
     }
 }
-impl std::fmt::Display for MovieError {
+impl std::fmt::Display for ErrorMovie {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,

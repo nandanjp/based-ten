@@ -8,10 +8,7 @@ use serde::Serialize;
 use sqlx::PgPool;
 
 use crate::{
-    models::{
-        anime::AnimeSerial,
-        movies::{CreateMovie, MovieError, MovieQuery, MovieSerial, UpdateMovie},
-    },
+    models::movies::{CreateMovie, MovieSerial, QueryMovie, UpdateMovie},
     services::movies::MovieService,
     utils::traits::{GeneralService, IntoSerial},
 };
@@ -20,30 +17,30 @@ use crate::{
 struct MovieResponse {
     success: bool,
     movie: Option<MovieSerial>,
-    error: Option<MovieError>,
+    error: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
 struct ListMovieResponse {
     success: bool,
     movies: Option<Vec<MovieSerial>>,
-    error: Option<MovieError>,
+    error: Option<String>,
 }
 
 pub async fn get_all_movies(
     State(pool): State<PgPool>,
-    Query(query): Query<MovieQuery>,
+    Query(query): Query<QueryMovie>,
 ) -> impl IntoResponse {
     match MovieService::get_all(&pool, query).await {
-        Ok(songs) => (
+        Ok(movies) => (
             StatusCode::OK,
             Json(ListMovieResponse {
                 success: true,
                 movies: Some(
                     movies
                         .into_iter()
-                        .map(|s| s.to_serial())
-                        .collect::<Vec<AnimeSerial>>(),
+                        .map(|m| m.to_serial())
+                        .collect::<Vec<MovieSerial>>(),
                 ),
                 error: None,
             }),
@@ -54,7 +51,7 @@ pub async fn get_all_movies(
                 success: false,
                 movies: None,
                 error: Some(format!(
-                    "failed to retrieve all songs due to the following error: {err:#?}"
+                    "failed to retrieve all movies due to the following error: {err:#?}"
                 )),
             }),
         ),
@@ -77,7 +74,7 @@ pub async fn get_movie_by_id(State(pool): State<PgPool>, Path(id): Path<i32>) ->
                 success: false,
                 movie: None,
                 error: Some(format!(
-                    "failed to retrieve song with id={id} due to the following error: {err:#?}"
+                    "failed to retrieve movie with id={id} due to the following error: {err:#?}"
                 )),
             }),
         ),
@@ -103,7 +100,7 @@ pub async fn create_movie(
                 success: false,
                 movie: None,
                 error: Some(format!(
-                    "failed to create song with given details due to the following error: {err:#?}"
+                    "failed to create movie with given details due to the following error: {err:#?}"
                 )),
             }),
         ),
@@ -130,7 +127,7 @@ pub async fn update_movie(
                 success: false,
                 movie: None,
                 error: Some(format!(
-                    "failed to update song with given details due to the following error: {err:#?}"
+                    "failed to update movie with given details due to the following error: {err:#?}"
                 )),
             }),
         ),
@@ -153,7 +150,7 @@ pub async fn delete_movie(State(pool): State<PgPool>, Path(id): Path<i32>) -> im
                 success: false,
                 movie: None,
                 error: Some(format!(
-                    "failed to update song with given details due to the following error: {err:#?}"
+                    "failed to update movie with given details due to the following error: {err:#?}"
                 )),
             }),
         ),

@@ -34,7 +34,7 @@ impl IntoSerial for Game {
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
-pub struct GameQuery {
+pub struct QueryGame {
     pub console: Option<String>,
 }
 
@@ -56,14 +56,14 @@ pub struct UpdateGame {
 }
 
 #[derive(Debug, Clone, Serialize)]
-pub struct GameError(pub String);
-impl Error for GameError {
+pub struct ErrorGame(pub String);
+impl Error for ErrorGame {
     fn new(err: String) -> Self {
         Self(err)
     }
 }
 
-impl std::fmt::Display for GameError {
+impl std::fmt::Display for ErrorGame {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,

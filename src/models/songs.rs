@@ -34,7 +34,9 @@ impl IntoSerial for Song {
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
-pub struct QuerySong;
+pub struct QuerySong {
+    pub author: Option<String>,
+}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateSong {
@@ -54,15 +56,15 @@ pub struct UpdateSong {
 }
 
 #[derive(Debug, Clone, Serialize)]
-pub struct SongError(pub String);
+pub struct ErrorSong(pub String);
 
-impl Error for SongError {
+impl Error for ErrorSong {
     fn new(err: String) -> Self {
         Self(err)
     }
 }
 
-impl std::fmt::Display for SongError {
+impl std::fmt::Display for ErrorSong {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,

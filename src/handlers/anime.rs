@@ -4,7 +4,7 @@ use crate::utils::traits::{GeneralService, IntoSerial};
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use sqlx::PgPool;
 
 #[derive(Debug, Serialize)]
