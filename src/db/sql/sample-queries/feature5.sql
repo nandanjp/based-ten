@@ -4,13 +4,14 @@
 -- 4. Return the top 10 recommended lists
 
 WITH YourRankedItems AS (
-    SELECT li.email, li.itemID
-    FROM ListItems li
-    WHERE li.email = 'example_email'
+    SELECT li.email, li.itemID, l.listType
+    FROM ListItems li JOIN Lists l ON li.email = l.email AND li.listName = l.listName
+    WHERE l.email = 'example_email'
 ),
 SimilarLists AS (
     SELECT l.email, l.listName, COUNT(lk.likerEmail) AS likes
     FROM Lists l JOIN Likes lk ON l.email = lk.likingEmail AND l.listName = lk.listName
+    JOIN YourRankedItems yri ON l.listType = yri.listType
     WHERE EXISTS (
         SELECT 1
         FROM ListItems li
@@ -39,9 +40,11 @@ ListsByScore AS (
     FROM SimilarListsWithSimilarity sl, TotalUsers tu
 )
 
-SELECT lbs.email, lbs.listName, lbs.score
-FROM ListsByScore lbs
-ORDER BY lbs.score DESC
-LIMIT 10;
+SELECT * FROM SimilarLists;
+
+-- SELECT lbs.email, lbs.listName, lbs.score
+-- FROM ListsByScore lbs
+-- ORDER BY lbs.score DESC
+-- LIMIT 10;
 
 
