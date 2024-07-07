@@ -1,17 +1,17 @@
 WITH RECURSIVE Circles AS (
-    (g.gid, g.groupName, g.ownedBy
+    (SELECT g.gid, g.groupName, g.ownedBy
     FROM Groups g
     WHERE g.gid = 1)
     UNION
     (
-        SELECT gm.gid, g.groupName, g.ownedBy
-        FROM Circles c JOIN GroupMembers gm ON c.gid = gm.gid
-        JOIN Groups g ON gm.gid = g.gid
-        WHERE AND gm.email IN (
+        SELECT gm2.gid, g.groupName, g.ownedBy
+        FROM Circles c JOIN GroupMembers gm1 ON c.gid = gm1.gid
+        JOIN GroupMembers gm2 ON gm1.email = gm2.email
+        JOIN Groups g ON gm2.gid = g.gid
+        WHERE gm2.email IN (
             SELECT u.email
             FROM Users u JOIN GroupMembers gm ON u.email = gm.email
-            WHERE gm.gid = 1 AND u.email != 'john.doe@example.com'
-            LIMIT 3
+            WHERE u.email != 'john.doe@example.com'
         )
     )
 )
