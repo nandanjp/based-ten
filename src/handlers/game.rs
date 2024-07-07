@@ -10,37 +10,37 @@ use sqlx::PgPool;
 use crate::{
     models::{
         anime::AnimeSerial,
-        songs::{CreateSong, QuerySong, SongError, SongSerial, UpdateSong},
+        game::{CreateGame, GameError, GameQuery, GameSerial, UpdateGame},
     },
-    services::songs::SongService,
+    services::game::GameService,
     utils::traits::{GeneralService, IntoSerial},
 };
 
 #[derive(Debug, Serialize)]
-struct SongResponse {
+struct GameResponse {
     success: bool,
-    song: Option<SongSerial>,
-    error: Option<SongError>,
+    game: Option<GameSerial>,
+    error: Option<GameError>,
 }
 
 #[derive(Debug, Serialize)]
-struct ListSongResponse {
+struct ListGameResponse {
     success: bool,
-    songs: Option<Vec<SongSerial>>,
-    error: Option<SongError>,
+    games: Option<Vec<GameSerial>>,
+    error: Option<GameError>,
 }
 
-pub async fn get_all_songs(
+pub async fn get_all_games(
     State(pool): State<PgPool>,
-    Query(query): Query<QuerySong>,
+    Query(query): Query<GameQuery>,
 ) -> impl IntoResponse {
-    match SongService::get_all(&pool, query).await {
-        Ok(songs) => (
+    match GameService::get_all(&pool, query).await {
+        Ok(games) => (
             StatusCode::OK,
-            Json(ListSongResponse {
+            Json(ListGameResponse {
                 success: true,
-                songs: Some(
-                    songs
+                games: Some(
+                    games
                         .into_iter()
                         .map(|s| s.to_serial())
                         .collect::<Vec<AnimeSerial>>(),
@@ -50,9 +50,9 @@ pub async fn get_all_songs(
         ),
         Err(err) => (
             StatusCode::BAD_REQUEST,
-            Json(ListSongResponse {
+            Json(ListGameResponse {
                 success: false,
-                songs: None,
+                games: None,
                 error: Some(format!(
                     "failed to retrieve all songs due to the following error: {err:#?}"
                 )),
@@ -61,21 +61,21 @@ pub async fn get_all_songs(
     }
 }
 
-pub async fn get_song_by_id(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
-    match SongService::get_by_id(&pool, id).await {
-        Ok(song) => (
+pub async fn get_game_by_id(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
+    match GameService::get_by_id(&pool, id).await {
+        Ok(game) => (
             StatusCode::OK,
-            Json(SongResponse {
+            Json(GameResponse {
                 success: true,
-                song: Some(song.to_serial()),
+                game: Some(game.to_serial()),
                 error: None,
             }),
         ),
         Err(err) => (
             StatusCode::BAD_REQUEST,
-            Json(SongResponse {
+            Json(GameResponse {
                 success: false,
-                song: None,
+                game: None,
                 error: Some(format!(
                     "failed to retrieve song with id={id} due to the following error: {err:#?}"
                 )),
@@ -84,24 +84,24 @@ pub async fn get_song_by_id(State(pool): State<PgPool>, Path(id): Path<i32>) -> 
     }
 }
 
-pub async fn create_song(
+pub async fn create_game(
     State(pool): State<PgPool>,
     Json(create): Json<CreateSong>,
 ) -> impl IntoResponse {
-    match SongService::create(&pool, create).await {
-        Ok(song) => (
+    match GameService::create(&pool, create).await {
+        Ok(game) => (
             StatusCode::OK,
-            Json(SongResponse {
+            Json(GameResponse {
                 success: true,
-                song: Some(song.to_serial()),
+                game: Some(game.to_serial()),
                 error: None,
             }),
         ),
         Err(err) => (
             StatusCode::BAD_REQUEST,
-            Json(SongResponse {
+            Json(GameResponse {
                 success: false,
-                song: None,
+                game: None,
                 error: Some(format!(
                     "failed to create song with given details due to the following error: {err:#?}"
                 )),
@@ -110,25 +110,25 @@ pub async fn create_song(
     }
 }
 
-pub async fn update_song(
+pub async fn update_game(
     State(pool): State<PgPool>,
     Path(id): Path<i32>,
     Json(update): Json<UpdateSong>,
 ) -> impl IntoResponse {
-    match SongService::update(&pool, update, id).await {
-        Ok(song) => (
+    match GameService::update(&pool, update, id).await {
+        Ok(game) => (
             StatusCode::OK,
-            Json(SongResponse {
+            Json(GameResponse {
                 success: true,
-                song: Some(song.to_serial()),
+                game: Some(game.to_serial()),
                 error: None,
             }),
         ),
         Err(err) => (
             StatusCode::BAD_REQUEST,
-            Json(SongResponse {
+            Json(GameResponse {
                 success: false,
-                song: None,
+                game: None,
                 error: Some(format!(
                     "failed to update song with given details due to the following error: {err:#?}"
                 )),
@@ -137,21 +137,21 @@ pub async fn update_song(
     }
 }
 
-pub async fn delete_song(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
-    match SongService::delete(&pool, id).await {
+pub async fn delete_game(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
+    match GameService::delete(&pool, id).await {
         Ok(song) => (
             StatusCode::OK,
-            Json(SongResponse {
+            Json(ListSongResponse {
                 success: true,
-                song: Some(song.to_serial()),
+                songs: Some(song.to_serial()),
                 error: None,
             }),
         ),
         Err(err) => (
             StatusCode::BAD_REQUEST,
-            Json(SongResponse {
+            Json(ListSongResponse {
                 success: false,
-                song: None,
+                songs: None,
                 error: Some(format!(
                     "failed to update song with given details due to the following error: {err:#?}"
                 )),

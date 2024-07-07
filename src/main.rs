@@ -1,10 +1,21 @@
 mod handlers;
 mod models;
-use handlers::anime::get_all_anime;
+mod services;
+mod utils;
+use handlers::{
+    anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime},
+    game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
+    movies::{delete_movie, get_all_movies, get_movie_by_id, update_movie},
+    songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
+};
 
-use axum::{routing::get, Router};
+use axum::{
+    routing::{delete, get, patch, post},
+    Router,
+};
 use sqlx::postgres::PgPoolOptions;
 use std::time::Duration;
+use tower_http::trace::TraceLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 #[tokio::main]
@@ -48,8 +59,45 @@ async fn main() {
         )
         .nest(
             "/api",
-            Router::new().nest("/anime", Router::new().route("/", get(get_all_anime))),
+            Router::new()
+                .nest(
+                    "/anime",
+                    Router::new()
+                        .route("/", get(get_all_anime))
+                        .route("/", post(create_anime))
+                        .route("/:id", get(get_anime_by_id))
+                        .route("/:id", patch(update_anime))
+                        .route("/:id", delete(delete_anime)),
+                )
+                .nest(
+                    "/movies",
+                    Router::new()
+                        .route("/", get(get_all_movies))
+                        .route("/", post(create_game))
+                        .route("/:id", get(get_movie_by_id))
+                        .route("/:id", patch(update_movie))
+                        .route("/:id", delete(delete_movie)),
+                )
+                .nest(
+                    "/songs",
+                    Router::new()
+                        .route("/", get(get_all_songs))
+                        .route("/", post(create_song))
+                        .route("/:id", get(get_song_by_id))
+                        .route("/:id", patch(update_song))
+                        .route("/:id", delete(delete_song)),
+                )
+                .nest(
+                    "/games",
+                    Router::new()
+                        .route("/", get(get_all_games))
+                        .route("/", post(create_game))
+                        .route("/:id", get(get_game_by_id))
+                        .route("/:id", patch(update_game))
+                        .route("/:id", delete(delete_game)),
+                ),
         )
+        .layer(TraceLayer::new_for_http())
         .layer(tower_http::timeout::TimeoutLayer::new(Duration::from_secs(
             10,
         )))

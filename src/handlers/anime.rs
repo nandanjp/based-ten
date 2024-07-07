@@ -1,4 +1,6 @@
-use crate::models::anime::{Anime, AnimeSerial};
+use crate::models::anime::{AnimeQuery, AnimeSerial, CreateAnime, UpdateAnime};
+use crate::services::anime::AnimeService;
+use crate::utils::traits::{GeneralService, IntoSerial};
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
@@ -19,46 +21,11 @@ struct ListAnimeResponse {
     error: Option<String>,
 }
 
-#[derive(Debug, Clone)]
-struct AnimeError(String);
-impl std::fmt::Display for AnimeError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "failed to retrieve anime due to the following error: {:#?}",
-            self.0
-        )
-    }
-}
-
-struct AnimeService;
-
-impl AnimeService {
-    async fn get_all_anime(pool: &sqlx::PgPool) -> Result<Vec<Anime>, AnimeError> {
-        sqlx::query!(r#"SELECT id, title, mediaimage, numepisodes, createdon FROM Anime"#)
-            .fetch_all(pool)
-            .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| Anime {
-                        id: a.id,
-                        title: a.title,
-                        media_image: a.mediaimage.unwrap(),
-                        num_episodes: a.numepisodes.unwrap(),
-                        created_on: a.createdon.unwrap(),
-                    })
-                    .collect::<Vec<Anime>>()
-            })
-            .map_err(|e| {
-                AnimeError(format!(
-                    "failed to retrieve all anime due to the following error: {e:#?}"
-                ))
-            })
-    }
-}
-
-pub async fn get_all_anime(State(pool): State<PgPool>) -> impl IntoResponse {
-    match AnimeService::get_all_anime(&pool).await {
+pub async fn get_all_anime(
+    State(pool): State<PgPool>,
+    Query(query): Query<AnimeQuery>,
+) -> impl IntoResponse {
+    match AnimeService::get_all(&pool, query).await {
         Ok(anime) => (
             StatusCode::OK,
             Json(ListAnimeResponse {
@@ -79,6 +46,105 @@ pub async fn get_all_anime(State(pool): State<PgPool>) -> impl IntoResponse {
                 anime: None,
                 error: Some(format!(
                     "failed to retrieve all anime due to the following error: {err:#?}"
+                )),
+            }),
+        ),
+    }
+}
+
+pub async fn get_anime_by_id(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
+    match AnimeService::get_by_id(&pool, id).await {
+        Ok(anime) => (
+            StatusCode::OK,
+            Json(AnimeResponse {
+                success: true,
+                anime: Some(anime.to_serial()),
+                error: None,
+            }),
+        ),
+        Err(err) => (
+            StatusCode::BAD_REQUEST,
+            Json(AnimeResponse {
+                success: false,
+                anime: None,
+                error: Some(format!(
+                    "failed to retrieve an anime due to the following error: {err:#?}"
+                )),
+            }),
+        ),
+    }
+}
+
+pub async fn create_anime(
+    State(pool): State<PgPool>,
+    Json(create): Json<CreateAnime>,
+) -> impl IntoResponse {
+    match AnimeService::create(&pool, create).await {
+        Ok(anime) => (
+            StatusCode::CREATED,
+            Json(AnimeResponse {
+                success: true,
+                anime: Some(anime.to_serial()),
+                error: None,
+            }),
+        ),
+        Err(err) => (
+            StatusCode::BAD_REQUEST,
+            Json(AnimeResponse {
+                success: false,
+                anime: None,
+                error: Some(format!(
+                    "failed to create anime due to the following error: {err:#?}"
+                )),
+            }),
+        ),
+    }
+}
+
+pub async fn update_anime(
+    State(pool): State<PgPool>,
+    Path(id): Path<i32>,
+    Json(update): Json<UpdateAnime>,
+) -> impl IntoResponse {
+    match AnimeService::update(&pool, update, id).await {
+        Ok(anime) => (
+            StatusCode::OK,
+            Json(AnimeResponse {
+                success: true,
+                anime: Some(anime.to_serial()),
+                error: None,
+            }),
+        ),
+        Err(err) => (
+            StatusCode::BAD_REQUEST,
+            Json(AnimeResponse {
+                success: false,
+                anime: None,
+                error: Some(format!(
+                    "failed to update anime due to the following error: {err:#?}"
+                )),
+            }),
+        ),
+    }
+}
+
+pub async fn delete_anime(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
+    match AnimeService::delete(&pool, id).await {
+        Ok(anime) => (
+            StatusCode::OK,
+            Json(AnimeResponse {
+                success: true,
+                anime: Some(anime.to_serial()),
+                error: None,
+            }),
+        ),
+        Err(err) => (
+            StatusCode::BAD_REQUEST,
+            Json(AnimeResponse {
+                success: false,
+                anime: None,
+                error: Some(format!(
+                    "failed to delete anime due to the following error: {err:#?}"
                 )),
             }),
         ),
