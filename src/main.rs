@@ -7,6 +7,7 @@ use handlers::{
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
+    media::{get_all_media},
 };
 
 use axum::{
@@ -95,6 +96,11 @@ async fn main() {
                         .route("/:id", get(get_game_by_id))
                         .route("/:id", patch(update_game))
                         .route("/:id", delete(delete_game)),
+                )
+                .nest(
+                    "/media",
+                    Router::new()
+                        .route("/", get(get_all_media))
                 ),
         )
         .layer(TraceLayer::new_for_http())

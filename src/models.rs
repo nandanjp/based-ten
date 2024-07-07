@@ -6,3 +6,4 @@ pub mod listitems;
 pub mod lists;
 pub mod movies;
 pub mod songs;
+pub mod media;
