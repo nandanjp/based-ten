@@ -6,7 +6,7 @@
 WITH YourRankedItems AS (
     SELECT li.email, li.itemID, l.listType
     FROM ListItems li JOIN Lists l ON li.email = l.email AND li.listName = l.listName
-    WHERE l.email = 'example_email'
+    WHERE l.email = 'jane.smith@example.net'
 ),
 SimilarLists AS (
     SELECT li.email, li.listName, COUNT(li.itemID) AS similarity, COUNT(lk.likerEmail) AS likes
