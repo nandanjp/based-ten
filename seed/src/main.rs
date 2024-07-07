@@ -1,6 +1,5 @@
 mod models;
 use csv::Error;
-use models::media::Anime;
 use sqlx::postgres::PgPoolOptions;
 use std::fs;
 use std::str::FromStr;
@@ -8,11 +7,17 @@ use std::time::Duration;
 use time::macros::format_description;
 use time::Date;
 
-r#"INSERT INTO Anime(id, title, mediaimage, numepisodes, createdon) VALUES($1, $2, $3, $4, $5) RETURNING id, title, mediaimage, numepisodes, createdon"#
-"INSERT INTO VideoGames(id, title, mediaimage, createdon, console) VALUES($1, $2, $3, $4, $5) RETURNING id, title, mediaimage, createdon, console"
-"INSERT INTO MOVIES(id, title, mediaimage, createdon) VALUES($1, $2, $3, $4) RETURNING id, title, mediaimage, createdon"
-"INSERT INTO Songs(id, title, author, mediaimage, createdon) VALUES($1, $2, $3, $4, $5) RETURNING id, title, author, mediaimage, createdon"
-"INSERT INTO Follows(followeremail, followingemail, user"
+r#"INSERT INTO Anime(title, mediaImage, numEpisodes, createdOn) VALUES($1, $2, $3, $4) RETURNING id, title, mediaImage, numEpisodes;"#
+r#"INSERT INTO VideoGames(title, mediaImage, console, createdOn) VALUES($1, $2, $3, $4) RETURNING id, title, mediaImage, console;"#
+r#"INSERT INTO Movies(title, mediaImage, createdOn) VALUES($1, $2, $3) RETURNING id, title, mediaImage;"#
+r#"INSERT INTO Songs(title, author, album, mediaImage, createdOn) VALUES($1, $2, $3, $4, $5) RETURNING id, author, album, title, mediaImage;"#
+r#"INSERT INTO Users(email, displayName, userPassword) VALUES($1, $2, $3) RETURNING email, displayName, userPassword;"#
+r#"INSERT INTO Groups(groupName,ownedBy) VALUES($1, $2) RETURNING gid, groupName, ownedBy;"#
+r#"INSERT INTO GroupMembers(gid, email) VALUES($1, $2) RETURNING gid, email;"#
+r#"INSERT INTO Likes(likerEmail, likingEmail, listName) VALUES($1, $2, $3) RETURNING likerEmail, likingEmail, listName;"#
+r#"INSERT INTO Lists(email, listName, listType) VALUES($1, $2, $3) RETURNING email, listName, listType;"#
+r#"INSERT INTO ListItems(email, listName, itemID, rankingInList) VALUES($1, $2, $3, $4) RETURNING email, listName, itemID, rankingInList;"#
+r#"INSERT INTO Follows(followerEmail, followingEmail) VALUES($1, $2) RETURNING followerEmail, followingEmail;"#
 
 fn convert_date(created_on: String) -> Result<Date, String> {
     let format = format_description!("[year]-[month]-[day]");
@@ -26,13 +31,30 @@ fn read_csv(name: String) -> Result<String, String> {
         .map_err(|e| format!("failed to read csv file due to the following error: {e:#?}"))
 }
 
-async fn insert_into_anime(pool: &sqlx::PgPool) {
-    let csv = read_csv(String::from_str("Anime")).expect("failed to read in the csv contents and thus to insert data into anime");
+enum InsertType {
+    Anime, Games, Movies, Songs, Users, Groups, GroupMembers, Likes, Lists, ListItems, Follows
+}
+
+async fn insert_into_anime(pool: &sqlx::PgPool, table: InsertType) {
+    let csv = read_csv(String::from_str(match table {
+        InsertType::Anime => "Anime",
+        InsertType::Games => "VideGames",
+        InsertType::Movies => "Movies",
+        InsertType::Songs => "Songs",
+        InsertType::Lists => "Lists",
+        InsertType::Users => "Users",
+        InsertType::Groups => "Groups",
+        InsertType::GroupMembers => "GroupMembers",
+        InsertType::Likes => "Lists",
+        InsertType::ListItems => "ListItems",
+        InsertType::Follows => "Follows"
+    })).expect("failed to read in the csv contents and thus to insert data into anime");
     let mut reader = csv::Reader::from_reader(csv.as_bytes());
 
     for record in reader.deserialize() {
         let record: Anime = record.expect("failed to deserialize the anime csv row into Anime type");
-        sqlx::query!("INSERT INTO Anime(id, title")
+        let created_on = convert_date(record.created)
+        sqlx::query!(r#"INSERT INTO Anime(id, title, mediaImage, numEpisodes, createdOn) VALUES($1, $2, $3, $4, $5) RETURNING id, title, mediaImage, numEpisodes;"#, record.)
     }
 }
 
