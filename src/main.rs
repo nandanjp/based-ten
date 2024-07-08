@@ -4,11 +4,14 @@ mod services;
 mod utils;
 use handlers::{
     anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime},
+    follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id},
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
+    likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
     lists::{create_list, delete_list, get_all_lists, get_user_list, get_user_lists, update_list},
     media::get_all_media,
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
+    users::{create_user, delete_user, get_all_users, get_user_by_id, update_user},
 };
 
 use axum::{
@@ -112,6 +115,29 @@ async fn main() {
                                 .route("/:list_name", patch(update_list))
                                 .route("/:list_name", delete(delete_list)),
                         ),
+                )
+                .nest(
+                    "/user",
+                    Router::new()
+                        .route("/", get(get_all_users))
+                        .route("/", post(create_user))
+                        .route("/:email", get(get_user_by_id))
+                        .route("/:email", patch(update_user))
+                        .route("/:email", delete(delete_user)),
+                )
+                .nest(
+                    "/like",
+                    Router::new()
+                        .route("/", get(get_all_likes))
+                        .route("/", post(create_like))
+                        .route("/:email", get(get_likes_by_id)), // TODO: implement delete path
+                )
+                .nest(
+                    "/follow",
+                    Router::new()
+                        .route("/", get(get_all_follows))
+                        .route("/", post(create_follow))
+                        .route("/:email", get(get_follows_by_id)), // TODO: implement delete path
                 ),
         )
         .layer(TraceLayer::new_for_http())

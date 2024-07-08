@@ -7,3 +7,5 @@ pub mod lists;
 pub mod movies;
 pub mod songs;
 pub mod media;
+pub mod users;
+pub mod follows;
