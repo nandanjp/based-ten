@@ -106,7 +106,7 @@ pub async fn create_like(
     }
 }
 
-pub async fn delete_like(State(pool): State<PgPool>, Path(liker_email): Path<String>, Path(liking_email): Path<String>, Path(list_name): Path<String>)
+pub async fn delete_like(State(pool): State<PgPool>, Path((liker_email, liking_email, list_name)): Path<(String, String, String)>)
 -> impl IntoResponse {
     match LikesService::delete(&pool, liker_email, liking_email, list_name).await {
         Ok(like) => (

@@ -143,14 +143,16 @@ async fn main() {
                     Router::new()
                         .route("/", get(get_all_likes))
                         .route("/", post(create_like))
-                        .route("/:email", get(get_likes_by_id)), // TODO: implement delete path
+                        .route("/:email", get(get_likes_by_id))
+                        .route("/:likeremail/:likingemail/:listname", delete(delete_like)),
                 )
                 .nest(
                     "/follow",
                     Router::new()
                         .route("/", get(get_all_follows))
                         .route("/", post(create_follow))
-                        .route("/:email", get(get_follows_by_id)), // TODO: implement delete path
+                        .route("/:email", get(get_follows_by_id))
+                        .route("/:followeremail/:followingemail", delete(delete_follow)),
                 ),
         )
         .layer(TraceLayer::new_for_http())
