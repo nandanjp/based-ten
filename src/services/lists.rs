@@ -1,4 +1,19 @@
-use crate::models::lists::{CreateList, ErrorList, List, ListType, QueryList, UpdateList};
+use serde::Serialize;
+
+use crate::models::{
+    listitems::ErrorListItem,
+    lists::{CreateList, ErrorList, List, ListType, QueryList, UpdateList},
+};
+
+#[derive(Debug, Clone, Serialize)]
+pub struct FullListItem {
+    pub email: String,
+    pub list_name: String,
+    pub ranking_in_list: i32,
+    pub item_id: i32,
+    #[serde(rename = "type")]
+    pub list_type: ListType,
+}
 
 pub struct ListService;
 impl ListService {
@@ -63,6 +78,29 @@ impl ListService {
                     "failed to retrieve list with email = {email} and listname = {list_name} due to the following error: {e:#?}"
                 ))
             })
+    }
+
+    pub async fn get_user_list_and_items(
+        pool: &sqlx::PgPool,
+        email: String,
+        list_name: String,
+    ) -> Result<Vec<FullListItem>, ErrorListItem> {
+        sqlx::query!(r#"
+            SELECT Lists.email, Lists.listname, rankinginlist, itemid, listtype AS "listtype: ListType" 
+            FROM Lists JOIN ListItems ON Lists.email = ListItems.email AND Lists.listname = ListItems.listname 
+            WHERE Lists.email = $1 AND Lists.listname = $2 
+            ORDER BY rankinginlist"#, email, list_name
+        )
+        .fetch_all(pool).await
+        .map(|a| a.into_iter().map(|a| FullListItem {
+                email: a.email,
+                list_name: a.listname,
+                ranking_in_list: a.rankinginlist,
+                item_id: a.itemid,
+                list_type: a.listtype
+            }).collect::<Vec<FullListItem>>()
+        )
+        .map_err(|e| ErrorListItem(format!("failed to retrieve items of the list with list_name = {list_name}, email = {email} due to the following error: {e:#?}")))
     }
 
     pub async fn create(pool: &sqlx::PgPool, create_obj: CreateList) -> Result<List, ErrorList> {

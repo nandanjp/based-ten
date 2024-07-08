@@ -7,8 +7,11 @@ use handlers::{
     follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id},
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
     likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
-    lists::{create_list, delete_list, get_all_lists, get_user_list, get_user_lists, update_list},
     listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
+    lists::{
+        create_list, delete_list, get_all_lists, get_user_list, get_user_list_items,
+        get_user_lists, update_list,
+    },
     media::get_all_media,
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
@@ -113,6 +116,7 @@ async fn main() {
                             Router::new()
                                 .route("/", get(get_user_lists))
                                 .route("/:list_name", get(get_user_list))
+                                .route("/:list_name/items", get(get_user_list_items))
                                 .route("/:list_name", patch(update_list))
                                 .route("/:list_name", delete(delete_list)),
                         ),

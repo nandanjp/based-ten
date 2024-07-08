@@ -9,8 +9,15 @@ use sqlx::PgPool;
 
 use crate::{
     models::lists::{CreateList, List, QueryList, UpdateList},
-    services::lists::ListService,
+    services::lists::{FullListItem, ListService},
 };
+
+#[derive(Debug, Serialize)]
+struct ListFullListItemResponse {
+    success: bool,
+    list: Option<Vec<FullListItem>>,
+    error: Option<String>,
+}
 
 #[derive(Debug, Serialize)]
 struct ListResponse {
@@ -98,6 +105,32 @@ pub async fn get_user_list(
                 list: None,
                 error: Some(format!(
                     "failed to retrieve list due to the following error: {err:#?}"
+                )),
+            }),
+        ),
+    }
+}
+
+pub async fn get_user_list_items(
+    State(pool): State<PgPool>,
+    Path((email, list_name)): Path<(String, String)>,
+) -> impl IntoResponse {
+    match ListService::get_user_list_and_items(&pool, email, list_name).await {
+        Ok(list) => (
+            StatusCode::OK,
+            Json(ListFullListItemResponse {
+                success: true,
+                list: Some(list),
+                error: None,
+            }),
+        ),
+        Err(err) => (
+            StatusCode::BAD_REQUEST,
+            Json(ListFullListItemResponse {
+                success: false,
+                list: None,
+                error: Some(format!(
+                    "failed to retrieve all list items due to the following error: {err:#?}"
                 )),
             }),
         ),

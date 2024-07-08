@@ -1,5 +1,5 @@
 use axum::{
-    extract::{Path, Query, State},
+    extract::{Path, State},
     response::IntoResponse,
     Json,
 };
@@ -8,9 +8,8 @@ use serde::Serialize;
 use sqlx::PgPool;
 
 use crate::{
-    models::listitems::{CreateListItem, ErrorListItem, ListItem, UpdateListItem},
+    models::listitems::{CreateListItem, ListItem, UpdateListItem},
     services::listitems::ListItemService,
-    utils::traits::{IntoSerial},
 };
 
 #[derive(Debug, Serialize)]
@@ -21,10 +20,10 @@ struct ListItemResponse {
 }
 
 #[derive(Debug, Serialize)]
-struct ListListItemResponse {
-    success: bool,
-    list_items: Option<Vec<ListItem>>,
-    error: Option<String>,
+pub struct ListListItemResponse {
+    pub success: bool,
+    pub list_items: Option<Vec<ListItem>>,
+    pub error: Option<String>,
 }
 
 pub async fn get_list_item(
