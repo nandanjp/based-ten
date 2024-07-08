@@ -8,6 +8,7 @@ use handlers::{
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
     likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
     lists::{create_list, delete_list, get_all_lists, get_user_list, get_user_lists, update_list},
+    listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
     media::get_all_media,
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
@@ -115,6 +116,14 @@ async fn main() {
                                 .route("/:list_name", patch(update_list))
                                 .route("/:list_name", delete(delete_list)),
                         ),
+                )
+                .nest(
+                    "/listitem",
+                    Router::new()
+                        .route("/:email/:listname/:item_id", get(get_list_item))
+                        .route("/:email/:listname/:item_id", post(create_list_item))
+                        .route("/:email/:listname/:item_id", patch(update_list_item))
+                        .route("/:email/:listname/:item_id", delete(delete_list_item)),
                 )
                 .nest(
                     "/user",
