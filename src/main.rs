@@ -8,7 +8,8 @@ use handlers::{
     media::get_all_media, 
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie}, 
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song}, 
-    users::{create_user, delete_user, get_all_users, get_user_by_id, update_user}
+    users::{create_user, delete_user, get_all_users, get_user_by_id, update_user},
+    likes::{create_like, delete_like, get_all_likes, get_likes_by_id}
 };
 
 use axum::{
@@ -111,7 +112,16 @@ async fn main() {
                         .route("/:email", get(get_user_by_id))
                         .route("/:email", patch(update_user))
                         .route("/:email", delete(delete_user)),
+                )
+                .nest(
+                    "/like",
+                    Router::new()
+                        .route("/", get(get_all_users))
+                        .route("/", post(create_like))
+                        .route("/:email", get(get_likes_by_id))
+                        // TODO: implement delete path
                 ),
+
         )
         .layer(TraceLayer::new_for_http())
         .layer(tower_http::timeout::TimeoutLayer::new(Duration::from_secs(
