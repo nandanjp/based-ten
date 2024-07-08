@@ -1,10 +1,12 @@
 use serde::Deserialize;
 
+use super::list_type::ListType;
+
 #[derive(Debug, Deserialize)]
 pub struct List {
     pub user_email: String,
     pub list_name: String,
-    pub list_type: String,
+    pub list_type: ListType,
 }
 
 #[derive(Debug, Deserialize)]

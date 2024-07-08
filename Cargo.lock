@@ -1422,6 +1422,7 @@ dependencies = [
  "dotenvy",
  "serde",
  "sqlx",
+ "thiserror",
  "time",
  "tokio",
 ]
