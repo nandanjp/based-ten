@@ -1,25 +1,8 @@
-use crate::utils::traits::{Error, IntoSerial};
+use crate::utils::traits::Error;
 use serde::{Deserialize, Serialize};
 
-pub struct Follow {
-    pub follower_email: String,
-    pub following_email: String,
-}
-
-impl IntoSerial for Follow {
-    type Serial = FollowSerial;
-
-    fn to_serial(&self) -> Self::Serial {
-        Self::Serial {
-            follower_email: self.follower_email.clone(),
-            following_email: self.following_email.clone(),
-        }
-    }
-}
-
-// not necessary (?)
 #[derive(Clone, Debug, Serialize)]
-pub struct FollowSerial {
+pub struct Follow {
     pub follower_email: String,
     pub following_email: String,
 }
