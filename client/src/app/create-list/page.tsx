@@ -1,12 +1,12 @@
 'use client';
 import { AddListItem } from '@/components/blocks/AddListItem/AddListItem';
-import { ListItem } from '@/components/blocks/AddListItem/types';
+import { ListItem, ListItems } from '@/components/blocks/AddListItem/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { getMediaByTypeAndId } from '../api/media/get-media';
-import { MediaType } from '../api/media/types';
+import { getAllMediaByType, getMediaByTypeAndId } from '../api/media/get-media';
+import { Anime, MediaType, Movie, Song, VideoGame } from '../api/media/types';
 
 const CreateListPage = ({
   searchParams,
@@ -18,16 +18,25 @@ const CreateListPage = ({
   const [listItems, setListItems] = useState<Array<ListItem | undefined>>(
     Array<ListItem>(10),
   );
+  const [allItems, setAllItems] = useState<ListItems>([]);
+  const onItemSelect = (index: number) => {
+    return (newItem: ListItem) => {
+      listItems[index] = newItem;
+      setListItems([...listItems]);
+    };
+  };
   useEffect(() => {
     const getFirstListItem = async () => {
       const firstItem = await getMediaByTypeAndId(mediaType, firstItemId);
-      listItems[0] = {
-        item: firstItem,
-        mediaType,
-      } as ListItem;
+      listItems[0] = firstItem;
       setListItems([...listItems]);
     };
+    const getAllItems = async () => {
+      const items = await getAllMediaByType(mediaType);
+      setAllItems([...items]);
+    };
     getFirstListItem();
+    getAllItems();
   }, []);
   return (
     <div className="p-8 h-full flex justify-between">
@@ -48,15 +57,13 @@ const CreateListPage = ({
         </Button>
       </div>
       <div className="flex flex-col gap-4">
-        <AddListItem listItem={listItems[0]} />
-        <AddListItem />
-        <AddListItem />
-        <AddListItem />
-        <AddListItem />
-        <AddListItem />
-        <AddListItem />
-        <AddListItem />
-        <AddListItem />
+        {listItems.map((item, index) => (
+          <AddListItem
+            listItem={item}
+            list={allItems}
+            onClick={onItemSelect(index)}
+          />
+        ))}
       </div>
     </div>
   );

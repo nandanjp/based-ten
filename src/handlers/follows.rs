@@ -1,6 +1,5 @@
-use crate::models::follows::{QueryFollow, FollowSerial, CreateFollow};
+use crate::models::follows::{QueryFollow, Follow, CreateFollow};
 use crate::services::follows::FollowsService;
-use crate::utils::traits::IntoSerial;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
@@ -10,14 +9,14 @@ use sqlx::PgPool;
 #[derive(Debug, Serialize)]
 struct FollowsResponse {
     success: bool,
-    follow: Option<FollowSerial>,
+    follow: Option<Follow>,
     error: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
 struct ListFollowsResponse {
     success: bool,
-    follows: Option<Vec<FollowSerial>>,
+    follows: Option<Vec<Follow>>,
     error: Option<String>,
 }
 
@@ -33,8 +32,7 @@ pub async fn get_all_follows(
                 follows: Some(
                     follows
                         .into_iter()
-                        .map(|a| a.to_serial())
-                        .collect::<Vec<FollowSerial>>(),
+                        .collect::<Vec<Follow>>(),
                 ),
                 error: None,
             }),
@@ -61,8 +59,7 @@ pub async fn get_follows_by_id(State(pool): State<PgPool>, Path(email): Path<Str
                 follows: Some(
                     follows
                         .into_iter()
-                        .map(|a| a.to_serial())
-                        .collect::<Vec<FollowSerial>>(),
+                        .collect::<Vec<Follow>>(),
                 ),
                 error: None,
             }),
@@ -89,7 +86,7 @@ pub async fn create_follow(
             StatusCode::CREATED,
             Json(FollowsResponse {
                 success: true,
-                follow: Some(follow.to_serial()),
+                follow: Some(follow),
                 error: None,
             }),
         ),
@@ -113,7 +110,7 @@ pub async fn delete_follow(State(pool): State<PgPool>, Path(follower_email): Pat
             StatusCode::OK,
             Json(FollowsResponse {
                 success: true,
-                follow: Some(follow.to_serial()),
+                follow: Some(follow),
                 error: None,
             }),
         ),

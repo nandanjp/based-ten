@@ -7,13 +7,16 @@ import {
   VideoGame,
 } from '@/app/api/media/types';
 
-export type ListItem =
-  | { mediaType: MediaType.ANIME; item: Anime }
-  | { mediaType: MediaType.MOVIE; item: Movie }
-  | { mediaType: MediaType.SONG; item: Song }
-  | { mediaType: MediaType.VIDEO_GAME; item: VideoGame };
+export type ListItem = Anime | Movie | Song | VideoGame;
+
+export type ListItems =
+  | Array<Movie>
+  | Array<Song>
+  | Array<VideoGame>
+  | Array<Anime>;
 
 export type AddListItemProps = {
   listItem?: ListItem;
-  onClick?: () => void;
+  list?: ListItems;
+  onClick?: (newItem: ListItem) => void;
 };

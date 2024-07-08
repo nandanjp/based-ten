@@ -16,6 +16,7 @@ use handlers::{
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
     users::{create_user, delete_user, get_all_users, get_user_by_id, update_user},
+    groups::{get_all_groups, get_groups_by_id, create_groups, update_groups, delete_groups}
 };
 
 use axum::{
@@ -153,6 +154,14 @@ async fn main() {
                         .route("/", post(create_follow))
                         .route("/:email", get(get_follows_by_id))
                         .route("/:followeremail/:followingemail", delete(delete_follow)),
+                )
+                .nest(
+                    "/groups",
+                    Router::new()
+                        .route("/", get(get_all_groups))
+                        .route("/:gid/:groupName/:ownedBy", post(create_groups))
+                        .route("/:gid", get(get_groups_by_id))
+                        .route("/:gid", delete(delete_groups)),
                 ),
         )
         .layer(TraceLayer::new_for_http())
