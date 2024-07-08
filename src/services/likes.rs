@@ -1,8 +1,7 @@
-use crate::models::likes::{Like, LikeError, QueryLike, CreateLike};
+use crate::models::likes::{CreateLike, Like, LikeError, QueryLike};
 
 pub struct LikesService;
 impl LikesService {
-
     pub async fn get_all(
         pool: &sqlx::PgPool,
         query_obj: QueryLike,
@@ -67,10 +66,7 @@ impl LikesService {
             })
     }
 
-    pub async fn create(
-        pool: &sqlx::PgPool,
-        create_obj: CreateLike,
-    ) -> Result<Like, LikeError> {
+    pub async fn create(pool: &sqlx::PgPool, create_obj: CreateLike) -> Result<Like, LikeError> {
         sqlx::query!(r#"INSERT INTO Likes(likerEmail, likingEmail, listName) VALUES($1, $2, $3) RETURNING likerEmail, likingEmail, listName"#, create_obj.liker_email, create_obj.liking_email, create_obj.list_name)
         .fetch_one(pool).await.map(|a| Like {
             liker_email: a.likeremail,
@@ -79,7 +75,12 @@ impl LikesService {
         }).map_err(|e| LikeError(format!("failed to create like due to the following error: {e:#?}")))
     }
 
-    pub async fn delete(pool: &sqlx::PgPool, liker_email: String, liking_email: String, list_name: String) -> Result<Like, LikeError> {
+    pub async fn delete(
+        pool: &sqlx::PgPool,
+        liker_email: String,
+        liking_email: String,
+        list_name: String,
+    ) -> Result<Like, LikeError> {
         sqlx::query!(r#"DELETE FROM Likes WHERE likerEmail = $1 AND likingEmail = $2 AND listName = $3 RETURNING likerEmail, likingEmail, listName"#, liker_email, liking_email, list_name)
         .fetch_one(pool).await.map(|a| Like {
             liker_email: a.likeremail,
