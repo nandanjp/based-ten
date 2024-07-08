@@ -3,11 +3,12 @@ mod models;
 mod services;
 mod utils;
 use handlers::{
-    anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime},
-    game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
-    movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
-    songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
-    media::{get_all_media},
+    anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime}, 
+    game::{create_game, delete_game, get_all_games, get_game_by_id, update_game}, 
+    media::get_all_media, 
+    movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie}, 
+    songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song}, 
+    users::{create_user, delete_user, get_all_users, get_user_by_id, update_user}
 };
 
 use axum::{
@@ -101,6 +102,15 @@ async fn main() {
                     "/media",
                     Router::new()
                         .route("/", get(get_all_media))
+                )
+                .nest(
+                    "/user",
+                    Router::new()
+                        .route("/", get(get_all_users))
+                        .route("/", post(create_user))
+                        .route("/:email", get(get_user_by_id))
+                        .route("/:email", patch(update_user))
+                        .route("/:email", delete(delete_user)),
                 ),
         )
         .layer(TraceLayer::new_for_http())
