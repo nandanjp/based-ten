@@ -1,9 +1,14 @@
-use crate::models::listitems::{ErrorListItem, ListItem, CreateListItem, UpdateListItem};
+use crate::models::listitems::{CreateListItem, ErrorListItem, ListItem, UpdateListItem};
 
 pub struct ListItemService;
 
 impl ListItemService {
-    pub async fn get_list_item(pool: &sqlx::PgPool, email: String, listname: String, item_id: i32) -> Result<ListItem, ErrorListItem> {
+    pub async fn get_list_item(
+        pool: &sqlx::PgPool,
+        email: String,
+        listname: String,
+        item_id: i32,
+    ) -> Result<ListItem, ErrorListItem> {
         sqlx::query!("SELECT * FROM ListItems WHERE email = $1 AND listName = $2 AND itemID = $3", email, listname, item_id)
             .fetch_one(pool)
             .await
@@ -19,7 +24,11 @@ impl ListItemService {
                 ))
             })
     }
-    pub async fn create_list_item(pool: &sqlx::PgPool, create_obj: CreateListItem) -> Result<ListItem, ErrorListItem> {
+
+    pub async fn create_list_item(
+        pool: &sqlx::PgPool,
+        create_obj: CreateListItem,
+    ) -> Result<ListItem, ErrorListItem> {
         sqlx::query!("INSERT INTO ListItems(email, listName, rankingInList, itemID) VALUES($1, $2, $3, $4) RETURNING email, listName, rankingInList, itemID", create_obj.email, create_obj.list_name, create_obj.ranking_in_list, create_obj.item_id).fetch_one(pool).await.map(|a| ListItem {
             email: a.email,
             list_name: a.listname,
@@ -34,7 +43,8 @@ impl ListItemService {
         listname: String,
         item_id: i32,
     ) -> Result<ListItem, ErrorListItem> {
-        let list_item = Self::get_list_item(&pool, email.clone(), listname.clone(), item_id).await?;
+        let list_item =
+            Self::get_list_item(&pool, email.clone(), listname.clone(), item_id).await?;
         let email = update.email.unwrap_or(list_item.email);
         let list_name = update.list_name.unwrap_or(list_item.list_name);
         let ranking_in_list = update.ranking_in_list.unwrap_or(list_item.ranking_in_list);
@@ -46,7 +56,12 @@ impl ListItemService {
             item_id: a.itemid
         }).map_err(|e| ErrorListItem(format!("failed to update list item due to the following error: {e:#?}")))
     }
-    pub async fn delete_list_item(pool: &sqlx::PgPool, email: String, listname: String, item_id: i32) -> Result<ListItem, ErrorListItem> {
+    pub async fn delete_list_item(
+        pool: &sqlx::PgPool,
+        email: String,
+        listname: String,
+        item_id: i32,
+    ) -> Result<ListItem, ErrorListItem> {
         sqlx::query!(
             "DELETE FROM ListItems WHERE email = $1 AND listName = $2 AND itemID = $3 RETURNING email, listName, rankingInList, itemID",
             email,

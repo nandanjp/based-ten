@@ -1,31 +1,30 @@
-use crate::models::users::{User, UserError, QueryUser, CreateUser, UpdateUser};
+use crate::models::users::{CreateUser, QueryUser, UpdateUser, User, UserError};
 
 pub struct UsersService;
 impl UsersService {
-
     pub async fn get_all(
         pool: &sqlx::PgPool,
         query_obj: QueryUser,
     ) -> Result<Vec<User>, UserError> {
         match query_obj {
             _ => sqlx::query!(r#"SELECT * FROM Users"#)
-            .fetch_all(pool)
-            .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| User {
-                        email: a.email,
-                        display_name: a.displayname,
-                        password: a.userpassword,
-                        created_at: a.createdat.unwrap(),
-                    })
-                    .collect::<Vec<User>>()
-            })
-            .map_err(|e| {
-                UserError(format!(
-                    "failed to retrieve all users due to the following error: {e:#?}"
-                ))
-            })
+                .fetch_all(pool)
+                .await
+                .map(|a| {
+                    a.into_iter()
+                        .map(|a| User {
+                            email: a.email,
+                            display_name: a.displayname,
+                            password: a.userpassword,
+                            created_at: a.createdat.unwrap(),
+                        })
+                        .collect::<Vec<User>>()
+                })
+                .map_err(|e| {
+                    UserError(format!(
+                        "failed to retrieve all users due to the following error: {e:#?}"
+                    ))
+                }),
         }
     }
 
@@ -46,10 +45,7 @@ impl UsersService {
             })
     }
 
-    pub async fn create(
-        pool: &sqlx::PgPool,
-        create_obj: CreateUser,
-    ) -> Result<User, UserError> {
+    pub async fn create(pool: &sqlx::PgPool, create_obj: CreateUser) -> Result<User, UserError> {
         sqlx::query!(r#"INSERT INTO Users(email, displayName, userPassword) VALUES($1, $2, $3) RETURNING email, displayName, userPassword, createdAt"#, create_obj.email, create_obj.display_name, create_obj.password)
         .fetch_one(pool).await.map(|a| User {
             email: a.email,
