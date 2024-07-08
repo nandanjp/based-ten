@@ -24,12 +24,11 @@ const SearchPage = () => {
       router.push(`/create-list/?itemId=${item.id}&mediaType=${item.type}`);
     };
   };
+  console.log(media);
   useEffect(() => {
     const getMedia = async () => {
       const result = await getAllMedia();
-      if (result.success) {
-        setMedia([...result.media]);
-      }
+      setMedia([...result]);
     };
     getMedia();
   }, []);

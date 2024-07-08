@@ -1,8 +1,8 @@
 export enum MediaType {
-  SONG = 'song',
-  VIDEO_GAME = 'videogame',
+  SONG = 'songs',
+  VIDEO_GAME = 'videogames',
   ANIME = 'anime',
-  MOVIE = 'movie',
+  MOVIE = 'movies',
 }
 
 export type Media = {
@@ -13,8 +13,25 @@ export type Media = {
   type: MediaType;
 };
 
-export type MediaResponse = {
+export type VideoGame = Media & {
+  console: string;
+};
+
+export type Anime = Media & {
+  num_episodes: number;
+};
+
+export type Movie = Media;
+
+export type Song = Media & {
+  author: string;
+};
+
+type BaseResponse = {
   error?: string;
   success: boolean;
-  media: Media[];
+};
+
+export type MediaResponse = BaseResponse & {
+  items: Media[] | VideoGame[] | Anime[] | Movie[] | Song[];
 };

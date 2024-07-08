@@ -1,15 +1,34 @@
+'use client';
 import { AddListItem } from '@/components/blocks/AddListItem/AddListItem';
+import { ListItem } from '@/components/blocks/AddListItem/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { getMediaByTypeAndId } from '../api/media/get-media';
+import { MediaType } from '../api/media/types';
 
 const CreateListPage = ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
-  const firstItem = searchParams['itemId'];
-  const mediaType = searchParams['mediaType'];
+  const firstItemId = searchParams['itemId'] as string;
+  const mediaType = searchParams['mediaType'] as MediaType;
+  const [listItems, setListItems] = useState<Array<ListItem | undefined>>(
+    Array<ListItem>(10),
+  );
+  useEffect(() => {
+    const getFirstListItem = async () => {
+      const firstItem = await getMediaByTypeAndId(mediaType, firstItemId);
+      listItems[0] = {
+        item: firstItem,
+        mediaType,
+      } as ListItem;
+      setListItems([...listItems]);
+    };
+    getFirstListItem();
+  }, []);
   return (
     <div className="p-8 h-full flex justify-between">
       <div className="flex flex-col">
@@ -29,7 +48,7 @@ const CreateListPage = ({
         </Button>
       </div>
       <div className="flex flex-col gap-4">
-        <AddListItem />
+        <AddListItem listItem={listItems[0]} />
         <AddListItem />
         <AddListItem />
         <AddListItem />

@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { AddListItemProps } from './types';
 
 export const AddListItem = (props: AddListItemProps) => {
-  const { onClick } = props;
+  const { onClick, listItem } = props;
   const [open, setOpen] = useState<boolean>(false);
   return (
     <div className="">
@@ -22,10 +22,25 @@ export const AddListItem = (props: AddListItemProps) => {
           setOpen(true);
         }}
       >
-        <Plus className="border-dashed border-2 rounded-sm" />
-        <div className="flex flex-col gap-2 items-center justify-center">
-          <h1 className="font-semibold italic text-base">Choose an item...</h1>
-        </div>
+        {listItem ? (
+          <>
+            <img src={listItem.item.media_image} className="w-12 h-12" />
+            <div className="flex flex-col gap-2 items-center justify-center">
+              <h1 className="font-semibold italic text-base">
+                {listItem.item.title}
+              </h1>
+            </div>
+          </>
+        ) : (
+          <>
+            <Plus className="border-dashed border-2 rounded-sm" />
+            <div className="flex flex-col gap-2 items-center justify-center">
+              <h1 className="font-semibold italic text-base">
+                Choose an item...
+              </h1>
+            </div>
+          </>
+        )}
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Search" />
