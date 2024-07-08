@@ -94,7 +94,7 @@ async fn main() {
                         .route("/:id", delete(delete_song)),
                 )
                 .nest(
-                    "/games",
+                    "/videogames",
                     Router::new()
                         .route("/", get(get_all_games))
                         .route("/", post(create_game))
