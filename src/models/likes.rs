@@ -1,7 +1,5 @@
-use serde::{Deserialize, Serialize};
-use time::OffsetDateTime;
-
 use crate::utils::traits::{Error, IntoSerial};
+use serde::{Deserialize, Serialize};
 
 pub struct Like {
     pub liker_email: String,

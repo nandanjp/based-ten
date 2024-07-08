@@ -1,7 +1,5 @@
-use serde::{Deserialize, Serialize};
-use time::OffsetDateTime;
-
 use crate::utils::traits::{Error, IntoSerial};
+use serde::{Deserialize, Serialize};
 
 pub struct Follow {
     pub follower_email: String,
