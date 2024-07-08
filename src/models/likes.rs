@@ -1,27 +1,8 @@
-use crate::utils::traits::{Error, IntoSerial};
+use crate::utils::traits::Error;
 use serde::{Deserialize, Serialize};
 
-pub struct Like {
-    pub liker_email: String,
-    pub liking_email: String,
-    pub list_name: String,
-}
-
-impl IntoSerial for Like {
-    type Serial = LikeSerial;
-
-    fn to_serial(&self) -> Self::Serial {
-        Self::Serial {
-            liker_email: self.liker_email.clone(),
-            liking_email: self.liking_email.clone(),
-            list_name: self.list_name.clone(),
-        }
-    }
-}
-
-// not necessary (?)
 #[derive(Clone, Debug, Serialize)]
-pub struct LikeSerial {
+pub struct Like {
     pub liker_email: String,
     pub liking_email: String,
     pub list_name: String,

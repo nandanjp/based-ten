@@ -1,6 +1,5 @@
-use crate::models::likes::{QueryLike, LikeSerial, CreateLike};
+use crate::models::likes::{QueryLike, Like, CreateLike};
 use crate::services::likes::LikesService;
-use crate::utils::traits::IntoSerial;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
@@ -10,14 +9,14 @@ use sqlx::PgPool;
 #[derive(Debug, Serialize)]
 struct LikesResponse {
     success: bool,
-    like: Option<LikeSerial>,
+    like: Option<Like>,
     error: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
 struct ListLikesResponse {
     success: bool,
-    likes: Option<Vec<LikeSerial>>,
+    likes: Option<Vec<Like>>,
     error: Option<String>,
 }
 
@@ -33,8 +32,7 @@ pub async fn get_all_likes(
                 likes: Some(
                     likes
                         .into_iter()
-                        .map(|a| a.to_serial())
-                        .collect::<Vec<LikeSerial>>(),
+                        .collect::<Vec<Like>>(),
                 ),
                 error: None,
             }),
@@ -61,8 +59,7 @@ pub async fn get_likes_by_id(State(pool): State<PgPool>, Path(email): Path<Strin
                 likes: Some(
                     likes
                         .into_iter()
-                        .map(|a| a.to_serial())
-                        .collect::<Vec<LikeSerial>>(),
+                        .collect::<Vec<Like>>(),
                 ),
                 error: None,
             }),
@@ -89,7 +86,7 @@ pub async fn create_like(
             StatusCode::CREATED,
             Json(LikesResponse {
                 success: true,
-                like: Some(like.to_serial()),
+                like: Some(like),
                 error: None,
             }),
         ),
@@ -113,7 +110,7 @@ pub async fn delete_like(State(pool): State<PgPool>, Path((liker_email, liking_e
             StatusCode::OK,
             Json(LikesResponse {
                 success: true,
-                like: Some(like.to_serial()),
+                like: Some(like),
                 error: None,
             }),
         ),
