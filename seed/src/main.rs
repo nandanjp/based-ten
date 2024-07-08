@@ -1,23 +1,15 @@
 mod models;
-use csv::Error;
+use csv::ReaderBuilder;
+use models::lists::{List, ListItem};
+use models::media::{Anime, Games, Movie, Song};
+use models::users::{Follows, Group, GroupMember, Likes, User};
+use serde::Deserialize;
 use sqlx::postgres::PgPoolOptions;
-use std::fs;
-use std::str::FromStr;
+use std::error::Error;
+use std::fs::File;
 use std::time::Duration;
 use time::macros::format_description;
 use time::Date;
-
-r#"INSERT INTO Anime(title, mediaImage, numEpisodes, createdOn) VALUES($1, $2, $3, $4) RETURNING id, title, mediaImage, numEpisodes;"#
-r#"INSERT INTO VideoGames(title, mediaImage, console, createdOn) VALUES($1, $2, $3, $4) RETURNING id, title, mediaImage, console;"#
-r#"INSERT INTO Movies(title, mediaImage, createdOn) VALUES($1, $2, $3) RETURNING id, title, mediaImage;"#
-r#"INSERT INTO Songs(title, author, album, mediaImage, createdOn) VALUES($1, $2, $3, $4, $5) RETURNING id, author, album, title, mediaImage;"#
-r#"INSERT INTO Users(email, displayName, userPassword) VALUES($1, $2, $3) RETURNING email, displayName, userPassword;"#
-r#"INSERT INTO Groups(groupName,ownedBy) VALUES($1, $2) RETURNING gid, groupName, ownedBy;"#
-r#"INSERT INTO GroupMembers(gid, email) VALUES($1, $2) RETURNING gid, email;"#
-r#"INSERT INTO Likes(likerEmail, likingEmail, listName) VALUES($1, $2, $3) RETURNING likerEmail, likingEmail, listName;"#
-r#"INSERT INTO Lists(email, listName, listType) VALUES($1, $2, $3) RETURNING email, listName, listType;"#
-r#"INSERT INTO ListItems(email, listName, itemID, rankingInList) VALUES($1, $2, $3, $4) RETURNING email, listName, itemID, rankingInList;"#
-r#"INSERT INTO Follows(followerEmail, followingEmail) VALUES($1, $2) RETURNING followerEmail, followingEmail;"#
 
 fn convert_date(created_on: String) -> Result<Date, String> {
     let format = format_description!("[year]-[month]-[day]");
@@ -26,17 +18,140 @@ fn convert_date(created_on: String) -> Result<Date, String> {
     })
 }
 
-fn read_csv(name: String) -> Result<String, String> {
-    fs::read_to_string(format !("./data/{}", name))
-        .map_err(|e| format!("failed to read csv file due to the following error: {e:#?}"))
+enum InsertType {
+    Anime,
+    Games,
+    Movies,
+    Songs,
+    Users,
+    Groups,
+    GroupMembers,
+    Likes,
+    Lists,
+    ListItems,
+    Follows,
 }
 
-enum InsertType {
-    Anime, Games, Movies, Songs, Users, Groups, GroupMembers, Likes, Lists, ListItems, Follows
+fn read_csv<T>(file_path: &str) -> Result<Vec<T>, Box<dyn Error>>
+where
+    T: for<'de> Deserialize<'de>,
+{
+    let file = File::open(file_path)?;
+    let mut reader = ReaderBuilder::new().has_headers(true).from_reader(file);
+
+    let mut anime = Vec::new();
+    for result in reader.deserialize() {
+        let a: T = result?;
+        anime.push(a);
+    }
+    Ok(anime)
+}
+
+async fn insert_into(pool: &sqlx::PgPool, table: InsertType) -> Result<(), Box<dyn Error>> {
+    match table {
+        InsertType::Anime => {
+            let anime = read_csv::<Anime>("Anime")?;
+            for a in anime {
+                let _ = sqlx::query!(r#"INSERT INTO Anime(id, title, mediaimage, numepisodes, createdon) VALUES($1, $2, $3, $4, $5)"#, a.anime_id, a.title, a.image, a.episodes, convert_date(a.released_on)?).fetch_one(pool).await?;
+            }
+        }
+        InsertType::Games => {
+            let games = read_csv::<Games>("VideoGames")?;
+            for g in games {
+                let _ = sqlx::query!(r#"INSERT INTO VideoGames(id, title, mediaimage, console, createdon) VALUES($1, $2, $3, $4, $5)"#, g.game_id, g.title, g.image, convert_date(g.released_on)?, g.platform).fetch_one(pool).await?;
+            }
+        }
+        InsertType::Movies => {
+            let movies = read_csv::<Movie>("Movies")?;
+            for m in movies {
+                let _ = sqlx::query!(
+                    r#"INSERT INTO Movies(id, title, mediaimage, createdOn) VALUES($1, $2, $3, $4)"#,
+                    m.movie_id,
+                    m.title,
+                    m.image,
+                    convert_date(m.released_on)?,
+                )
+                .fetch_one(pool)
+                .await?;
+            }
+        }
+        InsertType::Songs => {
+            let songs = read_csv::<Song>("Songs")?;
+            for s in songs {
+                let _ = sqlx::query!(r#"INSERT INTO Songs(id, title, author, album, mediaimage, createdOn) VALUES($1, $2, $3, $4, $5, $6)"#, s.song_id, s.title, s.writer, a.album, a.image, convert_date(a.released_on)?).fetch_one(pool).await?;
+            }
+        }
+        InsertType::Lists => {
+            let lists = read_csv::<List>("Lists")?;
+            for l in lists {
+                let _ = sqlx::query!(
+                    r#"INSERT INTO Lists(email, listName, listType) VALUES($1, $2, $3)"#,
+                    l.user_email,
+                    l.list_name,
+                    l.list_type
+                )
+                .fetch_one(pool)
+                .await?;
+            }
+        }
+        InsertType::Users => {
+            let users = read_csv::<User>("Users")?;
+            for u in users {
+                let _ = sqlx::query!(
+                    r#"INSERT INTO Users(email, displayname, userpassword) VALUES($1, $2, $3)"#,
+                    u.user_email,
+                    u.user_name,
+                    u.password
+                )
+                .fetch_one(pool)
+                .await?;
+            }
+        }
+        InsertType::Groups => {
+            let groups = read_csv::<Group>("Groups")?;
+            for g in groups {
+                let _ = sqlx::query!(r#"INSERT INTO Groups(groupName,ownedBy) VALUES($1, $2) RETURNING gid, groupName, ownedBy"#, a.anime_id, a.title, a.image, a.episodes, convert_date(a.released_on)?).fetch_one(pool).await?;
+            }
+        }
+        InsertType::GroupMembers => {
+            let group_members = read_csv::<GroupMember>("GroupMembers")?;
+            for gm in group_members {
+                let _ = sqlx::query!(
+                    r#"INSERT INTO GroupMembers(gid, email) VALUES($1, $2) RETURNING gid, email"#,
+                    a.anime_id,
+                    a.title,
+                    a.image,
+                    a.episodes,
+                    convert_date(a.released_on)?
+                )
+                .fetch_one(pool)
+                .await?;
+            }
+        }
+        InsertType::Likes => {
+            let likes = read_csv::<Likes>("Likes")?;
+            for l in likes {
+                let _ = sqlx::query!(r#"INSERT INTO Likes(likerEmail, likingEmail, listName) VALUES($1, $2, $3) RETURNING likerEmail, likingEmail, listName"#, a.anime_id, a.title, a.image, a.episodes, convert_date(a.released_on)?).fetch_one(pool).await?;
+            }
+        }
+        InsertType::ListItems => {
+            let list_items = read_csv::<ListItem>("ListItems")?;
+            for li in list_items {
+                let _ = sqlx::query!(r#"INSERT INTO ListItems(email, listName, itemID, rankingInList) VALUES($1, $2, $3, $4) RETURNING email, listName, itemID, rankingInList"#, a.anime_id, a.title, a.image, a.episodes, convert_date(a.released_on)?).fetch_one(pool).await?;
+            }
+        }
+        InsertType::Follows => {
+            let follows = read_csv::<Follows>("Follows")?;
+            for f in follows {
+                let _ = sqlx::query!(r#"INSERT INTO Follows(followerEmail, followingEmail) VALUES($1, $2) RETURNING followerEmail, followingEmail"#, a.anime_id, a.title, a.image, a.episodes, convert_date(a.released_on)?).fetch_one(pool).await?;
+            }
+        }
+    }
+    Ok(())
 }
 
 async fn insert_into_anime(pool: &sqlx::PgPool, table: InsertType) {
-    let csv = read_csv(String::from_str(match table {
+    let csv = read_csv(match table {
         InsertType::Anime => "Anime",
         InsertType::Games => "VideGames",
         InsertType::Movies => "Movies",
@@ -47,35 +162,13 @@ async fn insert_into_anime(pool: &sqlx::PgPool, table: InsertType) {
         InsertType::GroupMembers => "GroupMembers",
         InsertType::Likes => "Lists",
         InsertType::ListItems => "ListItems",
-        InsertType::Follows => "Follows"
-    })).expect("failed to read in the csv contents and thus to insert data into anime");
-    let mut reader = csv::Reader::from_reader(csv.as_bytes());
-
-    for record in reader.deserialize() {
-        let record: Anime = record.expect("failed to deserialize the anime csv row into Anime type");
-        let created_on = convert_date(record.created)
-        sqlx::query!(r#"INSERT INTO Anime(id, title, mediaImage, numEpisodes, createdOn) VALUES($1, $2, $3, $4, $5) RETURNING id, title, mediaImage, numEpisodes;"#, record.)
-    }
-}
-
-fn insert_into_table(table_name: String) {
-    let csv = read_csv(table_name.clone()).expect("failed to read in the csv contents and thus to insert data into the given table");
-    let mut reader = csv::Reader::from_reader(csv.as_bytes());
-
-    for record in reader.deserialize() {
-        let record: Anime = record?;
-        println!(
-            "In {}, {} built the {} model. It is a {}.",
-            record.year,
-            record.make,
-            record.model,
-            record.description
-        );
-    }
+        InsertType::Follows => "Follows",
+    })
+    .expect("failed to read in the csv contents and thus to insert data into anime");
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn Error>> {
     dotenvy::dotenv().expect("expected environment variables/failed to parse the .env file");
 
     let db_str = std::env::var("DATABASE_URL")
