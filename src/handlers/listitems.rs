@@ -28,9 +28,9 @@ pub struct ListListItemResponse {
 
 pub async fn get_list_item(
     State(pool): State<PgPool>,
-    Path((email, listname, item_id)): Path<(String, String, i32)>,
+    Path((email, list_name, item_id)): Path<(String, String, i32)>,
 ) -> impl IntoResponse {
-    match ListItemService::get_list_item(&pool, email, listname, item_id).await {
+    match ListItemService::get_list_item(&pool, email, list_name, item_id).await {
         Ok(list_item) => (
             StatusCode::OK,
             Json(ListItemResponse {
@@ -80,10 +80,10 @@ pub async fn create_list_item(
 
 pub async fn update_list_item(
     State(pool): State<PgPool>,
-    Path((email, listname, item_id)): Path<(String, String, i32)>,
+    Path((email, list_name, item_id)): Path<(String, String, i32)>,
     Json(update_obj): Json<UpdateListItem>,
 ) -> impl IntoResponse {
-    match ListItemService::update_list_item(&pool, update_obj, email, listname, item_id).await {
+    match ListItemService::update_list_item(&pool, update_obj, email, list_name, item_id).await {
         Ok(list_item) => (
             StatusCode::OK,
             Json(ListItemResponse {
@@ -107,9 +107,9 @@ pub async fn update_list_item(
 
 pub async fn delete_list_item(
     State(pool): State<PgPool>,
-    Path((email, listname, item_id)): Path<(String, String, i32)>,
+    Path((email, list_name, item_id)): Path<(String, String, i32)>,
 ) -> impl IntoResponse {
-    match ListItemService::delete_list_item(&pool, email, listname, item_id).await {
+    match ListItemService::delete_list_item(&pool, email, list_name, item_id).await {
         Ok(list_item) => (
             StatusCode::OK,
             Json(ListItemResponse {
