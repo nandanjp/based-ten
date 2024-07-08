@@ -1,8 +1,4 @@
-use crate::{
-    models::lists::{CreateList, ErrorList, List, QueryList, UpdateList, ListType},
-    utils::{functions::convert_date, traits::GeneralService},
-};
-use axum::{async_trait, Error};
+use crate::models::lists::{CreateList, ErrorList, List, ListType, QueryList, UpdateList};
 
 pub struct ListService;
 impl ListService {
@@ -11,50 +7,69 @@ impl ListService {
         query_obj: QueryList,
     ) -> Result<Vec<List>, ErrorList> {
         match query_obj {
-            _ => sqlx::query!(r#"SELECT email, listName, listType::text AS listtype FROM Lists"#)
-                .fetch_all(pool)
-                .await
-                .map(|a| {
-                    a.into_iter()
-                        .map(|a| List {
-                            email: a.email,
-                            list_name: a.listname,
-                            list_type: a.listtype.unwrap().parse::<ListType>().unwrap(),
-                        })
-                        .collect::<Vec<List>>()
-                })
-                .map_err(|e| {
-                    ErrorList(format!(
-                        "failed to retrieve all lists due to the following error: {e:#?}"
-                    ))
-                }),
+            _ => sqlx::query!(
+                r#"SELECT email, listName, listtype AS "listtype: ListType" FROM Lists"#
+            )
+            .fetch_all(pool)
+            .await
+            .map(|a| {
+                a.into_iter()
+                    .map(|a| List {
+                        email: a.email,
+                        list_name: a.listname,
+                        list_type: a.listtype,
+                    })
+                    .collect::<Vec<List>>()
+            })
+            .map_err(|e| {
+                ErrorList(format!(
+                    "failed to retrieve all lists due to the following error: {e:#?}"
+                ))
+            }),
         }
     }
 
-    pub async fn get_by_id(pool: &sqlx::PgPool, email: String, listname: String) -> Result<List, ErrorList> {
-        sqlx::query!("SELECT email, listName, listType::text AS listtype FROM Lists WHERE email = $1 AND listName = $2", email, listname)
+    pub async fn get_by_email(pool: &sqlx::PgPool, email: String) -> Result<Vec<List>, ErrorList> {
+        sqlx::query!(r#"SELECT email, listName, listtype AS "listtype: ListType" FROM Lists WHERE email = $1"#, email)
+            .fetch_all(pool)
+            .await
+            .map(|a| a.into_iter().map(|a| List {
+                email: a.email,
+                list_name: a.listname,
+                list_type: a.listtype,
+            }).collect::<Vec<List>>())
+            .map_err(|e| {
+                ErrorList(format!(
+                    "failed to retrieve list with email = {email} due to the following error: {e:#?}"
+                ))
+            })
+    }
+
+    pub async fn get_by_user_and_listname(
+        pool: &sqlx::PgPool,
+        email: String,
+        list_name: String,
+    ) -> Result<List, ErrorList> {
+        sqlx::query!(r#"SELECT email, listname, listtype AS "listtype: ListType" FROM Lists WHERE email = $1 AND listname = $2"#, email, list_name)
             .fetch_one(pool)
             .await
             .map(|a| List {
                 email: a.email,
                 list_name: a.listname,
-                list_type: a.listtype.unwrap().parse::<ListType>().unwrap(),
+                list_type: a.listtype,
             })
             .map_err(|e| {
                 ErrorList(format!(
-                    "failed to retrieve list with email = {email} and listname = {listname} due to the following error: {e:#?}"
+                    "failed to retrieve list with email = {email} and listname = {list_name} due to the following error: {e:#?}"
                 ))
             })
     }
 
-    pub async fn create(
-        pool: &sqlx::PgPool,
-        create_obj: CreateList,
-    ) -> Result<List, ErrorList> {
-        sqlx::query!("INSERT INTO Lists(email, listName, listType) VALUES($1, $2, $3) RETURNING email, listName, listType::text AS listtype", create_obj.email, create_obj.list_name, create_obj.list_type.to_string()).fetch_one(pool).await.map(|a| List {
+    pub async fn create(pool: &sqlx::PgPool, create_obj: CreateList) -> Result<List, ErrorList> {
+        sqlx::query!(r#"INSERT INTO Lists(email, listName, listType) VALUES($1, $2, $3) RETURNING email, listName, listtype AS "listtype: ListType""#, create_obj.email, create_obj.list_name, create_obj.list_type as ListType).fetch_one(pool).await.map(|a| List {
             email: a.email,
             list_name: a.listname,
-            list_type: a.listtype.unwrap().parse::<ListType>().unwrap()
+            list_type: a.listtype
         }).map_err(|e| ErrorList(format!("failed to create a list with the given values due to the following error: {e:#?}")))
     }
 
@@ -62,22 +77,26 @@ impl ListService {
         pool: &sqlx::PgPool,
         update_obj: UpdateList,
         email: String,
-        listname: String
+        listname: String,
     ) -> Result<List, ErrorList> {
-        let list = ListService::get_by_id(pool, email, listname).await?;
-        let email = update_obj.email.unwrap_or(list.email);
+        let list = ListService::get_by_user_and_listname(pool, email, listname.clone()).await?;
+        let original_name = listname;
         let list_name = update_obj.list_name.unwrap_or(list.list_name);
         let list_type = update_obj.list_type.unwrap_or(list.list_type);
-        sqlx::query!("UPDATE Lists SET email = $1, listName = $2, listType = $3 WHERE email = $1 AND listName = $2 RETURNING email, listName, listType::text AS listtype", email, list_name, list_type).fetch_one(pool).await.map(|a| List {
+        sqlx::query!(r#"UPDATE Lists SET email = $1, listname = $3, listtype = $4 WHERE email = $1 AND listname = $2 RETURNING email, listName, listtype AS "listtype: ListType""#, list.email, original_name, list_name, list_type as ListType).fetch_one(pool).await.map(|a| List {
             email: a.email,
             list_name: a.listname,
-            list_type: a.listtype.unwrap().parse::<ListType>().unwrap()
+            list_type: a.listtype as ListType
         }).map_err(|e| ErrorList(format!("failed to update list due to the following error: {e:#?}")))
     }
 
-    pub async fn delete(pool: &sqlx::PgPool, email: String, listname: String) -> Result<List, ErrorList> {
+    pub async fn delete(
+        pool: &sqlx::PgPool,
+        email: String,
+        listname: String,
+    ) -> Result<List, ErrorList> {
         sqlx::query!(
-            "DELETE FROM Lists WHERE email = $1 AND listName = $2 RETURNING email, listName, listType::text AS listtype",
+            r#"DELETE FROM Lists WHERE email = $1 AND listName = $2 RETURNING email, listName, listtype AS "listtype: ListType""#,
             email,
             listname
         )
@@ -86,7 +105,7 @@ impl ListService {
         .map(|a| List {
             email: a.email,
             list_name: a.listname,
-            list_type: a.listtype.unwrap().parse::<ListType>().unwrap(),
+            list_type: a.listtype,
         })
         .map_err(|e| {
             ErrorList(format!(

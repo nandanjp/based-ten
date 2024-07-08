@@ -192,6 +192,7 @@ dependencies = [
  "http",
  "serde",
  "sqlx",
+ "thiserror",
  "time",
  "tokio",
  "tower-http",

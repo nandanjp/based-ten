@@ -5,9 +5,10 @@ mod utils;
 use handlers::{
     anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime},
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
+    lists::{create_list, delete_list, get_all_lists, get_user_list, get_user_lists, update_list},
+    media::get_all_media,
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
-    media::{get_all_media},
 };
 
 use axum::{
@@ -97,10 +98,20 @@ async fn main() {
                         .route("/:id", patch(update_game))
                         .route("/:id", delete(delete_game)),
                 )
+                .nest("/media", Router::new().route("/", get(get_all_media)))
                 .nest(
-                    "/media",
+                    "/lists",
                     Router::new()
-                        .route("/", get(get_all_media))
+                        .route("/", get(get_all_lists))
+                        .route("/", post(create_list))
+                        .nest(
+                            "/:email",
+                            Router::new()
+                                .route("/", get(get_user_lists))
+                                .route("/:list_name", get(get_user_list))
+                                .route("/:list_name", patch(update_list))
+                                .route("/:list_name", delete(delete_list)),
+                        ),
                 ),
         )
         .layer(TraceLayer::new_for_http())

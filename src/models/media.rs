@@ -1,13 +1,20 @@
+use crate::utils::traits::{Error, IntoSerial};
 use serde::{Deserialize, Serialize};
 use sqlx::types::time::Date;
-use crate::utils::traits::{Error, IntoSerial};
+
+use super::lists::ListType;
 
 pub struct Media {
     pub id: i32,
     pub title: String,
     pub media_image: String,
     pub created_on: Date,
-    pub media_type: String
+    pub media_type: ListType,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct QueryMedia {
+    pub media_type: Option<ListType>,
 }
 
 impl IntoSerial for Media {
@@ -31,7 +38,7 @@ pub struct MediaSerial {
     pub media_image: String,
     pub created_on: String,
     #[serde(rename = "type")]
-    pub media_type: String
+    pub media_type: ListType,
 }
 
 #[derive(Debug, Clone)]

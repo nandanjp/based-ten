@@ -1,5 +1,3 @@
-use std::string;
-
 use axum::{
     extract::{Path, Query, State},
     response::IntoResponse,
@@ -10,9 +8,8 @@ use serde::Serialize;
 use sqlx::PgPool;
 
 use crate::{
-    models::lists::{CreateList, UpdateList, ErrorList, List, QueryList},
+    models::lists::{CreateList, List, QueryList, UpdateList},
     services::lists::ListService,
-    utils::traits::{IntoSerial},
 };
 
 #[derive(Debug, Serialize)]
@@ -38,12 +35,7 @@ pub async fn get_all_lists(
             StatusCode::OK,
             Json(ListListResponse {
                 success: true,
-                lists: Some(
-                    lists
-                        .into_iter()
-                        // .map(|m| m.to_serial())
-                        .collect::<Vec<List>>(),
-                ),
+                lists: Some(lists.into_iter().collect::<Vec<List>>()),
                 error: None,
             }),
         ),
@@ -60,8 +52,37 @@ pub async fn get_all_lists(
     }
 }
 
-pub async fn get_list_by_id(State(pool): State<PgPool>, Path(email): Path<String>, Path(listname): Path<String>) -> impl IntoResponse {
-    match ListService::get_by_id(&pool, email, listname).await {
+pub async fn get_user_lists(
+    State(pool): State<PgPool>,
+    Path(email): Path<String>,
+) -> impl IntoResponse {
+    match ListService::get_by_email(&pool, email).await {
+        Ok(lists) => (
+            StatusCode::OK,
+            Json(ListListResponse {
+                success: true,
+                lists: Some(lists),
+                error: None,
+            }),
+        ),
+        Err(err) => (
+            StatusCode::BAD_REQUEST,
+            Json(ListListResponse {
+                success: false,
+                lists: None,
+                error: Some(format!(
+                    "failed to retrieve list due to the following error: {err:#?}"
+                )),
+            }),
+        ),
+    }
+}
+
+pub async fn get_user_list(
+    State(pool): State<PgPool>,
+    Path((email, list_name)): Path<(String, String)>,
+) -> impl IntoResponse {
+    match ListService::get_by_user_and_listname(&pool, email, list_name).await {
         Ok(list) => (
             StatusCode::OK,
             Json(ListResponse {
@@ -111,11 +132,10 @@ pub async fn create_list(
 
 pub async fn update_list(
     State(pool): State<PgPool>,
-    Path(email): Path<String>, 
-    Path(listname): Path<String>,
+    Path((email, list_name)): Path<(String, String)>,
     Json(update): Json<UpdateList>,
 ) -> impl IntoResponse {
-    match ListService::update(&pool, update, email, listname).await {
+    match ListService::update(&pool, update, email, list_name).await {
         Ok(list) => (
             StatusCode::OK,
             Json(ListResponse {
@@ -137,8 +157,11 @@ pub async fn update_list(
     }
 }
 
-pub async fn delete_list(State(pool): State<PgPool>, Path(email): Path<String>, Path(listname): Path<String>) -> impl IntoResponse {
-    match ListService::delete(&pool, email, listname).await {
+pub async fn delete_list(
+    State(pool): State<PgPool>,
+    Path((email, list_name)): Path<(String, String)>,
+) -> impl IntoResponse {
+    match ListService::delete(&pool, email, list_name).await {
         Ok(list) => (
             StatusCode::OK,
             Json(ListResponse {
