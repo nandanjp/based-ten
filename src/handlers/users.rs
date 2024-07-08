@@ -1,6 +1,6 @@
 use crate::models::users::{QueryUser, UserSerial, CreateUser, UpdateUser};
 use crate::services::users::UsersService;
-use crate::utils::traits::{IntoSerial};
+use crate::utils::traits::IntoSerial;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
 use http::StatusCode;

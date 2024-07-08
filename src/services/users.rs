@@ -1,6 +1,4 @@
-use crate::{
-    models::users::{User, UserError, QueryUser, CreateUser, UpdateUser},
-};
+use crate::models::users::{User, UserError, QueryUser, CreateUser, UpdateUser};
 
 pub struct UsersService;
 impl UsersService {

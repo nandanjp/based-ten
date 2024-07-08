@@ -1,6 +1,4 @@
-use crate::{
-    models::likes::{Like, LikeError, QueryLike, CreateLike},
-};
+use crate::models::likes::{Like, LikeError, QueryLike, CreateLike};
 
 pub struct LikesService;
 impl LikesService {

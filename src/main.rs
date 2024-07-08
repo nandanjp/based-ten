@@ -9,7 +9,8 @@ use handlers::{
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie}, 
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song}, 
     users::{create_user, delete_user, get_all_users, get_user_by_id, update_user},
-    likes::{create_like, delete_like, get_all_likes, get_likes_by_id}
+    likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
+    follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id},
 };
 
 use axum::{
@@ -116,9 +117,17 @@ async fn main() {
                 .nest(
                     "/like",
                     Router::new()
-                        .route("/", get(get_all_users))
+                        .route("/", get(get_all_likes))
                         .route("/", post(create_like))
                         .route("/:email", get(get_likes_by_id))
+                        // TODO: implement delete path
+                )
+                .nest(
+                    "/follow",
+                    Router::new()
+                        .route("/", get(get_all_follows))
+                        .route("/", post(create_follow))
+                        .route("/:email", get(get_follows_by_id))
                         // TODO: implement delete path
                 ),
 

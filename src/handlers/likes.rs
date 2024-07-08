@@ -1,6 +1,6 @@
 use crate::models::likes::{QueryLike, LikeSerial, CreateLike};
 use crate::services::likes::LikesService;
-use crate::utils::traits::{IntoSerial};
+use crate::utils::traits::IntoSerial;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
