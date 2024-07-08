@@ -43,22 +43,27 @@ For more information on all the things you can do with Feathers visit [docs.feat
 
 ## Loading the Sample Database
 
-To load the sample database, first we want to ensure that we drop all existing tables by running the following command from src\db:
-
+To load the sample database, first ensure that you've installed the sqlx-cli by running:
 ```
-$ npx ts-node .\run-raw-sql.ts drop-tables
-```
-
-Then we want to create the tables by running the following command from src\db:
-
-```
-$ npx ts-node .\run-raw-sql.ts create-tables
+cargo install sqlx-cli
 ```
 
-Then we want to populate all the tables with the sample data by going into src\db\seed and running the following command:
+Next, we want to ensure that we drop all existing tables by running the following command from the root folder:
 
 ```
-$ npx ts-node .\insert.ts all
+sqlx migrate revert
+```
+
+Then we want to create the tables by running the following command from the root folder:
+
+```
+sqlx migrate run
+```
+
+Then we want to populate all the tables with the sample data by going into seed/src and running the following command:
+
+```
+cargo run --package seed
 ```
 
 ## Running SQL
