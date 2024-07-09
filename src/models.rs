@@ -1,4 +1,5 @@
 pub mod anime;
+pub mod followmutual;
 pub mod game;
 pub mod groups;
 pub mod likes;

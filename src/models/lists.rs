@@ -67,7 +67,7 @@ impl ListType {
             Self::VideoGames => "videogames",
         }
     }
-    fn from_str(s: &str) -> Result<Self, ListTypeError> {
+    pub fn from_str(s: &str) -> Result<Self, ListTypeError> {
         match s.to_lowercase().as_str() {
             "anime" => Ok(ListType::Anime),
             "movies" => Ok(ListType::Movies),

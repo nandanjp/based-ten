@@ -1,6 +1,6 @@
 use crate::models::{
     lists::ListType,
-    media::{Media, MediaError, QueryMedia},
+    media::{Media, MediaWithLikes, MediaError, QueryMedia},
 };
 
 pub struct MediaService;
@@ -55,5 +55,31 @@ impl MediaService {
                 ))
             }),
         }
+    }
+
+    pub async fn get_by_type(
+        pool: &sqlx::PgPool,
+        path: String,
+    ) -> Result<Vec<MediaWithLikes>, MediaError> {
+        sqlx::query_file!("sql/get_media_by_type.sql", ListType::from_str(path.as_str()).unwrap() as ListType)
+        .fetch_all(pool)
+        .await
+        .map(|a| {
+            a.into_iter()
+                .map(|a| MediaWithLikes {
+                    id: a.id.unwrap(),
+                    title: a.title.unwrap(),
+                    media_image: a.mediaimage.unwrap(),
+                    created_on: a.createdon.unwrap(),
+                    media_type: a.r#type.unwrap(),
+                    likes: a.totallikes.unwrap(),
+                })
+                .collect::<Vec<MediaWithLikes>>()
+        })
+        .map_err(|e| {
+            MediaError(format!(
+                "failed to retrieve all media due to the following error: {e:#?}"
+            ))
+        })
     }
 }
