@@ -10,13 +10,7 @@ dotenvy = "0.15.7"
 futures = "0.3.30"
 http = "1.1.0"
 serde = { version = "1.0.203", features = ["derive"] }
-sqlx = { version = "0.7.4", features = [
-    "json",
-    "macros",
-    "postgres",
-    "runtime-tokio-native-tls",
-    "time",
-] }
+sqlx = { version = "0.7.4", features = ["bigdecimal", "json", "macros", "postgres", "runtime-tokio-native-tls", "time"] }
 thiserror = "1.0.61"
 time = "0.3.36"
 tokio = { version = "1.38.0", features = ["full"] }
