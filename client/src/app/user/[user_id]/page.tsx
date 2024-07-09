@@ -31,10 +31,6 @@ const UserPage = () => {
     return <span>data not fetched</span>;
   }
 
-  console.log(user_likes.data)
-  console.log(user_following.data)
-  console.log(user_followers.data)
-  console.log(user_lists.data)
   console.log(user_info.data)
 
   return (
@@ -43,7 +39,7 @@ const UserPage = () => {
         <div className="flex items-center pt-12 pl-6 pb-6">
           <div className="grid gap-1">
             <div className="text-4xl font-bold text-primary-foreground">
-              {user_info.data.user?.display_name}
+              {user_info.data.user?.user_name}
             </div>
             <div className="text-sm text-primary-foreground/80">
               {user_info.data.user?.email}

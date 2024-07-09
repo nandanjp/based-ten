@@ -137,7 +137,7 @@ export interface UserResponse {
   success: boolean;
   user?: {
     email: string;
-    display_name: string;
+    user_name: string;
     password: string;
     created_at: string;
   };
