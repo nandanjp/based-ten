@@ -1,7 +1,7 @@
 import axios from "axios";
-import { CreateUserType, UserResponse } from "./api.types";
+import { CreateUserType, ListResponse, UserResponse } from "./api.types";
 
-const BASE_URL = `http://localhost:5000`;
+const BASE_URL = `http://localhost:5000/api`;
 const axiosInstance = axios.create({ baseURL: BASE_URL });
 
 export const getAllAnime = async () => {};
@@ -52,13 +52,16 @@ export const getAllLists = async () => {};
 
 export const createList = async () => {};
 
-export const getUsersLists = async () => {};
+export const getUsersLists =
+  ({ email }: { email: string }) =>
+  async () =>
+    (await axiosInstance.get<ListResponse>(`lists/${email}`)).data;
 
 export const getUserList = async () =>
-  (await axios.get<UserResponse[]>("users")).data;
+  (await axiosInstance.get<UserResponse[]>("users")).data;
 
 export const getUserListItems = async ({ id }: { id: string }) =>
-  (await axios.get<UserResponse>(`users/{id}`)).data;
+  (await axiosInstance.get<UserResponse>(`users/{id}`)).data;
 
 export const updateUserList = async () => {};
 
@@ -73,18 +76,18 @@ export const updateUserListItem = async () => {};
 export const deleteUserListItem = async () => {};
 
 export const getAllUsers = async () =>
-  (await axios.get<UserResponse[]>("users")).data;
+  (await axiosInstance.get<UserResponse[]>("users")).data;
 
 export const getUserByEmail = async ({ email }: { email: string }) =>
-  (await axios.get<UserResponse[]>(`users/${email}`)).data;
+  (await axiosInstance.get<UserResponse[]>(`users/${email}`)).data;
 
 export const createUser = async (user: CreateUserType) =>
-  (await axios.post<UserResponse[]>(`users`, user)).data;
+  (await axiosInstance.post<UserResponse[]>(`users`, user)).data;
 
 export const updateUser = async () => {};
 
 export const deleteUser = async ({ email }: { email: string }) =>
-  (await axios.delete<UserResponse>(`users/${email}`)).data;
+  (await axiosInstance.delete<UserResponse>(`users/${email}`)).data;
 
 export const getAllLikes = async () => {};
 

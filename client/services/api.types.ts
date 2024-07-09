@@ -146,11 +146,11 @@ export interface UserResponse {
 
 export interface ListResponse {
   success: boolean;
-  list?: {
+  lists?: {
     email: string;
     list_name: string;
     list_type: ListType;
-  };
+  }[];
   error?: string;
 }
 

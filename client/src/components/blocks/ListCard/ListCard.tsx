@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 
 import {
   Card,
@@ -6,18 +6,24 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
-export function ListCard() {
+interface ListCardProps {
+  list_name: string;
+  list_author: string;
+  list_type: "anime" | "movies" | "songs" | "videogames";
+}
+
+export function ListCard({ list_name, list_author, list_type }: ListCardProps) {
   return (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>List name</CardTitle>
-        <CardDescription className="italic">list type</CardDescription>
+        <CardTitle>{list_name}</CardTitle>
+        <CardDescription className="italic">{list_type}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
-        <p className="">Author: _</p>
+        <p className="">{list_author}</p>
       </CardFooter>
     </Card>
-  )
+  );
 }

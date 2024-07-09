@@ -77,10 +77,10 @@ export const useAllLists = async () =>
     queryFn: getAllLists,
   });
 
-export const useUsersLists = async () =>
+export const useUsersLists = ({ email }: { email: string }) =>
   useQuery({
     queryKey: ["user-lists"],
-    queryFn: getUsersLists,
+    queryFn: getUsersLists({ email }),
   });
 
 export const useUserList = async () =>
