@@ -52,6 +52,7 @@ export const AddListItem = (props: AddListItemProps) => {
                 onClick?.(item);
                 setOpen(false);
               }}
+              key={`${item.id}-${item.type}`}
             >
               {item.title}
             </CommandItem>
