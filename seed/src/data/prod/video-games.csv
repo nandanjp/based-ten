@@ -1,4 +1,4 @@
-game_id,title,image,released,platforms
+game_id,title,image,released_on,platform
 1,D/Generation HD,https://upload.wikimedia.org/wikipedia/en/a/a9/The_Last_of_Us.jpg,2015-10-23,PC||macOS||Xbox One||PlayStation 4||Nintendo Switch
 2,G Prime Into The Rain,https://upload.wikimedia.org/wikipedia/en/a/a9/The_Last_of_Us.jpg,2016-01-06,macOS||PC||Xbox One
 3,Land Sliders,https://upload.wikimedia.org/wikipedia/en/a/a9/The_Last_of_Us.jpg,2015-09-24,iOS
