@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 import {
   getAllAnime,
   getAllFollows,
@@ -19,124 +19,139 @@ import {
   getUserFollowing,
   getUserFollowers,
   getUserLikes,
-} from "./api";
+  getMediaByTypeAndId,
+  getAllMediaByType,
+} from './api';
+import { MediaType } from './api.types';
 
 export const useAllAnime = async () =>
   useQuery({
-    queryKey: ["anime"],
+    queryKey: ['anime'],
     queryFn: getAllAnime,
   });
 
 export const useAnimeById = async () =>
   useQuery({
-    queryKey: ["animeid"],
+    queryKey: ['animeid'],
     queryFn: getAnimeById,
   });
 
 export const useAllMovies = async () =>
   useQuery({
-    queryKey: ["movies"],
+    queryKey: ['movies'],
     queryFn: getAllMovies,
   });
 
 export const useMovieById = async () =>
   useQuery({
-    queryKey: ["movieid"],
+    queryKey: ['movieid'],
     queryFn: getMovieById,
   });
 
 export const useAllSongs = async () =>
   useQuery({
-    queryKey: ["songs"],
+    queryKey: ['songs'],
     queryFn: getAllSongs,
   });
 
 export const useSongById = async () =>
   useQuery({
-    queryKey: ["songid"],
+    queryKey: ['songid'],
     queryFn: getSongById,
   });
 
 export const useAllGames = async () =>
   useQuery({
-    queryKey: ["games"],
+    queryKey: ['games'],
     queryFn: getAllGames,
   });
 
 export const useGameById = async () =>
   useQuery({
-    queryKey: ["gameid"],
+    queryKey: ['gameid'],
     queryFn: getGameById,
-  });
-
-export const useAllMedia = async () =>
-  useQuery({
-    queryKey: ["media"],
-    queryFn: getAllMedia,
   });
 
 export const useAllLists = async () =>
   useQuery({
-    queryKey: ["lists"],
+    queryKey: ['lists'],
     queryFn: getAllLists,
   });
 
 export const useUsersLists = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ["user-lists"],
+    queryKey: ['user-lists'],
     queryFn: getUsersLists({ email }),
   });
 
 export const useUserList = async () =>
   useQuery({
-    queryKey: ["user-list"],
+    queryKey: ['user-list'],
     queryFn: getUserList,
   });
 
 export const useAllUsers = async () =>
   useQuery({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: getAllUsers,
   });
 
 export const useUser = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ["user"],
+    queryKey: ['user'],
     queryFn: getUserByEmail({ email }),
   });
 
 export const useAllLikes = async () =>
   useQuery({
-    queryKey: ["likes"],
+    queryKey: ['likes'],
     queryFn: getAllLists,
   });
 
 export const useUserLikes = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ["user-likes"],
-    queryFn: getUserLikes({ email })
-  })
+    queryKey: ['user-likes'],
+    queryFn: getUserLikes({ email }),
+  });
 
 export const useAllFollows = async () =>
   useQuery({
-    queryKey: ["follows"],
+    queryKey: ['follows'],
     queryFn: getAllFollows,
   });
 
 export const useUserFollowing = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ["user-following"],
-    queryFn: getUserFollowing({ email })
-  })
+    queryKey: ['user-following'],
+    queryFn: getUserFollowing({ email }),
+  });
 
 export const useAllGroups = async () =>
   useQuery({
-    queryKey: ["groups"],
+    queryKey: ['groups'],
     queryFn: getAllGroups,
   });
 
 export const useUserFollowers = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ["user-followers"],
+    queryKey: ['user-followers'],
     queryFn: getUserFollowers({ email }),
-  })
+  });
+
+export const useAllMedia = () =>
+  useQuery({
+    queryKey: ['get-all-media'],
+    queryFn: getAllMedia,
+  });
+
+export const useMediaByTypeAndId = (mediaType: MediaType, id: string) =>
+  useQuery({
+    queryKey: ['get-all-media-by-type-and-id'],
+    queryFn: getMediaByTypeAndId(mediaType, id),
+  });
+
+export const useMediaByType = (mediaType: MediaType) =>
+  useQuery({
+    queryKey: ['get-media-by-type'],
+    queryFn: getAllMediaByType(mediaType),
+  });

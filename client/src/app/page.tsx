@@ -1,6 +1,5 @@
 'use client';
-import { getAllMedia } from '@/app/api/media/get-media';
-import { Media } from '@/app/api/media/types';
+import { Media } from '../../services/api.types';
 import {
   Command,
   CommandEmpty,
@@ -9,29 +8,21 @@ import {
 } from '@/components/ui/command';
 import { CommandItem } from 'cmdk';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useAllMedia } from '../../services/queries';
 
 const SearchPage = () => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
-  const [media, setMedia] = useState<Array<Media>>([]);
+  const media = useAllMedia();
   const handleValueChange = (value: string) => {
     setOpen(!!value);
   };
   const onItemSelect = (item: Media) => {
     return () => {
-      console.log('create list');
       router.push(`/create-list/?itemId=${item.id}&mediaType=${item.type}`);
     };
   };
-  console.log(media);
-  useEffect(() => {
-    const getMedia = async () => {
-      const result = await getAllMedia();
-      setMedia([...result]);
-    };
-    getMedia();
-  }, []);
   return (
     <div
       style={{
@@ -54,7 +45,7 @@ const SearchPage = () => {
           <CommandList>
             {open && <CommandEmpty>No results found.</CommandEmpty>}
             {open &&
-              media.map((item: Media) => {
+              media?.data?.map((item: Media) => {
                 return (
                   <CommandItem
                     className="flex p-4 hover:bg-gray-200 cursor-pointer"

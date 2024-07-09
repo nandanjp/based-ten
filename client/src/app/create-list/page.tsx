@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Trash2, Upload } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { getAllMediaByType, getMediaByTypeAndId } from '../api/media/get-media';
-import { MediaType } from '../api/media/types';
+import { MediaType } from '../../../services/api.types';
 import { useRouter } from 'next/navigation';
+import { useMediaByType, useMediaByTypeAndId } from '../../../services/queries';
 
 const CreateListPage = ({
   searchParams,
@@ -17,11 +17,19 @@ const CreateListPage = ({
   const router = useRouter();
   const firstItemId = searchParams['itemId'] as string;
   const mediaType = searchParams['mediaType'] as MediaType;
+  const firstItem = useMediaByTypeAndId(mediaType, firstItemId);
+  const allItems = useMediaByType(mediaType);
+
   const [listName, setListName] = useState<string>('');
   const [listItems, setListItems] = useState<Array<ListItem | undefined>>(
-    Array<ListItem>(10),
+    Array(10),
   );
-  const [allItems, setAllItems] = useState<ListItems>([]);
+  useEffect(() => {
+    if (firstItem.data) {
+      listItems[0] = firstItem.data;
+      setListItems([...listItems]);
+    }
+  }, [firstItem.data]);
   const done = useMemo(() => {
     return listItems.every((item) => !!item) && listName.trim().length > 0;
   }, [listName, listItems]);
@@ -35,19 +43,7 @@ const CreateListPage = ({
       setListItems([...listItems]);
     };
   };
-  useEffect(() => {
-    const getFirstListItem = async () => {
-      const firstItem = await getMediaByTypeAndId(mediaType, firstItemId);
-      listItems[0] = firstItem;
-      setListItems([...listItems]);
-    };
-    const getAllItems = async () => {
-      const items = await getAllMediaByType(mediaType);
-      setAllItems([...items]);
-    };
-    getFirstListItem();
-    getAllItems();
-  }, []);
+
   return (
     <div className="p-8 h-full flex justify-between">
       <div className="flex flex-col">
@@ -66,7 +62,7 @@ const CreateListPage = ({
         </h3>
         <div className="flex gap-2">
           <Button
-            className="bg-gray-600 hover:bg-gray-700 rounded-xl gap-2 py-5 w-fit"
+            className="bg-primary hover:bg-gray-700 rounded-xl gap-2 py-5 w-fit"
             onClick={() => router.back()}
           >
             <Trash2 />
@@ -75,7 +71,7 @@ const CreateListPage = ({
           <Button
             className={`rounded-xl gap-2 py-5 w-fit ${
               done
-                ? 'bg-gray-600 hover:bg-gray-700'
+                ? 'bg-primary hover:bg-gray-700'
                 : 'bg-gray-400 hover:bg-gray-400 cursor-default'
             }`}
             disabled={!done}
@@ -97,7 +93,7 @@ const CreateListPage = ({
             }.`}</div>
             <AddListItem
               listItem={item}
-              list={allItems}
+              list={allItems.data}
               onClick={onItemSelect(index)}
             />
           </div>
