@@ -3,13 +3,21 @@ mod models;
 mod services;
 mod utils;
 use handlers::{
-    anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime}, followmutual::get_mutual_follows_by_id, follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id}, game::{create_game, delete_game, get_all_games, get_game_by_id, update_game}, groups::{create_groups, delete_groups, get_all_groups, get_groups_by_id, update_groups}, likes::{create_like, delete_like, get_all_likes, get_likes_by_id}, listitems::{create_list_item, delete_list_item, get_list_item, update_list_item}, lists::{
+    anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime},
+    followmutual::get_mutual_follows_by_id,
+    follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id},
+    game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
+    groups::{create_groups, delete_groups, get_all_groups, get_groups_by_id},
+    likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
+    listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
+    lists::{
         create_list, delete_list, get_all_lists, get_user_list, get_user_list_items,
-        get_user_lists, update_list},
-    media::{get_all_media,get_media_by_type},
+        get_user_lists, update_list,
+    },
+    media::{get_all_media, get_media_by_type},
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
-    users::{create_user, delete_user, get_all_users, get_user_by_id, update_user}
+    users::{create_user, delete_user, get_all_users, get_user_by_id, update_user},
 };
 
 use axum::{
@@ -99,9 +107,11 @@ async fn main() {
                         .route("/:id", patch(update_game))
                         .route("/:id", delete(delete_game)),
                 )
-                .nest("/media", Router::new()
-                    .route("/", get(get_all_media))
-                    .route("/:type", get(get_media_by_type)),
+                .nest(
+                    "/media",
+                    Router::new()
+                        .route("/", get(get_all_media))
+                        .route("/:type", get(get_media_by_type)),
                 )
                 .nest(
                     "/lists",

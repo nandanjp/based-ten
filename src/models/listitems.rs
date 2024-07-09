@@ -4,7 +4,7 @@ use crate::utils::traits::Error;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct ListItem {
-    pub email: String,
+    pub user_name: String,
     pub list_name: String,
     pub ranking_in_list: i32,
     pub item_id: i32,
@@ -12,7 +12,7 @@ pub struct ListItem {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateListItem {
-    pub email: String,
+    pub user_name: String,
     pub list_name: String,
     pub ranking_in_list: i32,
     pub item_id: i32,
@@ -20,7 +20,7 @@ pub struct CreateListItem {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct UpdateListItem {
-    pub email: Option<String>,
+    pub user_name: Option<String>,
     pub list_name: Option<String>,
     pub ranking_in_list: Option<i32>,
     pub item_id: i32,

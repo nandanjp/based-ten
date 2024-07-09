@@ -1,0 +1,10 @@
+follower,following
+jane.smith,michael.brown
+jane.smith,sarah.jones
+jane.smith,david.wilson
+jane.smith,amanda.taylor
+amanda.taylor,sarah.jones
+amanda.taylor,joshua.white
+joshua.white,jane.smith
+amanda.taylor,jane.smith
+sarah.jones,jane.smith

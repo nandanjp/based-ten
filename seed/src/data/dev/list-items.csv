@@ -1,0 +1,41 @@
+user_name,list_name,rank_in_list,item_id
+john.doe,Favorite Anime,1,14
+john.doe,Favorite Anime,2,15
+john.doe,Favorite Anime,3,12
+john.doe,Favorite Anime,4,11
+john.doe,Favorite Anime,5,13
+john.doe,Favorite Anime,6,17
+john.doe,Favorite Anime,7,20
+john.doe,Favorite Anime,8,16
+john.doe,Favorite Anime,9,18
+john.doe,Favorite Anime,10,19
+jane.smith,Top Movies of 2024,1,4
+jane.smith,Top Movies of 2024,2,8
+jane.smith,Top Movies of 2024,3,1
+jane.smith,Top Movies of 2024,4,9
+jane.smith,Top Movies of 2024,5,7
+jane.smith,Top Movies of 2024,6,5
+jane.smith,Top Movies of 2024,7,10
+jane.smith,Top Movies of 2024,8,3
+jane.smith,Top Movies of 2024,9,2
+jane.smith,Top Movies of 2024,10,6
+michael.brown,Best Video Games,1,3
+michael.brown,Best Video Games,2,10
+michael.brown,Best Video Games,3,4
+michael.brown,Best Video Games,4,9
+michael.brown,Best Video Games,5,7
+michael.brown,Best Video Games,6,2
+michael.brown,Best Video Games,7,6
+michael.brown,Best Video Games,8,5
+michael.brown,Best Video Games,9,8
+michael.brown,Best Video Games,10,1
+michael.brown,My Favourite Movies,1,11
+michael.brown,My Favourite Movies,2,12
+michael.brown,My Favourite Movies,3,10
+michael.brown,My Favourite Movies,4,9
+michael.brown,My Favourite Movies,5,8
+michael.brown,My Favourite Movies,6,7
+michael.brown,My Favourite Movies,7,5
+michael.brown,My Favourite Movies,8,4
+michael.brown,My Favourite Movies,9,3
+michael.brown,My Favourite Movies,10,2

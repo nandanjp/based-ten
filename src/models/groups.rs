@@ -1,12 +1,11 @@
 use serde::{Deserialize, Serialize};
-use sqlx::types::time::Date;
 
 use crate::utils::traits::{Error, IntoSerial};
 
 pub struct Groups {
     pub gid: i32,
-    pub groupName: String,
-    pub ownedBy: String,
+    pub group_name: String,
+    pub owned_by: String,
 }
 
 impl IntoSerial for Groups {
@@ -15,8 +14,8 @@ impl IntoSerial for Groups {
     fn to_serial(&self) -> Self::Serial {
         Self::Serial {
             gid: self.gid,
-            groupName: self.groupName.clone(),
-            ownedBy: self.ownedBy.clone()
+            group_name: self.group_name.clone(),
+            owned_by: self.owned_by.clone(),
         }
     }
 }
@@ -24,25 +23,24 @@ impl IntoSerial for Groups {
 #[derive(Clone, Debug, Serialize)]
 pub struct GroupsSerial {
     pub gid: i32,
-    pub groupName: String,
-    pub ownedBy: String
+    pub group_name: String,
+    pub owned_by: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
-pub struct GroupsQuery {
-}
+pub struct GroupsQuery {}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateGroups {
     pub gid: i32,
-    pub groupName: String,
-    pub ownedBy: String
+    pub group_name: String,
+    pub owned_by: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct UpdateGroups {
-    pub groupName: Option<String>,
-    pub ownedBy: Option<String>
+    pub group_name: Option<String>,
+    pub owned_by: Option<String>,
 }
 
 #[derive(Debug, Clone)]

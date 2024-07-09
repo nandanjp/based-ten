@@ -1,6 +1,6 @@
-use crate::models::followmutual::{FollowMutual};
+use crate::models::followmutual::FollowMutual;
 use crate::services::followmutual::FollowMutualService;
-use axum::extract::{Json, Path, Query, State};
+use axum::extract::{Json, Path, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
 use serde::Serialize;
@@ -20,7 +20,10 @@ struct ListFollowMutualResponse {
     error: Option<String>,
 }
 
-pub async fn get_mutual_follows_by_id(State(pool): State<PgPool>, Path(follower_email): Path<String>) -> impl IntoResponse {
+pub async fn get_mutual_follows_by_id(
+    State(pool): State<PgPool>,
+    Path(follower_email): Path<String>,
+) -> impl IntoResponse {
     match FollowMutualService::get_by_mutual_follower(&pool, follower_email).await {
         Ok(followmutual) => (
             StatusCode::OK,

@@ -28,53 +28,53 @@ CREATE TABLE Anime (
     createdOn DATE
 );
 CREATE TABLE Users (
-    email VARCHAR(30) NOT NULL PRIMARY KEY,
-    displayName VARCHAR(20) NOT NULL,
+    email VARCHAR(30) NOT NULL UNIQUE,
+    userName VARCHAR(20) NOT NULL PRIMARY KEY,
     userPassword VARCHAR(30) NOT NULL,
     createdAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE Groups (
     gid SERIAL PRIMARY KEY,
     groupName VARCHAR(30) NOT NULL,
-    ownedBy VARCHAR(30) NOT NULL REFERENCES Users(email)
+    ownedBy VARCHAR(30) NOT NULL REFERENCES Users(userName)
 );
 CREATE TABLE GroupMembers (
-    email VARCHAR(30) NOT NULL REFERENCES Users(email),
+    userName VARCHAR(30) NOT NULL REFERENCES Users(userName),
     gid INT NOT NULL REFERENCES Groups(gid),
-    PRIMARY KEY(email, gid)
+    PRIMARY KEY(userName, gid)
 );
 CREATE TYPE ListType AS ENUM ('anime', 'movies', 'songs', 'videogames');
 CREATE TABLE Lists (
-    email VARCHAR(30) NOT NULL REFERENCES Users(email),
+    userName VARCHAR(30) NOT NULL REFERENCES Users(userName),
     listName VARCHAR(30) NOT NULL,
     listType ListType NOT NULL,
-    PRIMARY KEY(email, listName),
-    UNIQUE (email, listName)
+    PRIMARY KEY(userName, listName),
+    UNIQUE (userName, listName)
 );
 CREATE TABLE ListItems (
-    email VARCHAR(30) NOT NULL,
+    userName VARCHAR(30) NOT NULL,
     listName VARCHAR(30) NOT NULL,
     rankingInList INT NOT NULL,
     itemID INT NOT NULL,
-    PRIMARY KEY(email, listName, itemID),
-    FOREIGN KEY (email, listName) REFERENCES Lists(email, listName),
+    PRIMARY KEY(userName, listName, itemID),
+    FOREIGN KEY (userName, listName) REFERENCES Lists(userName, listName),
     CHECK(
         rankingInList <= 10
         AND rankingInList >= 1
     )
 );
 CREATE TABLE Likes (
-    likerEmail VARCHAR(30) NOT NULL REFERENCES Users(email),
-    likingEmail VARCHAR(30) NOT NULL,
+    likerName VARCHAR(30) NOT NULL REFERENCES Users(userName),
+    likingName VARCHAR(30) NOT NULL,
     listName VARCHAR(30) NOT NULL,
-    PRIMARY KEY (likerEmail, likingEmail, listName),
-    UNIQUE (likerEmail, likingEmail, listName),
-    FOREIGN KEY (likingEmail, listName) REFERENCES Lists(email, listName)
+    PRIMARY KEY (likerName, likingName, listName),
+    UNIQUE (likerName, likingName, listName),
+    FOREIGN KEY (likingName, listName) REFERENCES Lists(userName, listName)
 );
 CREATE TABLE Follows (
-    followerEmail VARCHAR(30) NOT NULL REFERENCES Users(email),
-    followingEmail VARCHAR(30) NOT NULL REFERENCES Users(email),
-    PRIMARY KEY (followerEmail, followingEmail)
+    follower VARCHAR(30) NOT NULL REFERENCES Users(userName),
+    following VARCHAR(30) NOT NULL REFERENCES Users(userName),
+    PRIMARY KEY (follower, following)
 );
 CREATE VIEW Media AS
 SELECT id,
@@ -108,7 +108,7 @@ FROM Anime;
 CREATE OR REPLACE FUNCTION check_rank_exists() RETURNS TRIGGER AS $$ BEGIN IF EXISTS (
         SELECT 1
         FROM ListItems
-        WHERE email = NEW.email
+        WHERE userName = NEW.userName
             AND listName = NEW.listName
             AND rankingInList = NEW.rankingInList
     ) THEN RAISE EXCEPTION 'An item with the same rank has already been added to the list';

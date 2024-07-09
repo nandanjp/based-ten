@@ -1,6 +1,6 @@
 use crate::{
-    models::groups::{Groups, GroupsError, GroupsQuery, CreateGroups, UpdateGroups},
-    utils::{traits::GeneralService},
+    models::groups::{CreateGroups, Groups, GroupsError, GroupsQuery, UpdateGroups},
+    utils::traits::GeneralService,
 };
 use axum::async_trait;
 
@@ -16,7 +16,7 @@ impl GeneralService for GroupsService {
 
     async fn get_all(
         pool: &sqlx::PgPool,
-        query_obj: Self::QueryObject,
+        _query_obj: Self::QueryObject,
     ) -> Result<Self::ListResponse, Self::Error> {
         sqlx::query!(r#"SELECT * FROM Groups"#,)
             .fetch_all(pool)
@@ -25,8 +25,8 @@ impl GeneralService for GroupsService {
                 a.into_iter()
                     .map(|a| Self::Response {
                         gid: a.gid,
-                        groupName: a.groupname,
-                        ownedBy: a.ownedby,
+                        group_name: a.groupname,
+                        owned_by: a.ownedby,
                     })
                     .collect::<Self::ListResponse>()
             })
@@ -43,8 +43,8 @@ impl GeneralService for GroupsService {
             .await
             .map(|a| Self::Response {
                 gid: a.gid,
-                groupName: a.groupname,
-                ownedBy: a.ownedby,
+                group_name: a.groupname,
+                owned_by: a.ownedby,
             })
             .map_err(|e| {
                 GroupsError(format!(
@@ -57,10 +57,10 @@ impl GeneralService for GroupsService {
         pool: &sqlx::PgPool,
         create_obj: Self::CreateObject,
     ) -> Result<Self::Response, Self::Error> {
-        sqlx::query!(r#"INSERT INTO Groups(gid, groupName, ownedBy) VALUES($1, $2, $3) RETURNING gid, groupName, ownedBy"#, create_obj.gid, create_obj.groupName, create_obj.ownedBy).fetch_one(pool).await.map(|a| Self::Response {
+        sqlx::query!(r#"INSERT INTO Groups(gid, groupName, ownedBy) VALUES($1, $2, $3) RETURNING gid, groupName, ownedBy"#, create_obj.gid, create_obj.group_name, create_obj.owned_by).fetch_one(pool).await.map(|a| Self::Response {
             gid: a.gid,
-            groupName: a.groupname,
-            ownedBy: a.ownedby
+            group_name: a.groupname,
+            owned_by: a.ownedby
         }).map_err(|e| GroupsError(format!("failed to create groups with the provided details due to the following error: {e:#?}")))
     }
 
@@ -70,21 +70,21 @@ impl GeneralService for GroupsService {
         gid: i32,
     ) -> Result<Self::Response, Self::Error> {
         let groups = Self::get_by_id(&pool, gid).await?;
-        let groupName = update_obj.groupName.unwrap_or(groups.groupName);
-        let ownedBy = update_obj.ownedBy.unwrap_or(groups.ownedBy);
+        let group_name = update_obj.group_name.unwrap_or(groups.group_name);
+        let owned_by = update_obj.owned_by.unwrap_or(groups.owned_by);
 
-        sqlx::query!(r#"UPDATE Groups SET groupName = $1, ownedBy = $2 WHERE gid = $3 RETURNING gid, groupName, ownedBy"#, groupName, ownedBy, gid).fetch_one(pool).await.map(|a| Self::Response {
+        sqlx::query!(r#"UPDATE Groups SET groupName = $1, ownedBy = $2 WHERE gid = $3 RETURNING gid, groupName, ownedBy"#, group_name, owned_by, gid).fetch_one(pool).await.map(|a| Self::Response {
             gid: a.gid,
-            groupName: a.groupname,
-            ownedBy: a.ownedby
+            group_name: a.groupname,
+            owned_by: a.ownedby
         }).map_err(|e| GroupsError(format!("failed to update groups with the provided details due to the following error: {e:#?}")))
     }
 
     async fn delete(pool: &sqlx::PgPool, gid: i32) -> Result<Self::Response, Self::Error> {
         sqlx::query!(r#"DELETE FROM Groups WHERE gid = $1 RETURNING gid, groupName, ownedBy"#, gid).fetch_one(pool).await.map(|a| Self::Response {
             gid: a.gid,
-            groupName: a.groupname,
-            ownedBy: a.ownedby
+            group_name: a.groupname,
+            owned_by: a.ownedby
         }).map_err(|e| GroupsError(format!("failed to delete groups with the given gid = {gid} due to the following error: {e:#?}")))
     }
 }
