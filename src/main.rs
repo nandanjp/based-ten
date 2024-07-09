@@ -106,7 +106,10 @@ async fn main() {
                         .route("/:id", patch(update_game))
                         .route("/:id", delete(delete_game)),
                 )
-                .nest("/media", Router::new().route("/", get(get_all_media)))
+                .nest("/media", Router::new()
+                    .route("/", get(get_all_media))
+                    .route("/:type", get(get_media_by_type)),
+                )
                 .nest(
                     "/lists",
                     Router::new()
