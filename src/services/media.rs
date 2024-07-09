@@ -57,6 +57,7 @@ impl MediaService {
         }
     }
 
+    /* 
     pub async fn get_by_type(
         pool: &sqlx::PgPool,
         path: String,
@@ -82,4 +83,5 @@ impl MediaService {
             ))
         })
     }
+    */
 }

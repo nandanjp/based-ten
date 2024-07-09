@@ -7,14 +7,14 @@ use handlers::{
     followmutual::get_mutual_follows_by_id,
     follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id},
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
-    groups::{create_groups, delete_groups, get_all_groups, get_groups_by_id},
+    groups::{create_groups, delete_groups, get_all_groups, get_groups_by_id, get_group_member_lists},
     likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
     listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
     lists::{
         create_list, delete_list, get_all_lists, get_user_list, get_user_list_items,
         get_user_lists, update_list,
     },
-    media::{get_all_media, get_media_by_type},
+    media::{get_all_media},
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
     songs::{create_song, delete_song, get_all_songs, get_song_by_id, update_song},
     users::{create_user, delete_user, get_all_users, get_user_by_id, update_user},
@@ -111,7 +111,7 @@ async fn main() {
                     "/media",
                     Router::new()
                         .route("/", get(get_all_media))
-                        .route("/:type", get(get_media_by_type)),
+                        //.route("/:type", get(get_media_by_type)),
                 )
                 .nest(
                     "/lists",
@@ -168,7 +168,8 @@ async fn main() {
                         .route("/", get(get_all_groups))
                         .route("/:gid/:groupName/:ownedBy", post(create_groups))
                         .route("/:gid", get(get_groups_by_id))
-                        .route("/:gid", delete(delete_groups)),
+                        .route("/:gid", delete(delete_groups))
+                        .route("/:gid/lists", get(get_group_member_lists)),
                 ),
         )
         .layer(TraceLayer::new_for_http())

@@ -165,7 +165,7 @@ export interface LikeResponse {
 
 export interface GroupResponse {
   success: boolean;
-  groups?: {
+  group?: {
     gid: number;
     group_name: string;
     owned_by: string;

@@ -21,9 +21,9 @@ import {
   getUserLikes,
   getMediaByTypeAndId,
   getAllMediaByType,
+  getGroupById,
 } from './api';
 import { MediaType } from './api.types';
-
 export const useAllAnime = async () =>
   useQuery({
     queryKey: ['anime'],
@@ -130,6 +130,12 @@ export const useAllGroups = async () =>
   useQuery({
     queryKey: ['groups'],
     queryFn: getAllGroups,
+  });
+
+export const useGroupById = ({ group_id }: { group_id: string}) =>
+  useQuery({
+    queryKey: ["group-by-id"],
+    queryFn: getGroupById({ group_id }),
   });
 
 export const useUserFollowers = ({ email }: { email: string }) =>

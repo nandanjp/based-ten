@@ -52,6 +52,7 @@ pub async fn get_all_media(
     }
 }
 
+/*
 pub async fn get_media_by_type(
     State(pool): State<PgPool>,
     Path(path): Path<String>,
@@ -82,3 +83,4 @@ pub async fn get_media_by_type(
         ),
     }
 }
+ */

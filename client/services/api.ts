@@ -12,6 +12,7 @@ import {
   Movie,
   Song,
   VideoGame,
+  GroupResponse,
 } from './api.types';
 
 const BASE_URL = `http://127.0.0.1:5000/api`;
@@ -132,7 +133,11 @@ export const deleteUserFollower = async () => {};
 
 export const getAllGroups = async () => {};
 
-export const getGroupById = async () => {};
+export const getGroupById = ({ group_id }: { group_id: string }) => async () =>
+  (await axiosInstance.get<GroupResponse>(`groups/${group_id}`)).data;
+
+export const getGroupMemberLists = ({ group_id }: { group_id: string }) => async() =>
+  (await axiosInstance.get<ListResponse>(`groups/${group_id}/lists`))
 
 export const createGroup = async () => {};
 

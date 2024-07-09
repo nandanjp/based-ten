@@ -2,33 +2,13 @@ use serde::{Deserialize, Serialize};
 
 use crate::utils::traits::{Error, IntoSerial};
 
-pub struct Groups {
-    pub gid: i32,
-    pub group_name: String,
-    pub owned_by: String,
-}
-
-impl IntoSerial for Groups {
-    type Serial = GroupsSerial;
-
-    fn to_serial(&self) -> Self::Serial {
-        Self::Serial {
-            gid: self.gid,
-            group_name: self.group_name.clone(),
-            owned_by: self.owned_by.clone(),
-        }
-    }
-}
 
 #[derive(Clone, Debug, Serialize)]
-pub struct GroupsSerial {
+pub struct Group {
     pub gid: i32,
     pub group_name: String,
     pub owned_by: String,
 }
-
-#[derive(Debug, Clone, Deserialize, Default)]
-pub struct GroupsQuery {}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateGroups {
