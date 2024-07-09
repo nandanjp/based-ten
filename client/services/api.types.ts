@@ -1,6 +1,6 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-type ListType = "anime" | "movies" | "songs" | "videogames";
+type ListType = 'anime' | 'movies' | 'songs' | 'videogames';
 export const create_anime = z.object({
   id: z.number().positive(),
   title: z.string(),
@@ -36,7 +36,7 @@ export const create_user = z.object({
 export const create_list = z.object({
   email: z.string().email(),
   list_name: z.string(),
-  list_type: z.enum(["anime", "movies", "songs", "videogames"]),
+  list_type: z.enum(['anime', 'movies', 'songs', 'videogames']),
 });
 
 export const create_list_item = z.object({
@@ -121,18 +121,6 @@ export interface MovieResponse {
   error?: string;
 }
 
-export interface MediaResponse {
-  success: boolean;
-  media?: {
-    id: number;
-    title: string;
-    media_image: string;
-    created_on: string;
-    media_type: ListType;
-  };
-  error?: string;
-}
-
 export interface UserResponse {
   success: boolean;
   user?: {
@@ -200,3 +188,41 @@ export interface FollowMutualResponse {
     follows_back: boolean;
   }[];
 }
+
+export enum MediaType {
+  SONG = 'songs',
+  VIDEO_GAME = 'videogames',
+  ANIME = 'anime',
+  MOVIE = 'movies',
+}
+
+export type Media = {
+  id: number;
+  created_on: string;
+  media_image: string;
+  title: string;
+  type: MediaType;
+};
+
+export type VideoGame = Media & {
+  console: string;
+};
+
+export type Anime = Media & {
+  num_episodes: number;
+};
+
+export type Movie = Media;
+
+export type Song = Media & {
+  author: string;
+};
+
+type BaseResponse = {
+  error?: string;
+  success: boolean;
+};
+
+export type MediaResponse = BaseResponse & {
+  items: Media[] | VideoGame[] | Anime[] | Movie[] | Song[];
+};
