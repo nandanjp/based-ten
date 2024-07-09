@@ -6,7 +6,7 @@ WITH YourRankedItems AS (
     ),
     SimilarLists AS (
         SELECT l.username, l.listName, COUNT(lk.likerName) AS likes
-        FROM Lists l JOIN Likes lk ON l.username = lk.likingName
+        FROM Lists l LEFT OUTER JOIN Likes lk ON l.username = lk.likingName
             AND l.listName = lk.listName
         JOIN YourRankedItems yri ON l.listType = yri.listType
         WHERE EXISTS (
