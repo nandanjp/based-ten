@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct FollowMutual {
-    pub following_email: String,
+    pub follower_email: String,
     pub follows_back: bool,
 }
 

@@ -16,13 +16,13 @@ interface ListCardProps {
 
 export function ListCard({ list_name, list_author, list_type }: ListCardProps) {
   return (
-    <Card className="w-[350px]">
+    <Card className="w-[400px]">
       <CardHeader>
         <CardTitle>{list_name}</CardTitle>
         <CardDescription className="italic">{list_type}</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
-        <p className="">{list_author}</p>
+        <p className="">Created by {list_author}</p>
       </CardFooter>
     </Card>
   );

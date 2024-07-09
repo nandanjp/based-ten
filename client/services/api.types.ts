@@ -167,11 +167,11 @@ export interface ListItemResponse {
 
 export interface LikeResponse {
   success: boolean;
-  like?: {
+  likes?: {
     liker_email: string;
     liking_email: string;
     list_name: string;
-  };
+  }[];
   error?: string;
 }
 
@@ -190,5 +190,14 @@ export interface FollowResponse {
   follows?: {
     follower_email: string;
     following_email: string;
-  };
+  }[];
+}
+
+export interface FollowMutualResponse {
+  success: boolean;
+  followmutuals?: {
+    follower_email: string;
+    following_email: string;
+    follows_back: boolean;
+  }[];
 }

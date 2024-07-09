@@ -9,12 +9,16 @@ import {
   getAllMovies,
   getAllSongs,
   getAllUsers,
+  getUserByEmail,
   getAnimeById,
   getGameById,
   getMovieById,
   getSongById,
   getUserList,
   getUsersLists,
+  getUserFollowing,
+  getUserFollowers,
+  getUserLikes,
 } from "./api";
 
 export const useAllAnime = async () =>
@@ -95,11 +99,23 @@ export const useAllUsers = async () =>
     queryFn: getAllUsers,
   });
 
+export const useUser = ({ email }: { email: string }) =>
+  useQuery({
+    queryKey: ["user"],
+    queryFn: getUserByEmail({ email }),
+  });
+
 export const useAllLikes = async () =>
   useQuery({
     queryKey: ["likes"],
     queryFn: getAllLists,
   });
+
+export const useUserLikes = ({ email }: { email: string }) =>
+  useQuery({
+    queryKey: ["user-likes"],
+    queryFn: getUserLikes({ email })
+  })
 
 export const useAllFollows = async () =>
   useQuery({
@@ -107,8 +123,20 @@ export const useAllFollows = async () =>
     queryFn: getAllFollows,
   });
 
+export const useUserFollowing = ({ email }: { email: string }) =>
+  useQuery({
+    queryKey: ["user-following"],
+    queryFn: getUserFollowing({ email })
+  })
+
 export const useAllGroups = async () =>
   useQuery({
     queryKey: ["groups"],
     queryFn: getAllGroups,
   });
+
+export const useUserFollowers = ({ email }: { email: string }) =>
+  useQuery({
+    queryKey: ["user-followers"],
+    queryFn: getUserFollowers({ email }),
+  })

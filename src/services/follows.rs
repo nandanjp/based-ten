@@ -1,7 +1,8 @@
-use crate::models::follows::{CreateFollow, Follow, FollowError, QueryFollow};
+use crate::models::follows::{Follow, FollowError, QueryFollow, CreateFollow};
 
 pub struct FollowsService;
 impl FollowsService {
+
     pub async fn get_all(
         pool: &sqlx::PgPool,
         query_obj: QueryFollow,
@@ -74,11 +75,7 @@ impl FollowsService {
         }).map_err(|e| FollowError(format!("failed to create follow due to the following error: {e:#?}")))
     }
 
-    pub async fn delete(
-        pool: &sqlx::PgPool,
-        follower_email: String,
-        following_email: String,
-    ) -> Result<Follow, FollowError> {
+    pub async fn delete(pool: &sqlx::PgPool, follower_email: String, following_email: String) -> Result<Follow, FollowError> {
         sqlx::query!(r#"DELETE FROM Follows WHERE followerEmail = $1 AND followingEmail = $2 RETURNING followerEmail, followingEmail"#, follower_email, following_email)
         .fetch_one(pool).await.map(|a| Follow {
             follower_email: a.followeremail,

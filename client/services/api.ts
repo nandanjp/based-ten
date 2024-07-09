@@ -1,7 +1,7 @@
 import axios from "axios";
-import { CreateUserType, ListResponse, UserResponse } from "./api.types";
+import { CreateUserType, ListResponse, UserResponse, FollowResponse, FollowMutualResponse, LikeResponse } from "./api.types";
 
-const BASE_URL = `http://localhost:5000/api`;
+const BASE_URL = `http://127.0.0.1:5000/api`;
 const axiosInstance = axios.create({ baseURL: BASE_URL });
 
 export const getAllAnime = async () => {};
@@ -61,7 +61,7 @@ export const getUserList = async () =>
   (await axiosInstance.get<UserResponse[]>("users")).data;
 
 export const getUserListItems = async ({ id }: { id: string }) =>
-  (await axiosInstance.get<UserResponse>(`users/{id}`)).data;
+  (await axiosInstance.get<UserResponse>(`users/${id}`)).data;
 
 export const updateUserList = async () => {};
 
@@ -78,8 +78,8 @@ export const deleteUserListItem = async () => {};
 export const getAllUsers = async () =>
   (await axiosInstance.get<UserResponse[]>("users")).data;
 
-export const getUserByEmail = async ({ email }: { email: string }) =>
-  (await axiosInstance.get<UserResponse[]>(`users/${email}`)).data;
+export const getUserByEmail = ({ email }: { email: string }) => async () =>
+  (await axiosInstance.get<UserResponse>(`users/${email}`)).data;
 
 export const createUser = async (user: CreateUserType) =>
   (await axiosInstance.post<UserResponse[]>(`users`, user)).data;
@@ -91,7 +91,8 @@ export const deleteUser = async ({ email }: { email: string }) =>
 
 export const getAllLikes = async () => {};
 
-export const getLikeByEmail = async () => {};
+export const getUserLikes = ({ email }: { email: string }) => async() =>
+  (await (axiosInstance.get<LikeResponse>(`likes/${email}`))).data;
 
 export const createLike = async () => [];
 
@@ -101,7 +102,11 @@ export const getAllFollows = async () => {};
 
 export const createFollows = async () => {};
 
-export const getUsersFollowers = async () => {};
+export const getUserFollowing = ({ email }: { email: string }) => async () =>
+  (await axiosInstance.get<FollowResponse>(`follow/${email}`)).data;
+
+export const getUserFollowers = ({ email }: { email: string }) => async () =>
+  (await axiosInstance.get<FollowMutualResponse>(`follow/mutual/${email}`)).data;
 
 export const deleteUserFollower = async () => {};
 
