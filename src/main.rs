@@ -123,7 +123,7 @@ async fn main() {
                         ),
                 )
                 .nest(
-                    "/listitem",
+                    "/listitems",
                     Router::new()
                         .route("/:email/:listname/:item_id", get(get_list_item))
                         .route("/:email/:listname/:item_id", post(create_list_item))
@@ -131,7 +131,7 @@ async fn main() {
                         .route("/:email/:listname/:item_id", delete(delete_list_item)),
                 )
                 .nest(
-                    "/user",
+                    "/users",
                     Router::new()
                         .route("/", get(get_all_users))
                         .route("/", post(create_user))
@@ -140,7 +140,7 @@ async fn main() {
                         .route("/:email", delete(delete_user)),
                 )
                 .nest(
-                    "/like",
+                    "/likes",
                     Router::new()
                         .route("/", get(get_all_likes))
                         .route("/", post(create_like))
