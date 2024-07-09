@@ -53,6 +53,7 @@ const UserPage = () => {
             <TabsTrigger value="likes">Liked Lists</TabsTrigger>
             <TabsTrigger value="followers">Followers</TabsTrigger>
             <TabsTrigger value="following">Following</TabsTrigger>
+            <TabsTrigger value="groups">My Groups</TabsTrigger>
             <TabsTrigger value="account">Account</TabsTrigger>
           </TabsList>
           <TabsContent value="lists" className="p-6">
@@ -102,6 +103,11 @@ const UserPage = () => {
                   user_email={f.following_email}
                 />
               )}
+            </div>
+          </TabsContent>
+          <TabsContent value="groups" className="p-6">
+            <div className="grid gap-4">
+              <div className="text-3xl font-semibold">Groups</div>
             </div>
           </TabsContent>
           <TabsContent value="account" className="p-6">

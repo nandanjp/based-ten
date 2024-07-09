@@ -119,7 +119,7 @@ async fn main() {
                         .route("/", get(get_all_lists))
                         .route("/", post(create_list))
                         .nest(
-                            "/:email",
+                            "/:user_name",
                             Router::new()
                                 .route("/", get(get_user_lists))
                                 .route("/:list_name", get(get_user_list))
@@ -131,26 +131,26 @@ async fn main() {
                 .nest(
                     "/listitems",
                     Router::new()
-                        .route("/:email/:listname/:item_id", get(get_list_item))
-                        .route("/:email/:listname/:item_id", post(create_list_item))
-                        .route("/:email/:listname/:item_id", patch(update_list_item))
-                        .route("/:email/:listname/:item_id", delete(delete_list_item)),
+                        .route("/:user_name/:listname/:item_id", get(get_list_item))
+                        .route("/:user_name/:listname/:item_id", post(create_list_item))
+                        .route("/:user_name/:listname/:item_id", patch(update_list_item))
+                        .route("/:user_name/:listname/:item_id", delete(delete_list_item)),
                 )
                 .nest(
                     "/users",
                     Router::new()
                         .route("/", get(get_all_users))
                         .route("/", post(create_user))
-                        .route("/:email", get(get_user_by_id))
-                        .route("/:email", patch(update_user))
-                        .route("/:email", delete(delete_user)),
+                        .route("/:user_name", get(get_user_by_id))
+                        .route("/:user_name", patch(update_user))
+                        .route("/:user_name", delete(delete_user)),
                 )
                 .nest(
                     "/likes",
                     Router::new()
                         .route("/", get(get_all_likes))
                         .route("/", post(create_like))
-                        .route("/:email", get(get_likes_by_id))
+                        .route("/:user_name", get(get_likes_by_id))
                         .route("/:likeremail/:likingemail/:listname", delete(delete_like)),
                 )
                 .nest(
@@ -158,7 +158,7 @@ async fn main() {
                     Router::new()
                         .route("/", get(get_all_follows))
                         .route("/", post(create_follow))
-                        .route("/:email", get(get_follows_by_id))
+                        .route("/:user_name", get(get_follows_by_id))
                         .route("/:followeremail/:followingemail", delete(delete_follow))
                         .route("/mutual/:useremail", get(get_mutual_follows_by_id)),
                 )
