@@ -1,1 +1,1 @@
-SELECT * FROM Media WHERE lower(title)  LIKE 'leaving%';
+SELECT * FROM Media WHERE lower(title) LIKE 'leaving%';

@@ -1,0 +1,9 @@
+[{
+  "listname": "Favorite Anime",
+  "listtype": "anime",
+  "username": "john.doe"
+}, {
+  "listname": "Top Movies of 2024",
+  "listtype": "movies",
+  "username": "jane.smith"
+}]

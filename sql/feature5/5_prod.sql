@@ -2,7 +2,7 @@ WITH YourRankedItems AS (
         SELECT li.username, li.itemID, l.listType
         FROM ListItems li JOIN Lists l ON li.username = l.username
             AND li.listName = l.listName
-        WHERE l.username = 'jane.smith'
+        WHERE l.username = 'john.smith'
     ),
     SimilarLists AS (
         SELECT l.username, l.listName, COUNT(lk.likerName) AS likes

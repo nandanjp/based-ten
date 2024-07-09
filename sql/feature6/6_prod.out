@@ -1,0 +1,81 @@
+[{
+  "gid": 1,
+  "groupname": "Starfall Alliance",
+  "ownedby": "john.smith"
+}, {
+  "gid": 2,
+  "groupname": "Echo Squadron",
+  "ownedby": "emily.johnson"
+}, {
+  "gid": 3,
+  "groupname": "Shadowrunners",
+  "ownedby": "michael.williams"
+}, {
+  "gid": 4,
+  "groupname": "Crystal Guardians",
+  "ownedby": "emma.brown"
+}, {
+  "gid": 5,
+  "groupname": "Dragon's Roar",
+  "ownedby": "joshua.jones"
+}, {
+  "gid": 6,
+  "groupname": "Avalon Knights",
+  "ownedby": "madison.davis"
+}, {
+  "gid": 7,
+  "groupname": "Silent Serpents",
+  "ownedby": "daniel.miller"
+}, {
+  "gid": 8,
+  "groupname": "Infinity Blades",
+  "ownedby": "olivia.wilson"
+}, {
+  "gid": 9,
+  "groupname": "Phantom Legacy",
+  "ownedby": "james.moore"
+}, {
+  "gid": 10,
+  "groupname": "Phoenix Requiem",
+  "ownedby": "ava.taylor"
+}, {
+  "gid": 11,
+  "groupname": "Obsidian Circle",
+  "ownedby": "ethan.anderson"
+}, {
+  "gid": 12,
+  "groupname": "Silvermoon Sentinels",
+  "ownedby": "sophia.thomas"
+}, {
+  "gid": 13,
+  "groupname": "Eclipse Rangers",
+  "ownedby": "alexander.jackson"
+}, {
+  "gid": 14,
+  "groupname": "Chrono Crusaders",
+  "ownedby": "isabella.white"
+}, {
+  "gid": 15,
+  "groupname": "Stormwatch Vanguard",
+  "ownedby": "mason.harris"
+}, {
+  "gid": 16,
+  "groupname": "Darkstar Saviors",
+  "ownedby": "mia.martin"
+}, {
+  "gid": 17,
+  "groupname": "Genesis Vanguard",
+  "ownedby": "william.thompson"
+}, {
+  "gid": 18,
+  "groupname": "Hydra Corps",
+  "ownedby": "amelia.garcia"
+}, {
+  "gid": 19,
+  "groupname": "Spectre Squad",
+  "ownedby": "benjamin.martinez"
+}, {
+  "gid": 20,
+  "groupname": "Neon Templars",
+  "ownedby": "chloe.robinson"
+}]

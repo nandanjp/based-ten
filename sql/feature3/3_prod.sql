@@ -1,9 +1,9 @@
 WITH mutuals AS (
     SELECT f1.following
     FROM Follows f1, Follows f2
-    WHERE f1.follower = 'jane.smith'
+    WHERE f1.follower = 'john.smith'
     AND f1.following = f2.follower 
-    AND f2.following = 'jane.smith'
+    AND f2.following = 'john.smith'
 )
 SELECT following,
 CASE 
@@ -11,4 +11,4 @@ CASE
     ELSE FALSE
 END as followsBack
 FROM Follows
-WHERE follower = 'jane.smith';
+WHERE follower = 'john.smith';

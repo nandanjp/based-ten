@@ -1,1 +1,1 @@
-INSERT INTO ListItems VALUES ('JohnDoe', 'Worst Video Games', 3);
+INSERT INTO ListItems VALUES ('john.doe', 'Worst Video Games', 3);

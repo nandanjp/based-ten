@@ -17,7 +17,7 @@ export const AddListItem = (props: AddListItemProps) => {
   return (
     <div className="">
       <Button
-        className="flex gap-4 justify-normal rounded-2xl px-8 py-10 w-80 bg-gray-600 text-white hover:bg-gray-700"
+        className="flex gap-4 justify-normal rounded-2xl px-8 py-10 w-80 bg-primary text-white hover:bg-gray-700"
         onClick={() => {
           setOpen(true);
         }}

@@ -1,1 +1,1 @@
-SELECT * FROM VideoGames WHERE id=3;
+SELECT * FROM Movies WHERE id=10;

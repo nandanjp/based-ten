@@ -1,1 +1,1 @@
-INSERT INTO Lists VALUES ('JohnDoe', 'Worst Video Games', 'videogames');
+INSERT INTO Lists VALUES ('john.doe', 'Worst Video Games', 'videogames');
