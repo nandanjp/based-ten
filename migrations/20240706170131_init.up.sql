@@ -7,9 +7,9 @@ CREATE TABLE Movies (
 );
 CREATE TABLE Songs (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(30) NOT NULL,
-    author VARCHAR(30),
-    album VARCHAR(30),
+    title VARCHAR(60) NOT NULL,
+    author VARCHAR(60),
+    album VARCHAR(60),
     mediaImage TEXT,
     createdOn DATE
 );
@@ -17,7 +17,7 @@ CREATE TABLE VideoGames (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     mediaImage TEXT,
-    console VARCHAR(30),
+    console VARCHAR(100),
     createdOn DATE
 );
 CREATE TABLE Anime (
@@ -29,7 +29,7 @@ CREATE TABLE Anime (
 );
 CREATE TABLE Users (
     email VARCHAR(30) NOT NULL UNIQUE,
-    userName VARCHAR(20) NOT NULL PRIMARY KEY,
+    userName VARCHAR(30) NOT NULL PRIMARY KEY,
     userPassword VARCHAR(30) NOT NULL,
     createdAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
