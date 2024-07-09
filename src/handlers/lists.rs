@@ -61,9 +61,9 @@ pub async fn get_all_lists(
 
 pub async fn get_user_lists(
     State(pool): State<PgPool>,
-    Path(email): Path<String>,
+    Path(user_name): Path<String>,
 ) -> impl IntoResponse {
-    match ListService::get_by_email(&pool, email).await {
+    match ListService::get_by_email(&pool, user_name).await {
         Ok(lists) => (
             StatusCode::OK,
             Json(ListListResponse {
@@ -87,9 +87,9 @@ pub async fn get_user_lists(
 
 pub async fn get_user_list(
     State(pool): State<PgPool>,
-    Path((email, list_name)): Path<(String, String)>,
+    Path((user_name, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    match ListService::get_by_user_and_listname(&pool, email, list_name).await {
+    match ListService::get_by_user_and_listname(&pool, user_name, list_name).await {
         Ok(list) => (
             StatusCode::OK,
             Json(ListResponse {
@@ -113,9 +113,9 @@ pub async fn get_user_list(
 
 pub async fn get_user_list_items(
     State(pool): State<PgPool>,
-    Path((email, list_name)): Path<(String, String)>,
+    Path((user_name, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    match ListService::get_user_list_and_items(&pool, email, list_name).await {
+    match ListService::get_user_list_and_items(&pool, user_name, list_name).await {
         Ok(list) => (
             StatusCode::OK,
             Json(ListFullListItemResponse {
@@ -165,10 +165,10 @@ pub async fn create_list(
 
 pub async fn update_list(
     State(pool): State<PgPool>,
-    Path((email, list_name)): Path<(String, String)>,
+    Path((user_name, list_name)): Path<(String, String)>,
     Json(update): Json<UpdateList>,
 ) -> impl IntoResponse {
-    match ListService::update(&pool, update, email, list_name).await {
+    match ListService::update(&pool, update, user_name, list_name).await {
         Ok(list) => (
             StatusCode::OK,
             Json(ListResponse {
@@ -192,9 +192,9 @@ pub async fn update_list(
 
 pub async fn delete_list(
     State(pool): State<PgPool>,
-    Path((email, list_name)): Path<(String, String)>,
+    Path((user_name, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    match ListService::delete(&pool, email, list_name).await {
+    match ListService::delete(&pool, user_name, list_name).await {
         Ok(list) => (
             StatusCode::OK,
             Json(ListResponse {

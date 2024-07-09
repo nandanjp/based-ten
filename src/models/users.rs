@@ -5,7 +5,7 @@ use crate::utils::traits::{Error, IntoSerial};
 
 pub struct User {
     pub email: String,
-    pub display_name: String,
+    pub user_name: String,
     pub password: String,
     pub created_at: OffsetDateTime,
 }
@@ -16,7 +16,7 @@ impl IntoSerial for User {
     fn to_serial(&self) -> Self::Serial {
         Self::Serial {
             email: self.email.clone(),
-            display_name: self.display_name.clone(),
+            user_name: self.user_name.clone(),
             password: self.password.clone(),
             created_at: self.created_at.to_string(),
         }
@@ -26,7 +26,7 @@ impl IntoSerial for User {
 #[derive(Clone, Debug, Serialize)]
 pub struct UserSerial {
     pub email: String,
-    pub display_name: String,
+    pub user_name: String,
     pub password: String,
     pub created_at: String,
 }
@@ -37,14 +37,14 @@ pub struct QueryUser {}
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateUser {
     pub email: String,
-    pub display_name: String,
+    pub user_name: String,
     pub password: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct UpdateUser {
     pub email: Option<String>,
-    pub display_name: Option<String>,
+    pub user_name: Option<String>,
     pub password: Option<String>,
 }
 

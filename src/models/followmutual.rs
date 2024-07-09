@@ -1,9 +1,9 @@
 use crate::utils::traits::Error;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct FollowMutual {
-    pub follower_email: String,
+    pub follower: String,
     pub follows_back: bool,
 }
 

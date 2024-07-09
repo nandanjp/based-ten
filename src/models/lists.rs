@@ -4,7 +4,7 @@ use thiserror::Error;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct List {
-    pub email: String,
+    pub user_name: String,
     pub list_name: String,
     pub list_type: ListType,
 }
@@ -14,7 +14,7 @@ pub struct QueryList {}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateList {
-    pub email: String,
+    pub user_name: String,
     pub list_name: String,
     pub list_type: ListType,
 }

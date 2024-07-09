@@ -1,4 +1,4 @@
-use crate::models::likes::{QueryLike, Like, CreateLike};
+use crate::models::likes::{CreateLike, Like, QueryLike};
 use crate::services::likes::LikesService;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
@@ -29,11 +29,7 @@ pub async fn get_all_likes(
             StatusCode::OK,
             Json(ListLikesResponse {
                 success: true,
-                likes: Some(
-                    likes
-                        .into_iter()
-                        .collect::<Vec<Like>>(),
-                ),
+                likes: Some(likes.into_iter().collect::<Vec<Like>>()),
                 error: None,
             }),
         ),
@@ -50,17 +46,16 @@ pub async fn get_all_likes(
     }
 }
 
-pub async fn get_likes_by_id(State(pool): State<PgPool>, Path(email): Path<String>) -> impl IntoResponse {
-    match LikesService::get_by_id(&pool, email).await {
+pub async fn get_likes_by_id(
+    State(pool): State<PgPool>,
+    Path(user_name): Path<String>,
+) -> impl IntoResponse {
+    match LikesService::get_by_id(&pool, user_name).await {
         Ok(likes) => (
             StatusCode::OK,
             Json(ListLikesResponse {
                 success: true,
-                likes: Some(
-                    likes
-                        .into_iter()
-                        .collect::<Vec<Like>>(),
-                ),
+                likes: Some(likes.into_iter().collect::<Vec<Like>>()),
                 error: None,
             }),
         ),
@@ -103,9 +98,11 @@ pub async fn create_like(
     }
 }
 
-pub async fn delete_like(State(pool): State<PgPool>, Path((liker_email, liking_email, list_name)): Path<(String, String, String)>)
--> impl IntoResponse {
-    match LikesService::delete(&pool, liker_email, liking_email, list_name).await {
+pub async fn delete_like(
+    State(pool): State<PgPool>,
+    Path((liker, liking, list_name)): Path<(String, String, String)>,
+) -> impl IntoResponse {
+    match LikesService::delete(&pool, liker, liking, list_name).await {
         Ok(like) => (
             StatusCode::OK,
             Json(LikesResponse {

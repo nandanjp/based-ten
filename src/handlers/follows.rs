@@ -1,4 +1,4 @@
-use crate::models::follows::{QueryFollow, Follow, CreateFollow};
+use crate::models::follows::{CreateFollow, Follow, QueryFollow};
 use crate::services::follows::FollowsService;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
@@ -29,11 +29,7 @@ pub async fn get_all_follows(
             StatusCode::OK,
             Json(ListFollowsResponse {
                 success: true,
-                follows: Some(
-                    follows
-                        .into_iter()
-                        .collect::<Vec<Follow>>(),
-                ),
+                follows: Some(follows.into_iter().collect::<Vec<Follow>>()),
                 error: None,
             }),
         ),
@@ -50,17 +46,16 @@ pub async fn get_all_follows(
     }
 }
 
-pub async fn get_follows_by_id(State(pool): State<PgPool>, Path(email): Path<String>) -> impl IntoResponse {
-    match FollowsService::get_by_id(&pool, email).await {
+pub async fn get_follows_by_id(
+    State(pool): State<PgPool>,
+    Path(user_name): Path<String>,
+) -> impl IntoResponse {
+    match FollowsService::get_by_id(&pool, user_name).await {
         Ok(follows) => (
             StatusCode::OK,
             Json(ListFollowsResponse {
                 success: true,
-                follows: Some(
-                    follows
-                        .into_iter()
-                        .collect::<Vec<Follow>>(),
-                ),
+                follows: Some(follows.into_iter().collect::<Vec<Follow>>()),
                 error: None,
             }),
         ),
@@ -103,9 +98,12 @@ pub async fn create_follow(
     }
 }
 
-pub async fn delete_follow(State(pool): State<PgPool>, Path(follower_email): Path<String>, Path(following_email): Path<String>)
--> impl IntoResponse {
-    match FollowsService::delete(&pool, follower_email, following_email).await {
+pub async fn delete_follow(
+    State(pool): State<PgPool>,
+    Path(follower): Path<String>,
+    Path(following): Path<String>,
+) -> impl IntoResponse {
+    match FollowsService::delete(&pool, follower, following).await {
         Ok(follow) => (
             StatusCode::OK,
             Json(FollowsResponse {

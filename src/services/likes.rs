@@ -8,22 +8,22 @@ impl LikesService {
     ) -> Result<Vec<Like>, LikeError> {
         match query_obj {
             QueryLike {
-                liking_email: Some(liking_email),
-            } => sqlx::query!(r#"SELECT * FROM Likes WHERE likingEmail = $1"#, liking_email)
+                liking_name: Some(liking_name),
+            } => sqlx::query!(r#"SELECT * FROM Likes WHERE likingName = $1"#, liking_name)
             .fetch_all(pool)
             .await
             .map(|a| {
                 a.into_iter()
                     .map(|a| Like {
-                        liker_email: a.likeremail,
-                        liking_email: a.likingemail,
+                        liker_name: a.likername,
+                        liking_name: a.likingname,
                         list_name: a.listname,
                     })
                     .collect::<Vec<Like>>()
             })
             .map_err(|e| {
                 LikeError(format!(
-                    "failed to retrieve likes where likingEmail = {liking_email} due to the following error: {e:#?}"
+                    "failed to retrieve likes where liking_name = {liking_name} due to the following error: {e:#?}"
                 ))
             }),
             _ => sqlx::query!(r#"SELECT * FROM Likes"#)
@@ -32,8 +32,8 @@ impl LikesService {
             .map(|a| {
                 a.into_iter()
                     .map(|a| Like {
-                        liker_email: a.likeremail,
-                        liking_email: a.likingemail,
+                        liker_name: a.likername,
+                        liking_name: a.likingname,
                         list_name: a.listname,
                     })
                     .collect::<Vec<Like>>()
@@ -46,46 +46,49 @@ impl LikesService {
         }
     }
 
-    pub async fn get_by_id(pool: &sqlx::PgPool, email: String) -> Result<Vec<Like>, LikeError> {
-        sqlx::query!(r#"SELECT * FROM Likes WHERE likerEmail = $1"#, email)
+    pub async fn get_by_id(
+        pool: &sqlx::PgPool,
+        liker_name: String,
+    ) -> Result<Vec<Like>, LikeError> {
+        sqlx::query!(r#"SELECT * FROM Likes WHERE likerName = $1"#, liker_name)
             .fetch_all(pool)
             .await
             .map(|a| {
                 a.into_iter()
                     .map(|a| Like {
-                        liker_email: a.likeremail,
-                        liking_email: a.likingemail,
+                        liker_name: a.likername,
+                        liking_name: a.likingname,
                         list_name: a.listname,
                     })
                     .collect::<Vec<Like>>()
             })
             .map_err(|e| {
                 LikeError(format!(
-                    "failed to retrieve likes of a user with email = {email} due to the following error: {e:#?}"
+                    "failed to retrieve likes of a user with user_name = {liker_name} due to the following error: {e:#?}"
                 ))
             })
     }
 
     pub async fn create(pool: &sqlx::PgPool, create_obj: CreateLike) -> Result<Like, LikeError> {
-        sqlx::query!(r#"INSERT INTO Likes(likerEmail, likingEmail, listName) VALUES($1, $2, $3) RETURNING likerEmail, likingEmail, listName"#, create_obj.liker_email, create_obj.liking_email, create_obj.list_name)
+        sqlx::query!(r#"INSERT INTO Likes(likerName, likingName, listName) VALUES($1, $2, $3) RETURNING likerName, likingName, listName"#, create_obj.liker_name, create_obj.liking_name, create_obj.list_name)
         .fetch_one(pool).await.map(|a| Like {
-            liker_email: a.likeremail,
-            liking_email: a.likingemail,
+            liker_name: a.likername,
+            liking_name: a.likingname,
             list_name: a.listname,
         }).map_err(|e| LikeError(format!("failed to create like due to the following error: {e:#?}")))
     }
 
     pub async fn delete(
         pool: &sqlx::PgPool,
-        liker_email: String,
-        liking_email: String,
+        liker_name: String,
+        liking_name: String,
         list_name: String,
     ) -> Result<Like, LikeError> {
-        sqlx::query!(r#"DELETE FROM Likes WHERE likerEmail = $1 AND likingEmail = $2 AND listName = $3 RETURNING likerEmail, likingEmail, listName"#, liker_email, liking_email, list_name)
+        sqlx::query!(r#"DELETE FROM Likes WHERE likerName = $1 AND likingName = $2 AND listName = $3 RETURNING likerName, likingName, listName"#, liker_name, liking_name, list_name)
         .fetch_one(pool).await.map(|a| Like {
-            liker_email: a.likeremail,
-            liking_email: a.likingemail,
+            liker_name: a.likername,
+            liking_name: a.likingname,
             list_name: a.listname,
-        }).map_err(|e| LikeError(format!("failed to delete like with likerEmail = {liker_email}, likingEmail = {liking_email}, and listName = {list_name} due to the following error: {e:#?}")))
+        }).map_err(|e| LikeError(format!("failed to delete like with likerName = {liker_name}, likingName = {liking_name}, and listName = {list_name} due to the following error: {e:#?}")))
     }
 }

@@ -3,20 +3,20 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct Like {
-    pub liker_email: String,
-    pub liking_email: String,
+    pub liker_name: String,
+    pub liking_name: String,
     pub list_name: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
 pub struct QueryLike {
-    pub liking_email: Option<String>,
+    pub liking_name: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateLike {
-    pub liker_email: String,
-    pub liking_email: String,
+    pub liker_name: String,
+    pub liking_name: String,
     pub list_name: String,
 }
 

@@ -1,4 +1,4 @@
-use crate::models::users::{QueryUser, UserSerial, CreateUser, UpdateUser};
+use crate::models::users::{CreateUser, QueryUser, UpdateUser, UserSerial};
 use crate::services::users::UsersService;
 use crate::utils::traits::IntoSerial;
 use axum::extract::{Json, Path, Query, State};
@@ -52,8 +52,11 @@ pub async fn get_all_users(
     }
 }
 
-pub async fn get_user_by_id(State(pool): State<PgPool>, Path(email): Path<String>) -> impl IntoResponse {
-    match UsersService::get_by_id(&pool, email).await {
+pub async fn get_user_by_id(
+    State(pool): State<PgPool>,
+    Path(user_name): Path<String>,
+) -> impl IntoResponse {
+    match UsersService::get_by_id(&pool, user_name).await {
         Ok(user) => (
             StatusCode::OK,
             Json(UsersResponse {
@@ -103,10 +106,10 @@ pub async fn create_user(
 
 pub async fn update_user(
     State(pool): State<PgPool>,
-    Path(email): Path<String>,
+    Path(user_name): Path<String>,
     Json(update): Json<UpdateUser>,
 ) -> impl IntoResponse {
-    match UsersService::update(&pool, update, email).await {
+    match UsersService::update(&pool, update, user_name).await {
         Ok(user) => (
             StatusCode::OK,
             Json(UsersResponse {
@@ -128,8 +131,11 @@ pub async fn update_user(
     }
 }
 
-pub async fn delete_user(State(pool): State<PgPool>, Path(email): Path<String>) -> impl IntoResponse {
-    match UsersService::delete(&pool, email).await {
+pub async fn delete_user(
+    State(pool): State<PgPool>,
+    Path(user_name): Path<String>,
+) -> impl IntoResponse {
+    match UsersService::delete(&pool, user_name).await {
         Ok(user) => (
             StatusCode::OK,
             Json(UsersResponse {

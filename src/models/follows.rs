@@ -3,19 +3,19 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize)]
 pub struct Follow {
-    pub follower_email: String,
-    pub following_email: String,
+    pub follower: String,
+    pub following: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
 pub struct QueryFollow {
-    pub following_email: Option<String>,
+    pub following: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateFollow {
-    pub follower_email: String,
-    pub following_email: String,
+    pub follower: String,
+    pub following: String,
 }
 
 #[derive(Debug, Clone)]

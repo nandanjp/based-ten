@@ -1,11 +1,11 @@
 -- Feature 3
 WITH ListsWithItemIDs AS (
-    SELECT l.email,
+    SELECT l.userName,
         l.listName,
         li.itemID,
         l.listType as itemType
     FROM ListItems li
-        JOIN Lists l ON li.email = l.email
+        JOIN Lists l ON li.userName = l.userName
         AND li.listName = l.listName
 ),
 ListsWithLikes AS (
@@ -14,11 +14,11 @@ ListsWithLikes AS (
         JOIN Likes lk on l.listName = lk.listName
 ),
 ListLikeCounts AS (
-    SELECT lwl.email,
+    SELECT lwl.userName,
         lwl.listName,
         COUNT(*) as likeCount
     FROM ListsWithLikes lwl
-    GROUP BY lwl.email,
+    GROUP BY lwl.userName,
         lwl.listName
 ),
 TotalLikesByItem AS (
@@ -26,7 +26,7 @@ TotalLikesByItem AS (
         lwi.itemType,
         CAST(SUM(llc.likeCount) AS INTEGER) as totalLikes
     FROM ListsWithItemIDs lwi
-        JOIN ListLikeCounts llc ON lwi.email = llc.email
+        JOIN ListLikeCounts llc ON lwi.userName = llc.userName
         AND lwi.listName = llc.listName
     GROUP BY lwi.itemID,
         lwi.itemType
