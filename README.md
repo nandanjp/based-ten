@@ -56,6 +56,7 @@ Now, you can make normal HTTP requests to our backend server, with the following
 - `DELETE /api/videogames/:id`
 
 - `GET /api/media`
+- `GET /api/:type`
 
 - `GET /api/lists`
 - `POST /api/lists`
@@ -65,11 +66,10 @@ Now, you can make normal HTTP requests to our backend server, with the following
 - `PATCH /api/lists/:email/:list_name`
 - `DELETE /api/lists/:email/:list_name`
 
-- `GET /api/listitem`
-- `GET /api/listitem/:item_id`
-- `POST /api/listitem/:item_id`
-- `PATCH /api/listitem/:item_id`
-- `DELETE /api/listitem/:item_id`
+- `GET /api/listitems/:email/:listname/:item_id`
+- `POST /api/listitems/:email/:listname/:item_id`
+- `PATCH /api/listitems/:email/:listname/:item_id`
+- `DELETE /api/listitems/:email/:listname/:item_id`
 
 - `GET /api/users`
 - `POST /api/users`
@@ -85,7 +85,13 @@ Now, you can make normal HTTP requests to our backend server, with the following
 - `GET /api/follow`
 - `POST /api/follow`
 - `GET /api/follow/:email`
-- `DELETE /api/follower/:followeremail/:followingemail`
+- `DELETE /api/follow/:followeremail/:followingemail`
+- `GET /api/follow/mutual/:useremail`
+
+- `GET /api/groups`
+- `POST /api/groups/:gid/:groupName/:ownedBy`
+- `GET /api/groups/:gid`
+- `DELETE /api/groups/:gid`
 
 ### Open APIs being used to retrieve and add new data
 [Spotify API](https://developer.spotify.com/documentation/web-api)
