@@ -147,7 +147,7 @@ export interface UserResponse {
 export interface ListResponse {
   success: boolean;
   lists?: {
-    email: string;
+    user_name: string;
     list_name: string;
     list_type: ListType;
   }[];
@@ -157,7 +157,7 @@ export interface ListResponse {
 export interface ListItemResponse {
   success: boolean;
   list_item?: {
-    email: string;
+    user_name: string;
     list_name: string;
     ranking_in_list: number;
     item_id: number;
@@ -168,8 +168,8 @@ export interface ListItemResponse {
 export interface LikeResponse {
   success: boolean;
   likes?: {
-    liker_email: string;
-    liking_email: string;
+    liker_name: string;
+    liking_name: string;
     list_name: string;
   }[];
   error?: string;
@@ -188,16 +188,15 @@ export interface GroupResponse {
 export interface FollowResponse {
   success: boolean;
   follows?: {
-    follower_email: string;
-    following_email: string;
+    follower: string;
+    following: string;
   }[];
 }
 
 export interface FollowMutualResponse {
   success: boolean;
   followmutuals?: {
-    follower_email: string;
-    following_email: string;
+    follower: string;
     follows_back: boolean;
   }[];
 }
