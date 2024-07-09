@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
 export function ListCard() {
   return (
     <Card className="w-[350px]">
@@ -15,7 +16,7 @@ export function ListCard() {
         <CardDescription className="italic">list type</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-between">
-        <p className="italic">Author: _</p>
+        <p className="">Author: _</p>
       </CardFooter>
     </Card>
   )
