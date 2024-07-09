@@ -62,7 +62,7 @@ const CreateListPage = ({
         </h3>
         <div className="flex gap-2">
           <Button
-            className="bg-gray-600 hover:bg-gray-700 rounded-xl gap-2 py-5 w-fit"
+            className="bg-primary hover:bg-gray-700 rounded-xl gap-2 py-5 w-fit"
             onClick={() => router.back()}
           >
             <Trash2 />
@@ -71,7 +71,7 @@ const CreateListPage = ({
           <Button
             className={`rounded-xl gap-2 py-5 w-fit ${
               done
-                ? 'bg-gray-600 hover:bg-gray-700'
+                ? 'bg-primary hover:bg-gray-700'
                 : 'bg-gray-400 hover:bg-gray-400 cursor-default'
             }`}
             disabled={!done}
