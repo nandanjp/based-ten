@@ -49,7 +49,7 @@ where
     Ok(anime)
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 enum DataType {
     Dev,
     Prod,
@@ -66,7 +66,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/anime.csv",
                 DataType::Prod => "./data/prod/anime.csv",
             })?;
-            for a in anime {
+            for a in anime.into_iter().take(500) {
                 match sqlx::query!(r#"INSERT INTO Anime(id, title, mediaimage, numepisodes, createdon) VALUES($1, $2, $3, $4, $5)"#, a.anime_id, a.title, a.image, a.episodes, convert_date(a.released_on)?).execute(pool).await {
                     Err(e) => println!("failed to insert into anime due to the following error = {e:#?}"),
                     _ => {}
@@ -78,7 +78,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/video-games.csv",
                 DataType::Prod => "./data/prod/video-games.csv",
             })?;
-            for g in games {
+            for g in games.into_iter().take(500) {
                 match sqlx::query!(r#"INSERT INTO VideoGames(id, title, mediaimage, console, createdon) VALUES($1, $2, $3, $4, $5)"#, g.game_id, g.title, g.image, g.platform, convert_date(g.released_on)?).execute(pool).await {
                     Err(e) => println!("failed to insert into games due to the following error = {e:#?}"),
                     _ => {}
@@ -90,7 +90,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/movies.csv",
                 DataType::Prod => "./data/prod/movies.csv",
             })?;
-            for m in movies {
+            for m in movies.into_iter().take(500) {
                 match sqlx::query!(
                     r#"INSERT INTO Movies(id, title, mediaimage, createdOn) VALUES($1, $2, $3, $4)"#,
                     m.movie_id,
@@ -110,7 +110,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/songs.csv",
                 DataType::Prod => "./data/prod/songs.csv",
             })?;
-            for s in songs {
+            for s in songs.into_iter().take(500) {
                 match sqlx::query!(r#"INSERT INTO Songs(id, title, author, album, mediaimage, createdon) VALUES($1, $2, $3, $4, $5, $6)"#, s.song_id, s.title, s.writer, s.album, s.image, convert_date(s.released_in_year)?).execute(pool).await {
                     Err(e) => println!("failed to insert into songs due to the following error = {e:#?}"),
                     _ => {}
@@ -122,7 +122,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/lists.csv",
                 DataType::Prod => "./data/prod/lists.csv",
             })?;
-            for l in lists {
+            for l in lists.into_iter().take(500) {
                 match sqlx::query!(
                     r#"INSERT INTO Lists(userName, listName, listType) VALUES($1, $2, $3)"#,
                     l.user_name,
@@ -144,7 +144,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/users.csv",
                 DataType::Prod => "./data/prod/users.csv",
             })?;
-            for u in users {
+            for u in users.into_iter().take(500) {
                 match sqlx::query!(
                     r#"INSERT INTO Users(email, username, userpassword) VALUES($1, $2, $3)"#,
                     u.user_email,
@@ -166,7 +166,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/groups.csv",
                 DataType::Prod => "./data/prod/groups.csv",
             })?;
-            for g in groups {
+            for g in groups.into_iter().take(500) {
                 match sqlx::query!(
                     r#"INSERT INTO Groups(gid, groupName, ownedBy) VALUES($1, $2, $3)"#,
                     g.group_id,
@@ -188,7 +188,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/group-members.csv",
                 DataType::Prod => "./data/prod/group-members.csv",
             })?;
-            for gm in group_members {
+            for gm in group_members.into_iter().take(500) {
                 match sqlx::query!(
                     r#"INSERT INTO GroupMembers(gid, userName) VALUES($1, $2)"#,
                     gm.group_id,
@@ -209,7 +209,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/likes.csv",
                 DataType::Prod => "./data/prod/likes.csv",
             })?;
-            for l in likes {
+            for l in likes.into_iter().take(500) {
                 match sqlx::query!(
                     r#"INSERT INTO Likes(likerName, likingName, listname) VALUES($1, $2, $3)"#,
                     l.liker_name,
@@ -231,7 +231,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/list-items.csv",
                 DataType::Prod => "./data/prod/list-items.csv",
             })?;
-            for li in list_items {
+            for li in list_items.into_iter().take(500) {
                 match sqlx::query!(r#"INSERT INTO ListItems(userName, listname, rankinginlist, itemid) VALUES($1, $2, $3, $4)"#, li.user_name, li.list_name, li.rank_in_list, li.item_id).execute(pool).await {
                     Err(e) => println!("failed to insert into list items due to the following error = {e:#?}"),
                     _ => {}
@@ -243,7 +243,7 @@ async fn insert_into(
                 DataType::Dev => "./data/dev/follows.csv",
                 DataType::Prod => "./data/prod/follows.csv",
             })?;
-            for f in follows {
+            for f in follows.into_iter().take(500) {
                 match sqlx::query!(
                     r#"INSERT INTO Follows(follower, following) VALUES($1, $2)"#,
                     f.follower,
