@@ -1,7 +1,7 @@
-use crate::models::groups::{Group, CreateGroups, UpdateGroups};
+use crate::models::groups::{Group, CreateGroups, UpdateGroups, QueryGroups};
 use crate::models::lists::List;
 use crate::services::groups::GroupsService;
-use axum::extract::{Json, Path, State};
+use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
 use serde::Serialize;
@@ -24,7 +24,7 @@ struct ListGroupsResponse {
 #[derive(Debug, Serialize)]
 struct GroupMemberListsResponse {
     success: bool,
-    memberlists: Option<Vec<List>>,
+    lists: Option<Vec<List>>,
     error: Option<String>,
 }
 
@@ -156,13 +156,13 @@ pub async fn delete_groups(State(pool): State<PgPool>, Path(id): Path<i32>) -> i
     }
 }
 
-pub async fn get_group_member_lists(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
-    match GroupsService::get_member_lists(&pool, id).await {
+pub async fn get_group_member_lists(State(pool): State<PgPool>, Path(id): Path<i32>, Query(orderByAuthor): Query<QueryGroups>) -> impl IntoResponse {
+    match GroupsService::get_member_lists(&pool, id, orderByAuthor).await {
         Ok(lists) => (
             StatusCode::OK,
             Json(GroupMemberListsResponse {
                 success: true,
-                memberlists: Some(lists),
+                lists: Some(lists),
                 error: None,
             }),
         ),
@@ -170,7 +170,7 @@ pub async fn get_group_member_lists(State(pool): State<PgPool>, Path(id): Path<i
             StatusCode::BAD_REQUEST,
             Json(GroupMemberListsResponse {
                 success: false,
-                memberlists: None,
+                lists: None,
                 error: Some(format!(
                     "failed to retrieve group member lists due to the following error: {err:#?}"
                 )),

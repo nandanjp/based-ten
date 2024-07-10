@@ -1,5 +1,5 @@
 use crate::{
-    models::groups::{CreateGroups, Group, GroupsError, UpdateGroups},
+    models::groups::{CreateGroups, Group, GroupMember, GroupsError, UpdateGroups, QueryGroups},
     models::lists::{List, ListType},
     utils::traits::GeneralService,
 };
@@ -81,19 +81,42 @@ impl GroupsService {
         }).map_err(|e| GroupsError(format!("failed to delete groups with the given gid = {gid} due to the following error: {e:#?}")))
     }
 
-    pub async fn get_member_lists(pool: &sqlx::PgPool, gid: i32) -> Result<Vec<List>, GroupsError>{
-        sqlx::query!(
-            r#"SELECT l.listName, listType AS "listType: ListType", l.username
+    pub async fn get_member_lists(pool: &sqlx::PgPool, gid: i32, orderByAuthor: QueryGroups) -> Result<Vec<List>, GroupsError> {
+        match orderByAuthor {
+            QueryGroups{order_by_author: Some(true)} =>
+            sqlx::query!(r#"SELECT l.listName, listType AS "listType: ListType", l.username
             FROM (GroupMembers m JOIN Users u ON m.username = u.username) JOIN Lists l
             ON u.username = l.username
-            WHERE m.gid = $1"#, 
-            gid,
-        ).fetch_all(pool).await
-        .map(|a| a.into_iter().map(|a| List {
-            user_name: a.username,
-            list_name: a.listname,
-            list_type: a.listType,
-        }).collect::<Vec<List>>())
-        .map_err(|e| GroupsError(format!("failed to get lists of group members for group with gid = {gid} due to the following error: {e:#?}")))
+            WHERE m.gid = $1
+            ORDER BY l.username"#, gid).fetch_all(pool).await
+            .map(|a| a.into_iter().map(|a| List {
+                user_name: a.username,
+                list_name: a.listname,
+                list_type: a.listType,
+            }).collect::<Vec<List>>())
+            .map_err(|e| GroupsError(format!("failed to get lists of group members for group with gid = {gid} due to the following error: {e:#?}"))),
+            _ => {
+                sqlx::query!(r#"SELECT l.listName, listType AS "listType: ListType", l.username
+                FROM (GroupMembers m JOIN Users u ON m.username = u.username) JOIN Lists l
+                ON u.username = l.username
+                WHERE m.gid = $1
+                ORDER BY listtype"#, gid).fetch_all(pool).await
+                .map(|a| a.into_iter().map(|a| List {
+                    user_name: a.username,
+                    list_name: a.listname,
+                    list_type: a.listType,
+                }).collect::<Vec<List>>())
+                .map_err(|e| GroupsError(format!("failed to get lists of group members for group with gid = {gid} due to the following error: {e:#?}")))
+            }
+        }
+    }
+
+    pub async fn get_members(pool: &sqlx::PgPool, gid: i32) -> Result<Vec<GroupMember>, GroupsError> {
+        sqlx::query!(r#"SELECT username FROM GroupMembers WHERE gid = $1"#, gid)
+        .fetch_all(pool).await
+        .map(|a| a.into_iter().map(|a| GroupMember {
+            user_name: a.username
+        }).collect::<Vec<GroupMember>>())
+        .map_err(|e| GroupsError(format!("failed to get group members for group with gid = {gid} due to the following error: {e:#?}")))
     }
 }

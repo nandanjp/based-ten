@@ -10,6 +10,15 @@ pub struct Group {
     pub owned_by: String,
 }
 
+#[derive(Clone, Debug, Deserialize, Default)]
+pub struct QueryGroups {
+    pub order_by_author: Option<bool>,
+}
+
+pub struct GroupMember {
+    pub user_name: String,
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateGroups {
     pub gid: i32,
