@@ -22,6 +22,7 @@ import {
   getMediaByTypeAndId,
   getAllMediaByType,
   getGroupById,
+  getGroupMemberLists,
 } from './api';
 import { MediaType } from './api.types';
 export const useAllAnime = async () =>
@@ -132,10 +133,16 @@ export const useAllGroups = async () =>
     queryFn: getAllGroups,
   });
 
-export const useGroupById = ({ group_id }: { group_id: string}) =>
+export const useGroupById = ({ group_id }: { group_id: string }) =>
   useQuery({
     queryKey: ["group-by-id"],
     queryFn: getGroupById({ group_id }),
+  });
+
+export const useGroupMemberLists = ({ group_id, orderByAuthor }: { group_id: string, orderByAuthor: boolean}) =>
+  useQuery({
+    queryKey: ["group-member-lists"],
+    queryFn: getGroupMemberLists({ group_id, orderByAuthor }),
   });
 
 export const useUserFollowers = ({ email }: { email: string }) =>
