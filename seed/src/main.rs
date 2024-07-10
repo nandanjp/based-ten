@@ -65,10 +65,7 @@ async fn insert_into(
             let anime = read_csv::<Anime>(match data {
                 DataType::Dev => "./data/dev/anime.csv",
                 DataType::Prod => "./data/prod/anime.csv",
-            })?
-            .into_iter()
-            .take(500)
-            .collect::<Vec<Anime>>();
+            })?;
             let anime_ids = anime
                 .iter()
                 .map(|a| a.anime_id as i64)
@@ -87,7 +84,12 @@ async fn insert_into(
                 .collect::<Vec<i64>>();
             let dates = anime
                 .iter()
-                .map(|a| convert_date(a.released_on.clone()).expect("failed to parse date"))
+                .map(|a| match convert_date(a.released_on.clone()) {
+                    Ok(date) => date,
+                    Err(e) => {
+                        panic!("failed to parse the date due to the following error: {e:#?}, anime = {}", a.anime_id)
+                    }
+                })
                 .collect::<Vec<Date>>();
             let _ = sqlx::query!(
                 r#"
@@ -107,10 +109,7 @@ async fn insert_into(
             let games = read_csv::<Games>(match data {
                 DataType::Dev => "./data/dev/video-games.csv",
                 DataType::Prod => "./data/prod/video-games.csv",
-            })?
-            .into_iter()
-            .take(500)
-            .collect::<Vec<Games>>();
+            })?;
             let game_ids = games.iter().map(|g| g.game_id as i64).collect::<Vec<i64>>();
             let titles = games
                 .iter()
@@ -147,10 +146,7 @@ async fn insert_into(
             let movies = read_csv::<Movie>(match data {
                 DataType::Dev => "./data/dev/movies.csv",
                 DataType::Prod => "./data/prod/movies.csv",
-            })?
-            .into_iter()
-            .take(500)
-            .collect::<Vec<Movie>>();
+            })?;
 
             let movie_ids = movies
                 .iter()
@@ -188,10 +184,7 @@ async fn insert_into(
             let songs = read_csv::<Song>(match data {
                 DataType::Dev => "./data/dev/songs.csv",
                 DataType::Prod => "./data/prod/songs.csv",
-            })?
-            .into_iter()
-            .take(500)
-            .collect::<Vec<Song>>();
+            })?;
             let song_ids = songs.iter().map(|s| s.song_id as i64).collect::<Vec<i64>>();
             let titles = songs
                 .iter()
