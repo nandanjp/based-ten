@@ -28,32 +28,32 @@ CREATE TABLE Anime (
     createdOn DATE
 );
 CREATE TABLE Users (
-    email VARCHAR(30) NOT NULL UNIQUE,
-    userName VARCHAR(30) NOT NULL PRIMARY KEY,
-    userPassword VARCHAR(30) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    userName VARCHAR(50) NOT NULL PRIMARY KEY,
+    userPassword VARCHAR(50) NOT NULL,
     createdAt TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE Groups (
     gid SERIAL PRIMARY KEY,
-    groupName VARCHAR(30) NOT NULL,
-    ownedBy VARCHAR(30) NOT NULL REFERENCES Users(userName)
+    groupName VARCHAR(50) NOT NULL,
+    ownedBy VARCHAR(50) NOT NULL REFERENCES Users(userName)
 );
 CREATE TABLE GroupMembers (
-    userName VARCHAR(30) NOT NULL REFERENCES Users(userName),
+    userName VARCHAR(50) NOT NULL REFERENCES Users(userName),
     gid INT NOT NULL REFERENCES Groups(gid),
     PRIMARY KEY(userName, gid)
 );
 CREATE TYPE ListType AS ENUM ('anime', 'movies', 'songs', 'videogames');
 CREATE TABLE Lists (
-    userName VARCHAR(30) NOT NULL REFERENCES Users(userName),
-    listName VARCHAR(30) NOT NULL,
+    userName VARCHAR(50) NOT NULL REFERENCES Users(userName),
+    listName VARCHAR(50) NOT NULL,
     listType ListType NOT NULL,
     PRIMARY KEY(userName, listName),
     UNIQUE (userName, listName)
 );
 CREATE TABLE ListItems (
-    userName VARCHAR(30) NOT NULL,
-    listName VARCHAR(30) NOT NULL,
+    userName VARCHAR(50) NOT NULL,
+    listName VARCHAR(50) NOT NULL,
     rankingInList INT NOT NULL,
     itemID INT NOT NULL,
     PRIMARY KEY(userName, listName, itemID),
@@ -64,16 +64,16 @@ CREATE TABLE ListItems (
     )
 );
 CREATE TABLE Likes (
-    likerName VARCHAR(30) NOT NULL REFERENCES Users(userName),
-    likingName VARCHAR(30) NOT NULL,
-    listName VARCHAR(30) NOT NULL,
+    likerName VARCHAR(50) NOT NULL REFERENCES Users(userName),
+    likingName VARCHAR(50) NOT NULL,
+    listName VARCHAR(50) NOT NULL,
     PRIMARY KEY (likerName, likingName, listName),
     UNIQUE (likerName, likingName, listName),
     FOREIGN KEY (likingName, listName) REFERENCES Lists(userName, listName)
 );
 CREATE TABLE Follows (
-    follower VARCHAR(30) NOT NULL REFERENCES Users(userName),
-    following VARCHAR(30) NOT NULL REFERENCES Users(userName),
+    follower VARCHAR(50) NOT NULL REFERENCES Users(userName),
+    following VARCHAR(50) NOT NULL REFERENCES Users(userName),
     PRIMARY KEY (follower, following)
 );
 CREATE VIEW Media AS

@@ -1,4 +1,5 @@
 use serde::{de::Visitor, Deserialize, Serialize};
+use sqlx::postgres::{PgHasArrayType, PgTypeInfo};
 use thiserror::Error;
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, sqlx::Type)]
@@ -8,6 +9,12 @@ pub enum ListType {
     Movies,
     Songs,
     VideoGames,
+}
+
+impl PgHasArrayType for ListType {
+    fn array_type_info() -> sqlx::postgres::PgTypeInfo {
+        PgTypeInfo::with_name("_listtype")
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Error)]
