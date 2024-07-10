@@ -598,7 +598,7 @@ anime_id,title,image,released_on,episodes
 597,Galaxy Angel Music Collection: Shouen to Shien no Cassoulet,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,2002-04-25,1
 598,Hamelin no Violin Hiki: The Movie,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,1996-04-20,1
 599,Tooi Sekai,https://upload.wikimedia.org/wikipedia/en/4/4b/OnePieceVolume61Cover.jpg,1999-02-01,1
-600,Jumping,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,"Jun, 1984",1
+600,Jumping,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,1984-06-01,1
 601,Bakuretsu Tenshi: Infinity Special,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,2007-03-23,1
 602,Hand Maid May: Akiramemasen,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,2001-02-21,1
 603,Fujimi 2-choume Koukyougakudan,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,1997-07-22,1
@@ -729,13 +729,13 @@ anime_id,title,image,released_on,episodes
 728,Birth,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,1984-07-21,1
 729,Mirai Shounen Conan: Kyodaiki Gigant no Fukkatsu,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,1984-03-11,1
 730,Otome wa Boku ni Koishiteru Special,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,2007-04-21,1
-731,Sora Iro no Tane,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,"Nov, 1992",1
+731,Sora Iro no Tane,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,1992-11-01,1
 732,Natsu e no Tobira,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1981-03-20,1
 733,Big Wars: Kami Utsu Akaki Kouya ni,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,1993-09-25,1
 734,Flanders no Inu (Movie),https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,1997-03-15,1
 735,The☆Doraemons: The Mysterious Thief Dorapan The Mysterious Cartel,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,1997-03-08,1
 736,The☆Doraemons: Mushimushi Pyonpyon Daisakusen!,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,1998-03-07,1
-737,Doraemon: It's New Year!,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,"Jan, 1979",1
+737,Doraemon: It's New Year!,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,1979-01-01,1
 738,"The☆Doraemons: Strange, Sweets, Strange?",https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,1999-03-06,1
 739,Doraemon and Itchy the Stray,https://upload.wikimedia.org/wikipedia/en/4/4b/OnePieceVolume61Cover.jpg,1987-01-02,1
 740,Doraemon Meets Hattori the Ninja,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,1982-01-03,1
@@ -860,7 +860,7 @@ anime_id,title,image,released_on,episodes
 859,Doubutsu no Mori,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,2006-12-16,1
 860,Gintama: Nanigoto mo Saiyo ga Kanjin nano de Tasho Senobisuru Kurai ga Choudoyoi,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,2005-09-24,1
 861,Final Fantasy VII: Advent Children Complete,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,2009-04-16,1
-862,Egao,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,"Apr, 2003",1
+862,Egao,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,2003-04-01,1
 863,Digimon Adventure Movie,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,1999-03-06,1
 864,Digimon Adventure 02 Movies,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,2000-07-08,2
 865,Appleseed Saga Ex Machina,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,2007-10-20,1
@@ -940,7 +940,7 @@ anime_id,title,image,released_on,episodes
 939,Bannou Bunka Neko-Musume Specials,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,1999-08-01,2
 940,009-1: R&B,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,2007-04-25,1
 941,Love Hina Final Selection,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,2001-09-05,1
-942,Super Teukgeup Mazinger 7,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,"Jul, 1983",1
+942,Super Teukgeup Mazinger 7,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,1983-07-01,1
 943,Lily C.A.T.,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,1987-09-01,1
 944,Ai Yori Aoshi: Enishi - Miyuki,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,2003-12-31,1
 945,.hack//G.U. Trilogy,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,2008-03-25,1
@@ -1186,14 +1186,14 @@ anime_id,title,image,released_on,episodes
 1185,UFO Robo Grendizer tai Great Mazinger,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,1976-03-20,1
 1186,Amada Anime Series: Super Mario Brothers,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,1989-08-03,3
 1187,Sora no Momotarou,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,1931-10-01,1
-1188,Saru Masamune,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,"Jan, 1931",1
+1188,Saru Masamune,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,1931-01-01,1
 1189,Ooatari Sora no Entaku,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,1932-10-22,1
 1190,Kokka Kimigayo,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,1931-05-01,1
 1191,Norakuro Gochou,https://upload.wikimedia.org/wikipedia/en/4/4b/OnePieceVolume61Cover.jpg,1934-03-09,1
 1192,Norakuro Nitouhei: Enshuu no Maki,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,1933-06-14,1
 1193,Osaru no Kantai,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1905-04-19,1
 1194,Osaru no Sankichi: Totsugeki-tai,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,1934-03-24,1
-1195,Kuro Nyago,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,"Jan, 1931",1
+1195,Kuro Nyago,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,1931-01-01,1
 1196,Mazinger Z tai Ankoku Daishougun,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,1974-07-25,1
 1197,Catman Series II,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1905-06-24,8
 1198,Catman,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,1905-06-24,7
@@ -1303,7 +1303,7 @@ anime_id,title,image,released_on,episodes
 1302,Angel Blade: Ultimate Edition - Tokuteneizou,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,2004-07-09,1
 1303,Shounen Sarutobi Sasuke,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,1959-12-25,1
 1304,Mushrambo (2008),https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,2008-09-21,2
-1305,Jigazou,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,"Jun, 1988",1
+1305,Jigazou,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,1988-06-01,1
 1306,Choujin Locke: Mirror Ring,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,2000-12-22,1
 1307,Afro Samurai: Resurrection,https://upload.wikimedia.org/wikipedia/en/4/4b/OnePieceVolume61Cover.jpg,2009-01-25,1
 1308,Hells,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,2008-10-18,1
@@ -1345,12 +1345,12 @@ anime_id,title,image,released_on,episodes
 1344,Shin Reyon Densetsu: Shikkoku no Majin,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,1996-09-27,1
 1345,Wake Up! Aria: Majokko Virgin Kiki Ippatsu,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,1998-02-20,1
 1346,Macross 25th Anniversary: All That VF Macross Zero Version,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,2008-07-25,1
-1347,Macross 25th Anniversary: All That VF Macross F Version,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,"Aug, 2008",1
-1348,Asience: Kami wa Onna no Inochi,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,"Mar, 2007",1
+1347,Macross 25th Anniversary: All That VF Macross F Version,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,2008-08-01,1
+1348,Asience: Kami wa Onna no Inochi,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,2007-03-01,1
 1349,First Squad: The Moment of Truth,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,2009-05-13,1
 1350,Kiku-chan to Ookami,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,2008-08-13,1
-1351,Shinjuku Shin-chan Patrol: Warui Otona ni Ki wo Tsukete,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,"Aug, 2008",1
-1352,Seto no Hanayome Fan Disc,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,"Sep, 2008",2
+1351,Shinjuku Shin-chan Patrol: Warui Otona ni Ki wo Tsukete,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,2008-08-01,1
+1352,Seto no Hanayome Fan Disc,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,2008-09-01,2
 1353,Kara no Kyoukai 6: Boukyaku Rokuon,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,2008-12-20,1
 1354,Kara no Kyoukai 7: Satsujin Kousatsu (Go),https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,2009-08-08,1
 1355,Hokuro Kyoudai Full Throttle!!!!,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,2007-05-25,7
@@ -1416,7 +1416,7 @@ anime_id,title,image,released_on,episodes
 1415,Hayate no Gotoku!!: Atsu ga Natsuize - Mizugi-hen!,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,2009-03-06,1
 1416,Pokemon: Pikachu no Natsuyasumi,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,1998-07-18,1
 1417,Pokemon: Odoru Pokemon Himitsu Kichi,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,2003-07-19,1
-1418,Tottoi,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,"Jun, 1992",1
+1418,Tottoi,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,1992-06-01,1
 1419,Tegamibachi: Hikari to Ao no Gensou Yawa,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,2008-11-24,1
 1420,Blassreiter: Navi,https://upload.wikimedia.org/wikipedia/en/4/4b/OnePieceVolume61Cover.jpg,2008-06-22,1
 1421,Datenshi-tachi no Kyouen,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,1985-03-10,1
@@ -1462,10 +1462,10 @@ anime_id,title,image,released_on,episodes
 1461,Uchuu Enban Dai-Sensou,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1975-07-21,1
 1462,The Chocolate Panic Picture Show,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,1985-09-21,1
 1463,Biohazard 4D-Executer,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,1905-06-22,1
-1464,Kaumori,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,"Jan, 1930",1
+1464,Kaumori,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,1931-01-01,1
 1465,Nihonichi Momotarou,https://upload.wikimedia.org/wikipedia/en/4/4b/OnePieceVolume61Cover.jpg,1905-04-11,1
 1466,Tabidachi: Ami Shuushou,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1986-06-21,1
-1467,PuriGorota: Uchuu no Yuujou Daibouken,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,"Nov, 2008",1
+1467,PuriGorota: Uchuu no Yuujou Daibouken,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,2008-11-01,1
 1468,Umi no Momotarou,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,1932-01-26,1
 1469,Suteneko Tora-chan,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,1947-09-25,1
 1470,Apfelland Monogatari,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,1992-12-12,1
@@ -1490,7 +1490,7 @@ anime_id,title,image,released_on,episodes
 1489,Urashima Tarou (1931),https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,1905-04-14,1
 1490,Dankichi-jima no Olympic Taikai,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1905-04-15,1
 1491,Tori no Uta,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,2007-01-30,1
-1492,Oira no Yakyuu,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,"Mar, 1931",1
+1492,Oira no Yakyuu,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,1931-03-01,1
 1493,Kishin Douji Zenki Gaiden: Anki Kitan,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,1997-03-21,1
 1494,Furudera no Obake-soudou,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,1905-04-19,1
 1495,Pokemon: Pikachu no Obake Carnival,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,2005-08-01,1
@@ -1530,7 +1530,7 @@ anime_id,title,image,released_on,episodes
 1529,Greed,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,1985-01-21,1
 1530,Hashire! Shiroi Ookami,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,1990-04-28,1
 1531,The Aurora: Umi no Aurora,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,2000-08-05,1
-1532,Tengen Toppa Gurren Lagann Movie Zenyasai: Viral no Amai Yume,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,"Jan, 2009",1
+1532,Tengen Toppa Gurren Lagann Movie Zenyasai: Viral no Amai Yume,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,2009-01-01,1
 1533,High School! Kimengumi (Movie),https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,1986-07-12,1
 1534,Kannagi: Moshimo Kannagi ga Attara...,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,2009-05-27,1
 1535,Marin to Yamato: Fushigi na Nichiyoubi,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,2000-12-02,1
@@ -1590,7 +1590,7 @@ anime_id,title,image,released_on,episodes
 1589,Nijiiro Hotaru: Eien no Natsuyasumi,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,2012-05-19,1
 1590,Lovedol: Lovely Idol OVA,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,2007-03-28,1
 1591,Detective Conan Magic File 3: Shinichi and Ran - Memories of Mahjong Tiles and Tanabata,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,2009-04-18,1
-1592,Black Jack: Sora kara Kita Kodomo,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,"Mar, 2000",1
+1592,Black Jack: Sora kara Kita Kodomo,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,2000-03-01,1
 1593,Joseito,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,2006-08-01,1
 1594,Eko Eko Azarak,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,2007-01-30,1
 1595,Sekishoku Elegy,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,2007-06-29,1
@@ -1702,7 +1702,7 @@ anime_id,title,image,released_on,episodes
 1701,Code Geass: Hangyaku no Lelouch R2 Special Edition - Zero Requiem,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,2009-07-24,1
 1702,Mura Matsuri,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1930-10-14,1
 1703,Break Blade 1: Kakusei no Toki,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,2010-05-29,1
-1704,Densha Kamo Shirenai,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,"Jun, 2002",1
+1704,Densha Kamo Shirenai,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,2002-06-01,1
 1705,ef: A Tale of Memories. - Recollections,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,2008-09-26,1
 1706,Goulart Knights: Evoked the Beginning Black,https://upload.wikimedia.org/wikipedia/en/4/4b/OnePieceVolume61Cover.jpg,2010-12-25,1
 1707,Mobile Suit SD Gundam Mk V,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1990-10-25,3
@@ -1711,7 +1711,7 @@ anime_id,title,image,released_on,episodes
 1710,Genius Party Beyond,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,2008-10-11,5
 1711,Kyuukyoku Choujin R,https://upload.wikimedia.org/wikipedia/en/b/b2/Sword_Art_Online_light_novel_volume_1_cover.jpg,1991-10-24,1
 1712,Docchi ni Suru?,https://upload.wikimedia.org/wikipedia/en/7/72/OnePunchMan_manga_cover.png,1905-06-21,1
-1713,Transformers: Scramble City,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,"Apr, 1986",1
+1713,Transformers: Scramble City,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,1986-04-01,1
 1714,Toshi Densetsu Monogatari Hikiko,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,2008-08-08,1
 1715,Omocha Bako Series Dai 3 Wa: Ehon 1936-nen,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,1934-04-13,1
 1716,Suzume no Oyado,https://upload.wikimedia.org/wikipedia/en/2/22/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg,1905-04-19,1
@@ -1730,7 +1730,7 @@ anime_id,title,image,released_on,episodes
 1729,Maabou no Daikyousou,https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg,1905-04-19,1
 1730,Maabou no Kinoshita Toukichirou,https://upload.wikimedia.org/wikipedia/en/6/68/Attack_on_Titan_cover.jpg,1938-12-05,1
 1731,Oyoge ya Oyoge,https://upload.wikimedia.org/wikipedia/en/4/4b/OnePieceVolume61Cover.jpg,1905-04-22,1
-1732,Kangaroo no Tanjoubi,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,"Feb, 1941",1
+1732,Kangaroo no Tanjoubi,https://upload.wikimedia.org/wikipedia/en/6/6f/Death_Note_Vol_1.jpg,1941-02-01,1
 1733,Osaru no Sankichi: Boukuusen,https://upload.wikimedia.org/wikipedia/en/9/99/Fullmetal_Alchemist_-_Volume_1.jpg,1905-04-25,1
 1734,Kuma ni Kuwarenu Otoko,https://upload.wikimedia.org/wikipedia/en/7/7d/Dragon_Ball_Z_vol._1_DVD_cover.jpg,1905-05-01,1
 1735,Gulliver Funtouki,https://upload.wikimedia.org/wikipedia/en/a/af/My_Hero_Academia_Volume_1.jpg,1905-05-03,1
