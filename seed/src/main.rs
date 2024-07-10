@@ -188,7 +188,10 @@ async fn insert_into(
             let songs = read_csv::<Song>(match data {
                 DataType::Dev => "./data/dev/songs.csv",
                 DataType::Prod => "./data/prod/songs.csv",
-            })?;
+            })?
+            .into_iter()
+            .take(500)
+            .collect::<Vec<Song>>();
             let song_ids = songs.iter().map(|s| s.song_id as i64).collect::<Vec<i64>>();
             let titles = songs
                 .iter()
@@ -448,27 +451,27 @@ async fn main() -> Result<(), Box<dyn Error>> {
             "failed to connect to the database using the provided connection string: {db_str}"
         ));
 
-    // insert_into(&pool, data, InsertType::Anime).await?;
-    // println!("Finished inserting into Anime Table");
-    // insert_into(&pool, data, InsertType::Games).await?;
-    // println!("Finished inserting into Games Table");
-    // insert_into(&pool, data, InsertType::Movies).await?;
-    // println!("Finished inserting into Movies Table");
+    insert_into(&pool, data, InsertType::Anime).await?;
+    println!("Finished inserting into Anime Table");
+    insert_into(&pool, data, InsertType::Games).await?;
+    println!("Finished inserting into Games Table");
+    insert_into(&pool, data, InsertType::Movies).await?;
+    println!("Finished inserting into Movies Table");
     insert_into(&pool, data, InsertType::Songs).await?;
     println!("Finished inserting into Songs Table");
-    // insert_into(&pool, data, InsertType::Users).await?;
-    // println!("Finished inserting into Users Table");
-    // insert_into(&pool, data, InsertType::Groups).await?;
-    // println!("Finished inserting into Groups Table");
-    // insert_into(&pool, data, InsertType::Lists).await?;
-    // println!("Finished inserting into Lists Table");
-    // insert_into(&pool, data, InsertType::GroupMembers).await?;
-    // println!("Finished inserting into GroupMembers Table");
-    // insert_into(&pool, data, InsertType::ListItems).await?;
-    // println!("Finished inserting into ListItems Table");
-    // insert_into(&pool, data, InsertType::Follows).await?;
-    // println!("Finished inserting into Follows Table");
-    // insert_into(&pool, data, InsertType::Likes).await?;
-    // println!("Finished inserting into Likes Table");
+    insert_into(&pool, data, InsertType::Users).await?;
+    println!("Finished inserting into Users Table");
+    insert_into(&pool, data, InsertType::Groups).await?;
+    println!("Finished inserting into Groups Table");
+    insert_into(&pool, data, InsertType::Lists).await?;
+    println!("Finished inserting into Lists Table");
+    insert_into(&pool, data, InsertType::GroupMembers).await?;
+    println!("Finished inserting into GroupMembers Table");
+    insert_into(&pool, data, InsertType::ListItems).await?;
+    println!("Finished inserting into ListItems Table");
+    insert_into(&pool, data, InsertType::Follows).await?;
+    println!("Finished inserting into Follows Table");
+    insert_into(&pool, data, InsertType::Likes).await?;
+    println!("Finished inserting into Likes Table");
     Ok(())
 }
