@@ -1,0 +1,13 @@
+[{
+  "gid": 1,
+  "groupname": "The Avengers",
+  "ownedby": "john.doe"
+}, {
+  "gid": 4,
+  "groupname": "Book Club",
+  "ownedby": "sarah.jones"
+}, {
+  "gid": 5,
+  "groupname": "Fitness Freaks",
+  "ownedby": "david.wilson"
+}]
