@@ -1,36 +1,61 @@
-# server
+# Based Ten
+
+A data-driven application for CS 348. Created in Spring 2024 by Nandan Patel, Emily Wang, Justin Lin, Jessie Zhang, and Zain Salman.
+
+## client
+
+> The client web-app for the based-ten application
+
+### Getting Started: Install dependencies
+
+Install the dependencies by running `npm i` in the client directory.
+
+### Running the client app
+
+Run the client app using `npm run dev` in the client directory. Ensure the server is running.
+
+## server
+
 > The API service for the based-ten application
 
-## Getting Started: Setting up the Database
+### Getting Started: Setting up the Database
 
 1. Make sure you have [Rust](https://www.rust-lang.org/tools/install) installed and can use the `cargo` package manager.
 2. Install the [sqlx-cli](https://crates.io/crates/sqlx-cli) tool
 3. Run the following command in the terminal at the root of the project directory, with the `Cargo.toml` file.
-    ```commandline
-    sqlx migrate run
-    ```
+   ```commandline
+   sqlx migrate run
+   ```
 4. From the root of the project directory, run the following command to run our script for seeding the database with our production data
+
 ```commandline
 cargo run --package seed
 ```
+
 5. To delete all tables and thus the data stored in the database, run the following command in the terminal at the root of the project directory with the `Cargo.toml` file.
+
 ```commandline
 sqlx migrate revert
 ```
 
-## Running the Backend Server
+### Running the Backend Server
 
 To run the backend server is quite simply; simply run the following command in the terminal anywhere near the project directory:
+
 ```commandline
 cargo run
 ```
+
 Doing so, you should have the following message (at least similar to the following message) appear in the terminal:
+
 ```commandline
 DEBUG based_ten: Now listening on port 5000
 ```
+
 Now, you can make normal HTTP requests to our backend server, with the following endpoints being currently available. Sample objects for POST or UPDATE requests are not shown, as this API is an internal tool.
 
-### API Endpoints Currently Functioning
+#### API Endpoints Currently Functioning
+
 - `GET /api/anime`
 - `POST /api/anime`
 - `GET /api/anime/:id`
@@ -93,7 +118,8 @@ Now, you can make normal HTTP requests to our backend server, with the following
 - `GET /api/groups/:gid`
 - `DELETE /api/groups/:gid`
 
-### Open APIs being used to retrieve and add new data
+#### Open APIs being used to retrieve and add new data
+
 [Spotify API](https://developer.spotify.com/documentation/web-api)
 [OMDb API](http://www.omdbapi.com/)
 [Jikan API](https://docs.api.jikan.moe/)
