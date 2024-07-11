@@ -1,166 +1,83 @@
+use crate::{
+    models::lists::{CreateList, QueryList, UpdateList},
+    services::lists::ListService,
+    utils::response::{get_list_response, get_one_response},
+};
 use axum::{
     extract::{Path, Query, State},
     response::IntoResponse,
     Json,
 };
 use http::StatusCode;
-use serde::Serialize;
 use sqlx::PgPool;
-
-use crate::{
-    models::lists::{CreateList, List, QueryList, UpdateList},
-    services::lists::{FullListItem, ListService},
-};
-
-#[derive(Debug, Serialize)]
-struct ListFullListItemResponse {
-    success: bool,
-    list: Option<Vec<FullListItem>>,
-    error: Option<String>,
-}
-
-#[derive(Debug, Serialize)]
-struct ListResponse {
-    success: bool,
-    list: Option<List>,
-    error: Option<String>,
-}
-
-#[derive(Debug, Serialize)]
-struct ListListResponse {
-    success: bool,
-    lists: Option<Vec<List>>,
-    error: Option<String>,
-}
 
 pub async fn get_all_lists(
     State(pool): State<PgPool>,
     Query(query): Query<QueryList>,
 ) -> impl IntoResponse {
-    match ListService::get_all(&pool, query).await {
-        Ok(lists) => (
-            StatusCode::OK,
-            Json(ListListResponse {
-                success: true,
-                lists: Some(lists.into_iter().collect::<Vec<List>>()),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(ListListResponse {
-                success: false,
-                lists: None,
-                error: Some(format!(
-                    "failed to retrieve all lists due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+    get_list_response(
+        ListService::get_all(&pool, query).await.map_err(|e| {
+            format!("failed to retrieve all lists due to the following error: {e:#?}")
+        }),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn get_user_lists(
     State(pool): State<PgPool>,
     Path(user_name): Path<String>,
 ) -> impl IntoResponse {
-    match ListService::get_by_email(&pool, user_name).await {
-        Ok(lists) => (
-            StatusCode::OK,
-            Json(ListListResponse {
-                success: true,
-                lists: Some(lists),
-                error: None,
+    get_list_response(
+        ListService::get_by_email(&pool, user_name)
+            .await
+            .map_err(|e| {
+                format!("failed to retrieve user's lists due to the following error: {e:#?}")
             }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(ListListResponse {
-                success: false,
-                lists: None,
-                error: Some(format!(
-                    "failed to retrieve list due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn get_user_list(
     State(pool): State<PgPool>,
     Path((user_name, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    match ListService::get_by_user_and_listname(&pool, user_name, list_name).await {
-        Ok(list) => (
-            StatusCode::OK,
-            Json(ListResponse {
-                success: true,
-                list: Some(list),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(ListResponse {
-                success: false,
-                list: None,
-                error: Some(format!(
-                    "failed to retrieve list due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+    get_one_response(
+        ListService::get_by_user_and_listname(&pool, user_name, list_name)
+            .await
+            .map_err(|e| format!("failed to retrieve list due to the following error: {e:#?}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn get_user_list_items(
     State(pool): State<PgPool>,
     Path((user_name, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    match ListService::get_user_list_and_items(&pool, user_name, list_name).await {
-        Ok(list) => (
-            StatusCode::OK,
-            Json(ListFullListItemResponse {
-                success: true,
-                list: Some(list),
-                error: None,
+    get_list_response(
+        ListService::get_user_list_and_items(&pool, user_name, list_name)
+            .await
+            .map_err(|e| {
+                format!("failed to retrieve all list items due to the following error: {e:#?}")
             }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(ListFullListItemResponse {
-                success: false,
-                list: None,
-                error: Some(format!(
-                    "failed to retrieve all list items due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn create_list(
     State(pool): State<PgPool>,
     Json(create): Json<CreateList>,
 ) -> impl IntoResponse {
-    match ListService::create(&pool, create).await {
-        Ok(list) => (
-            StatusCode::OK,
-            Json(ListResponse {
-                success: true,
-                list: Some(list),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(ListResponse {
-                success: false,
-                list: None,
-                error: Some(format!(
-                    "failed to create list with given details due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+    get_one_response(
+        ListService::create(&pool, create).await.map_err(|e| {
+            format!("failed to create list with given details due to the following error: {e:#?}")
+        }),
+        StatusCode::CREATED,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn update_list(
@@ -168,50 +85,28 @@ pub async fn update_list(
     Path((user_name, list_name)): Path<(String, String)>,
     Json(update): Json<UpdateList>,
 ) -> impl IntoResponse {
-    match ListService::update(&pool, update, user_name, list_name).await {
-        Ok(list) => (
-            StatusCode::OK,
-            Json(ListResponse {
-                success: true,
-                list: Some(list),
-                error: None,
+    get_one_response(
+        ListService::update(&pool, update, user_name, list_name)
+            .await
+            .map_err(|e| {
+                format!(
+                    "failed to update list with given details due to the following error: {e:#?}"
+                )
             }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(ListResponse {
-                success: false,
-                list: None,
-                error: Some(format!(
-                    "failed to update list with given details due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn delete_list(
     State(pool): State<PgPool>,
     Path((user_name, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    match ListService::delete(&pool, user_name, list_name).await {
-        Ok(list) => (
-            StatusCode::OK,
-            Json(ListResponse {
-                success: true,
-                list: Some(list),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(ListResponse {
-                success: false,
-                list: None,
-                error: Some(format!(
-                    "failed to update list with given details due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+    get_one_response(
+        ListService::delete(&pool, user_name, list_name)
+            .await
+            .map_err(|e| format!("failed to delete list to the following error: {e:#?}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }

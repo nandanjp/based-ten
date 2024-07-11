@@ -1,8 +1,11 @@
 use serde::Serialize;
 
-use crate::models::{
-    listitems::ErrorListItem,
-    lists::{CreateList, ErrorList, List, ListType, QueryList, UpdateList},
+use crate::{
+    models::{
+        listitems::ErrorListItem,
+        lists::{CreateList, ErrorList, List, ListType, QueryList, UpdateList},
+    },
+    utils::traits::IntoSerial,
 };
 
 #[derive(Debug, Clone, Serialize)]
@@ -13,6 +16,20 @@ pub struct FullListItem {
     pub item_id: i32,
     #[serde(rename = "type")]
     pub list_type: ListType,
+}
+
+impl IntoSerial for FullListItem {
+    type Serial = Self;
+
+    fn to_serial(&self) -> Self::Serial {
+        Self {
+            user_name: self.user_name.clone(),
+            list_name: self.list_name.clone(),
+            ranking_in_list: self.ranking_in_list,
+            item_id: self.item_id,
+            list_type: self.list_type,
+        }
+    }
 }
 
 pub struct ListService;

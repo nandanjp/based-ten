@@ -1,12 +1,12 @@
 pub mod anime;
 pub mod followmutual;
+pub mod follows;
 pub mod game;
 pub mod groups;
 pub mod likes;
 pub mod listitems;
 pub mod lists;
+pub mod media;
 pub mod movies;
 pub mod songs;
-pub mod media;
 pub mod users;
-pub mod follows;

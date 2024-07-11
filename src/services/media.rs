@@ -1,6 +1,6 @@
 use crate::models::{
     lists::ListType,
-    media::{Media, MediaWithLikes, MediaError, QueryMedia},
+    media::{Media, MediaError, QueryMedia},
 };
 
 pub struct MediaService;
@@ -57,7 +57,7 @@ impl MediaService {
         }
     }
 
-    /* 
+    /*
     pub async fn get_by_type(
         pool: &sqlx::PgPool,
         path: String,

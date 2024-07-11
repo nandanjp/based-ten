@@ -1,109 +1,45 @@
-use crate::models::groups::{Group, CreateGroups, UpdateGroups, QueryGroups};
-use crate::models::lists::List;
+use crate::models::groups::{CreateGroups, QueryGroups, UpdateGroups};
 use crate::services::groups::GroupsService;
+use crate::utils::response::{get_list_response, get_one_response};
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
-use serde::Serialize;
 use sqlx::PgPool;
 
-#[derive(Debug, Serialize)]
-struct GroupsResponse {
-    success: bool,
-    groups: Option<Group>,
-    error: Option<String>,
+pub async fn get_all_groups(State(pool): State<PgPool>) -> impl IntoResponse {
+    get_list_response(
+        GroupsService::get_all(&pool).await.map_err(|e| {
+            format!("failed to retrieve all groups due to the following error: {e:#?}")
+        }),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
-#[derive(Debug, Serialize)]
-struct ListGroupsResponse {
-    success: bool,
-    groups: Option<Vec<Group>>,
-    error: Option<String>,
-}
-
-#[derive(Debug, Serialize)]
-struct GroupMemberListsResponse {
-    success: bool,
-    lists: Option<Vec<List>>,
-    error: Option<String>,
-}
-
-pub async fn get_all_groups(
+pub async fn get_groups_by_id(
     State(pool): State<PgPool>,
+    Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    match GroupsService::get_all(&pool).await {
-        Ok(groups) => (
-            StatusCode::OK,
-            Json(ListGroupsResponse {
-                success: true,
-                groups: Some(
-                    groups
-                        .into_iter()
-                        .collect::<Vec<Group>>(),
-                ),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(ListGroupsResponse {
-                success: false,
-                groups: None,
-                error: Some(format!(
-                    "failed to retrieve all groups due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
-}
-
-pub async fn get_groups_by_id(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
-    match GroupsService::get_by_id(&pool, id).await {
-        Ok(groups) => (
-            StatusCode::OK,
-            Json(GroupsResponse {
-                success: true,
-                groups: Some(groups),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(GroupsResponse {
-                success: false,
-                groups: None,
-                error: Some(format!(
-                    "failed to retrieve an groups due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+    get_one_response(
+        GroupsService::get_by_id(&pool, id)
+            .await
+            .map_err(|e| format!("failed to retrieve group due to the following error: {e:#?}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn create_groups(
     State(pool): State<PgPool>,
     Json(create): Json<CreateGroups>,
 ) -> impl IntoResponse {
-    match GroupsService::create(&pool, create).await {
-        Ok(groups) => (
-            StatusCode::CREATED,
-            Json(GroupsResponse {
-                success: true,
-                groups: Some(groups),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(GroupsResponse {
-                success: false,
-                groups: None,
-                error: Some(format!(
-                    "failed to create groups due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+    get_one_response(
+        GroupsService::create(&pool, create)
+            .await
+            .map_err(|e| format!("failed to create group due to the following error: {e:#?}")),
+        StatusCode::CREATED,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn update_groups(
@@ -111,70 +47,37 @@ pub async fn update_groups(
     Path(id): Path<i32>,
     Json(update): Json<UpdateGroups>,
 ) -> impl IntoResponse {
-    match GroupsService::update(&pool, update, id).await {
-        Ok(groups) => (
-            StatusCode::OK,
-            Json(GroupsResponse {
-                success: true,
-                groups: Some(groups),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(GroupsResponse {
-                success: false,
-                groups: None,
-                error: Some(format!(
-                    "failed to update groups due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+    get_one_response(
+        GroupsService::update(&pool, update, id)
+            .await
+            .map_err(|e| format!("failed to update group due to the following error: {e:#?}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
 pub async fn delete_groups(State(pool): State<PgPool>, Path(id): Path<i32>) -> impl IntoResponse {
-    match GroupsService::delete(&pool, id).await {
-        Ok(groups) => (
-            StatusCode::OK,
-            Json(GroupsResponse {
-                success: true,
-                groups: Some(groups),
-                error: None,
-            }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(GroupsResponse {
-                success: false,
-                groups: None,
-                error: Some(format!(
-                    "failed to delete groups due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+    get_one_response(
+        GroupsService::delete(&pool, id)
+            .await
+            .map_err(|e| format!("failed to delete group due to the following error: {e:#?}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }
 
-pub async fn get_group_member_lists(State(pool): State<PgPool>, Path(id): Path<i32>, Query(orderByAuthor): Query<QueryGroups>) -> impl IntoResponse {
-    match GroupsService::get_member_lists(&pool, id, orderByAuthor).await {
-        Ok(lists) => (
-            StatusCode::OK,
-            Json(GroupMemberListsResponse {
-                success: true,
-                lists: Some(lists),
-                error: None,
+pub async fn get_group_member_lists(
+    State(pool): State<PgPool>,
+    Path(id): Path<i32>,
+    Query(order_by_author): Query<QueryGroups>,
+) -> impl IntoResponse {
+    get_list_response(
+        GroupsService::get_member_lists(&pool, id, order_by_author)
+            .await
+            .map_err(|e| {
+                format!("failed to retrieve group member lists due to the following error: {e:#?}")
             }),
-        ),
-        Err(err) => (
-            StatusCode::BAD_REQUEST,
-            Json(GroupMemberListsResponse {
-                success: false,
-                lists: None,
-                error: Some(format!(
-                    "failed to retrieve group member lists due to the following error: {err:#?}"
-                )),
-            }),
-        ),
-    }
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }

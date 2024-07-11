@@ -1,10 +1,20 @@
-use crate::utils::traits::Error;
+use crate::utils::traits::{Error, IntoSerial};
 use serde::Serialize;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct FollowMutual {
     pub follower: String,
     pub follows_back: bool,
+}
+
+impl IntoSerial for FollowMutual {
+    type Serial = Self;
+    fn to_serial(&self) -> Self::Serial {
+        Self {
+            follower: self.follower.clone(),
+            follows_back: self.follows_back.clone(),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]

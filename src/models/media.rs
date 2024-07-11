@@ -76,6 +76,20 @@ pub struct MediaWithLikesSerial {
     pub likes: i32,
 }
 
+impl IntoSerial for MediaWithLikesSerial {
+    type Serial = Self;
+    fn to_serial(&self) -> Self::Serial {
+        Self {
+            id: self.id,
+            title: self.title.clone(),
+            media_image: self.media_image.clone(),
+            created_on: self.created_on.clone(),
+            media_type: self.media_type,
+            likes: self.likes,
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct MediaError(pub String);
 impl Error for MediaError {

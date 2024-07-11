@@ -1,4 +1,4 @@
-use crate::utils::traits::Error;
+use crate::utils::traits::{Error, IntoSerial};
 use serde::{de::Visitor, Deserialize, Serialize};
 use thiserror::Error;
 
@@ -7,6 +7,17 @@ pub struct List {
     pub user_name: String,
     pub list_name: String,
     pub list_type: ListType,
+}
+
+impl IntoSerial for List {
+    type Serial = Self;
+    fn to_serial(&self) -> Self::Serial {
+        Self {
+            user_name: self.user_name.clone(),
+            list_name: self.list_name.clone(),
+            list_type: self.list_type,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
@@ -43,7 +54,7 @@ impl std::fmt::Display for ErrorList {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, sqlx::Type)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, sqlx::Type)]
 #[sqlx(rename_all = "lowercase", type_name = "listtype")]
 pub enum ListType {
     Anime,

@@ -1,4 +1,5 @@
 use axum::async_trait;
+use serde::Serialize;
 
 #[async_trait]
 pub trait GeneralService {
@@ -27,7 +28,7 @@ pub trait GeneralService {
 }
 
 pub trait IntoSerial {
-    type Serial;
+    type Serial: Serialize;
     fn to_serial(&self) -> Self::Serial;
 }
 
