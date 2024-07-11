@@ -4,6 +4,8 @@ use csv::ReaderBuilder;
 use serde::Deserialize;
 use time::{macros::format_description, Date};
 
+use crate::models::traits::Commit;
+
 #[derive(Hash, PartialEq, Eq, Debug, Clone, Copy)]
 pub enum InsertType {
     Anime,
@@ -80,4 +82,56 @@ where
         values.push(a);
     }
     Ok(values)
+}
+
+pub async fn insert_into<T>(
+    pool: &sqlx::PgPool,
+    data: &str,
+) -> Result<(), Box<dyn std::error::Error>>
+where
+    T: Commit + for<'de> Deserialize<'de>,
+{
+    let values = read_csv::<T::Value>(data)?;
+    T::commit(&pool, values).await
+}
+
+pub fn populate_table_to_data(
+    p: &std::path::Path,
+    table: &mut Vec<(InsertType, String, String)>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    for entry in std::fs::read_dir(p)? {
+        let path = entry?.path();
+        let insert_type = InsertType::from_str(
+            &path
+                .file_stem()
+                .map(|s| String::from(s.to_str().unwrap()))
+                .unwrap()
+                .split('.')
+                .nth(1)
+                .unwrap_or(""),
+        );
+        table.push((
+            insert_type?,
+            path.to_str().map(String::from).unwrap(),
+            path.file_stem()
+                .map(|s| String::from(s.to_str().unwrap()))
+                .unwrap(),
+        ));
+    }
+
+    table.sort_by(|(_, __, a), (___, ____, b)| {
+        a.split('.')
+            .nth(0)
+            .unwrap()
+            .parse::<u8>()
+            .expect("did not get a number")
+            .cmp(
+                &b.split('.')
+                    .nth(0)
+                    .unwrap()
+                    .parse::<u8>()
+                    .expect("did not get a number"),
+            )
+    });
+    Ok(())
 }

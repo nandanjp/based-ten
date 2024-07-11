@@ -3,23 +3,12 @@ mod utils;
 use clap::Parser;
 use models::lists::{List, ListItem};
 use models::media::{Anime, Games, Movie, Song};
-use models::traits::Commit;
 use models::users::{Follows, Group, GroupMember, Likes, User};
-use serde::Deserialize;
 use sqlx::postgres::PgPoolOptions;
 use std::error::Error;
-use std::fs;
 use std::path::Path;
 use std::time::Duration;
-use utils::{read_csv, DataType, InsertType};
-
-async fn insert_into<T>(pool: &sqlx::PgPool, data: &str) -> Result<(), Box<dyn Error>>
-where
-    T: Commit + for<'de> Deserialize<'de>,
-{
-    let values = read_csv::<T::Value>(data)?;
-    T::commit(&pool, values).await
-}
+use utils::{insert_into, populate_table_to_data, DataType, InsertType};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -27,47 +16,6 @@ struct Args {
     /// Which dataset to load into the database
     #[arg(short, long, default_value_t = String::from("dev"))]
     data: String,
-}
-
-fn populate_table_to_data(
-    p: &Path,
-    table: &mut Vec<(InsertType, String, String)>,
-) -> Result<(), Box<dyn Error>> {
-    for entry in fs::read_dir(p)? {
-        let path = entry?.path();
-        let insert_type = InsertType::from_str(
-            &path
-                .file_stem()
-                .map(|s| String::from(s.to_str().unwrap()))
-                .unwrap()
-                .split('.')
-                .nth(1)
-                .unwrap_or(""),
-        );
-        table.push((
-            insert_type?,
-            path.to_str().map(String::from).unwrap(),
-            path.file_stem()
-                .map(|s| String::from(s.to_str().unwrap()))
-                .unwrap(),
-        ));
-    }
-
-    table.sort_by(|(_, __, a), (___, ____, b)| {
-        a.split('.')
-            .nth(0)
-            .unwrap()
-            .parse::<u8>()
-            .expect("did not get a number")
-            .cmp(
-                &b.split('.')
-                    .nth(0)
-                    .unwrap()
-                    .parse::<u8>()
-                    .expect("did not get a number"),
-            )
-    });
-    Ok(())
 }
 
 #[tokio::main]
