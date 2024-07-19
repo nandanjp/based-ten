@@ -118,6 +118,15 @@ Now, you can make normal HTTP requests to our backend server, with the following
 - `GET /api/groups/:gid`
 - `DELETE /api/groups/:gid`
 
+
+#### Website Pages
+- Search (Main Page)
+- Explore (Recommended Lists) Page
+- Create/View a list
+- Account page for a user (view all user's lists, groups, followers, etc.)
+- Manage Groups page (accept/reject invites?)
+- A "Search Users & Groups" page: almost identical to Main Search page, but shows results for users and groups
+
 #### Open APIs being used to retrieve and add new data
 
 [Spotify API](https://developer.spotify.com/documentation/web-api)
