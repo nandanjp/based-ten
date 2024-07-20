@@ -3,7 +3,7 @@ use serde::Serialize;
 use crate::{
     models::{
         listitems::ErrorListItem,
-        lists::{CreateList, ErrorList, List, ListType, TopList, ListWithLikes, QueryList, UpdateList},
+        lists::{CreateList, ErrorList, List, ListType, ListWithLikes, QueryList, UpdateList},
     },
     utils::traits::IntoSerial,
 };
@@ -194,7 +194,7 @@ impl ListService {
     pub async fn get_top_lists(
     pool: &sqlx::PgPool,
     query_obj: QueryList,
-) -> Result<Vec<TopList>, ErrorList> {
+) -> Result<Vec<ListWithLikes>, ErrorList> {
     match query_obj {
         QueryList {
             limit_num: Some(limit_num),
@@ -209,15 +209,15 @@ impl ListService {
                         SELECT lwl.listName,
                             lwl.username,
                             lwl.listType,
-                            COUNT(*) as likeCount
+                            COUNT(*) as likes
                         FROM ListsWithLikes lwl
                         GROUP BY lwl.username,
                             lwl.listName,
                             lwl.listType
                     )
-                    SELECT userName, listName, listtype AS "listtype: ListType", likecount
+                    SELECT userName, listName, listtype AS "listtype: ListType", likes
                     FROM ListLikeCounts l
-                    ORDER BY l.likeCount DESC
+                    ORDER BY l.likes DESC
                     LIMIT $1"#,
                 limit_num,
             )
@@ -225,13 +225,13 @@ impl ListService {
             .await
             .map(|a| {
                     a.into_iter()
-                        .map(|a| TopList {
+                        .map(|a| ListWithLikes {
                             user_name: a.username,
                             list_name: a.listname,
                             list_type: a.listtype,
-                            like_count: a.likecount.unwrap_or_default() as i32,
+                            likes: a.likes.unwrap(),
                         })
-                        .collect::<Vec<TopList>>()
+                        .collect::<Vec<ListWithLikes>>()
                 })
                 .map_err(|e| {
                     ErrorList(format!(
@@ -250,27 +250,27 @@ impl ListService {
                         SELECT lwl.listName,
                             lwl.username,
                             lwl.listType,
-                            COUNT(*) as likeCount
+                            COUNT(*) as likes
                         FROM ListsWithLikes lwl
                         GROUP BY lwl.username,
                             lwl.listName,
                             lwl.listType
                     )
-                    SELECT userName, listName, listtype AS "listtype: ListType", likecount
+                    SELECT userName, listName, listtype AS "listtype: ListType", likes
                     FROM ListLikeCounts l
-                    ORDER BY l.likeCount DESC"#,
+                    ORDER BY l.likes DESC"#,
             )
             .fetch_all(pool)
             .await
             .map(|a| {
                     a.into_iter()
-                        .map(|a| TopList {
+                        .map(|a| ListWithLikes {
                             user_name: a.username,
                             list_name: a.listname,
                             list_type: a.listtype,
-                            like_count: a.likecount.unwrap_or_default() as i32,
+                            likes: a.likes.unwrap(),
                         })
-                        .collect::<Vec<TopList>>()
+                        .collect::<Vec<ListWithLikes>>()
                 })
                 .map_err(|e| {
                     ErrorList(format!(
