@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAllMedia } from '../../services/queries';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import Navbar from '@/components/blocks/Navbar/Navbar';
 
 const SearchPage = () => {
   const router = useRouter();
@@ -31,9 +33,7 @@ const SearchPage = () => {
       }}
       className="h-screen w-screen flex items-center flex-col"
     >
-      <div className="flex flex-row-reverse w-full p-4 text-gray-500 underline text-xl">
-        <Link href="/login">Login</Link>
-      </div>
+      <Navbar />
       <div className="flex flex-col flex-auto justify-center items-center">
         <div className="flex flex-col text-center p-10">
           <h1

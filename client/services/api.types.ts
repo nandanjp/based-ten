@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-type ListType = 'anime' | 'movies' | 'songs' | 'videogames';
+export const listTypes = ['anime', 'movies', 'songs', 'videogames'] as const;
+export type ListType = (typeof listTypes)[number];
 export const create_anime = z.object({
   id: z.number().positive(),
   title: z.string(),
