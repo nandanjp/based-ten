@@ -133,11 +133,19 @@ export const deleteUserFollower = async () => {};
 
 export const getAllGroups = async () => {};
 
-export const getGroupById = ({ group_id }: { group_id: string }) => async () =>
-  (await axiosInstance.get<GroupResponse>(`groups/${group_id}`)).data;
+export const getGroupById =
+  ({ group_id }: { group_id: string }) =>
+  async () =>
+    (await axiosInstance.get<GroupResponse>(`groups/${group_id}`)).data;
 
-export const getGroupMemberLists = ({ group_id, orderByAuthor }: { group_id: string, orderByAuthor: boolean }) => async() =>
-  (await axiosInstance.get<ListResponse>(`groups/${group_id}/lists?order_by_author=${orderByAuthor}`)).data;
+export const getGroupMemberLists =
+  ({ group_id, orderByAuthor }: { group_id: string; orderByAuthor: boolean }) =>
+  async () =>
+    (
+      await axiosInstance.get<ListResponse>(
+        `groups/${group_id}/lists?order_by_author=${orderByAuthor}`,
+      )
+    ).data;
 
 export const createGroup = async () => {};
 
@@ -145,7 +153,7 @@ export const deleteGroup = async () => {};
 
 export const getAllMedia = async () => {
   const rawResult = await axiosInstance.get(`media`);
-  return rawResult.data.media as Media[];
+  return rawResult.data.response as Media[];
 };
 
 export const getAllMediaByType = (mediaType: MediaType) => async () => {
