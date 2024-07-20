@@ -155,6 +155,17 @@ export interface ListItemResponse {
   error?: string;
 }
 
+export interface ListItemsResponse {
+  success: boolean;
+  response?: {
+    user_name: string;
+    list_name: string;
+    ranking_in_list: number;
+    item_id: number;
+  }[];
+  error?: string;
+}
+
 export interface LikeResponse {
   success: boolean;
   response?: {
