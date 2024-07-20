@@ -13,8 +13,8 @@ use handlers::{
     likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
     listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
     lists::{
-        create_list, delete_list, get_all_lists, get_user_list, get_user_list_items,
-        get_user_lists, update_list, get_user_explore_lists,
+        create_list, delete_list, get_all_lists, get_list_and_items, get_user_list,
+        get_user_list_items, get_user_lists, update_list, get_user_explore_lists,
     },
     media::get_all_media,
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
@@ -118,6 +118,7 @@ async fn main() {
                     Router::new()
                         .route("/", get(get_all_lists))
                         .route("/", post(create_list))
+                        .route("/view/:list_name", get(get_list_and_items))
                         .nest(
                             "/:user_name",
                             Router::new()

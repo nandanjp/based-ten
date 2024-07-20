@@ -80,6 +80,25 @@ impl ListService {
             })
     }
 
+    pub async fn get_by_list_and_items_by_name(
+        pool: &sqlx::PgPool,
+        list_name: String,
+    ) -> Result<Vec<FullListItem>, ErrorList> {
+        sqlx::query!(r#"SELECT Lists.username, Lists.listname, rankinginlist, itemid, listtype AS "listtype: ListType" FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname WHERE Lists.listname = $1"#, list_name)
+        .fetch_all(pool)
+        .await
+        .map(|a| 
+            a.into_iter()
+            .map(|a| FullListItem {
+                item_id: a.itemid,
+                list_name: a.listname,
+                list_type: a.listtype,
+                ranking_in_list: a.rankinginlist,
+                user_name: a.username
+            }).collect::<Vec<FullListItem>>())
+            .map_err(|e| ErrorList(format!("failed to retrieve list with the given list name due to the following error: {e:#?}")))
+    }
+
     pub async fn get_by_user_and_listname(
         pool: &sqlx::PgPool,
         user_name: String,
