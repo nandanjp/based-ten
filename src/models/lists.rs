@@ -41,27 +41,6 @@ impl IntoSerial for ListWithLikes {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
-pub struct TopList {
-    pub user_name:  String,
-    pub list_name:  String,
-    pub list_type:  ListType,
-    pub like_count: i32,
-}
-
-impl IntoSerial for TopList {
-    type Serial = Self;
-
-    fn to_serial(&self) -> Self::Serial {
-        Self {
-            user_name:  self.user_name.clone(),
-            list_name:  self.list_name.clone(),
-            list_type:  self.list_type,
-            like_count: self.like_count,
-        }
-    }
-}
-
 #[derive(Debug, Clone, Deserialize, Default)]
 pub struct QueryList {
     pub limit_num: Option<i64>,
