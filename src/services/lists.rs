@@ -209,8 +209,8 @@ impl ListService {
         list_name: String,
     ) -> Result<Vec<serde_json::Value>, ErrorList> {
         let list = sqlx::query!(r#"
-            SELECT listtype AS "listtype: ListType" FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname WHERE Lists.listname = $1 LIMIT 1
-        "#, list_name).fetch_one(pool).await.map_err(|e| ErrorList(format!("failed to retrieve list with the given list name due to the following error: {e:#?}")))?;
+            SELECT listtype AS "listtype: ListType" FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname WHERE Lists.listname = $1 AND Lists.username = $2 LIMIT 1
+        "#, list_name, user_name).fetch_one(pool).await.map_err(|e| ErrorList(format!("failed to retrieve list with the given list name due to the following error: {e:#?}")))?;
 
         match list.listtype {
             ListType::Anime => {

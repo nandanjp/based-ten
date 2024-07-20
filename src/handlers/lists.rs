@@ -83,7 +83,7 @@ pub async fn get_user_list(
 
 pub async fn get_user_list_items(
     State(pool): State<Arc<AppState>>,
-    Path((user_name, list_name)): Path<(String, String)>,
+    Path((list_name, user_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
     let response = ListService::get_user_list_and_items(&pool.db, user_name, list_name)
         .await

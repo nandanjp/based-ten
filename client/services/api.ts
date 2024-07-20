@@ -203,7 +203,7 @@ export const getRecommendedLists = (userId: string) => async () =>
   (await axiosInstance.get<ListResponse>(`explore/${userId}`)).data.response;
 
 export const getList = (list_name: string, user_name: string) => async () =>
-  (await axiosInstance.get<MediaResponse>(`lists/${list_name}/${user_name}/items`)).data;
+  (await axiosInstance.get<MediaResponse>(`lists/${user_name}/${list_name}/items`)).data;
 
 export const getUser = async (user_name: string, password: string) =>
   (

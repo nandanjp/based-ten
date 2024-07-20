@@ -4,12 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Trash2, Upload, View } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { MediaType } from '../../../../../services/api.types';
 import { useRouter } from 'next/navigation';
-import { useMediaByType, useMediaByTypeAndId } from '../../../../../services/queries';
 import { useParams } from 'next/navigation';
 import { useListByName } from '../../../../../services/queries';
 import ViewListItem from '@/components/blocks/ViewListItem/ViewListItem';
+import { list } from 'postcss';
 
 // const placeholderItems: ListItem[] = Array.from({ length: 10 }, (_, index) => ({
 //   media_image: 'https://via.placeholder.com/150',
@@ -17,12 +16,12 @@ import ViewListItem from '@/components/blocks/ViewListItem/ViewListItem';
 // }));
 
 const ViewListPage = () => {
-  const { user_name, list_name } = useParams<{ user_name: string; list_name: string }>();
+  const { list_name, user_name } = useParams<{ list_name: string; user_name: string }>();
   // const [listItems, setListItems] = useState<Array<ListItem | undefined>>(
   //   Array(10),
   // );
   // console.log(list_name);
-  const list = useListByName(list_name, user_name);
+  const list = useListByName(user_name, list_name);
   // const listItems = placeholderItems;
   
   if (list.isPending) {
