@@ -83,14 +83,8 @@ async fn main() {
     tracing::debug!("Now listening on port {port}");
 
     let cors = CorsLayer::new()
-        .allow_origin(
-            format!("http://localhost:{port}")
-                .as_str()
-                .parse::<HeaderValue>()
-                .unwrap(),
-        )
+        .allow_origin(tower_http::cors::Any)
         .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
-        .allow_credentials(true)
         .allow_headers([
             AUTHORIZATION,
             ACCEPT,

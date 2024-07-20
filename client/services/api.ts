@@ -202,8 +202,8 @@ export const getMediaByTypeAndId =
 export const getRecommendedLists = (userId: string) => async () =>
   (await axiosInstance.get<ListResponse>(`explore/${userId}`)).data.response;
 
-export const getList = (list_name: string) => async () =>
-  (await axiosInstance.get<MediaResponse>(`lists/view/${list_name}`)).data;
+export const getList = (list_name: string, user_name: string) => async () =>
+  (await axiosInstance.get<MediaResponse>(`lists/${list_name}/${user_name}/items`)).data;
 
 export const getUser = async (user_name: string, password: string) =>
   (
