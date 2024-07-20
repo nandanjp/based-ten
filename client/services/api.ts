@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {
-  CreateUserType,
   ListResponse,
   UserResponse,
   FollowResponse,
@@ -13,12 +12,11 @@ import {
   Song,
   VideoGame,
   GroupResponse,
-  ListItemResponse,
-  ListItemsResponse,
-  MediaResponse
+  MediaResponse,
+  LoginResponse,
 } from './api.types';
 
-const BASE_URL = `http://127.0.0.1:5000/api`;
+const BASE_URL = `http://localhost:5000/api`;
 const axiosInstance = axios.create({ baseURL: BASE_URL });
 
 export const getAllAnime = async () => {};
@@ -99,9 +97,6 @@ export const getUserByEmail =
   async () =>
     (await axiosInstance.get<UserResponse>(`users/${email}`)).data;
 
-export const createUser = async (user: CreateUserType) =>
-  (await axiosInstance.post<UserResponse[]>(`users`, user)).data;
-
 export const updateUser = async () => {};
 
 export const deleteUser = async ({ email }: { email: string }) =>
@@ -154,11 +149,7 @@ export const getGroupMemberLists =
 export const getRecommendedGroups =
   ({ group_id }: { group_id: string }) =>
   async () =>
-    (
-      await axiosInstance.get<GroupResponse>(
-        `groups/${group_id}/circles`,
-      )
-    ).data;
+    (await axiosInstance.get<GroupResponse>(`groups/${group_id}/circles`)).data;
 
 export const createGroup = async () => {};
 
@@ -211,5 +202,26 @@ export const getMediaByTypeAndId =
 export const getRecommendedLists = (userId: string) => async () =>
   (await axiosInstance.get<ListResponse>(`explore/${userId}`)).data.response;
 
-export const getList = (list_name: string, user_name: string) => async () =>
-  (await axiosInstance.get<MediaResponse>(`lists/${user_name}/${list_name}/items`)).data;
+export const getList = (list_name: string) => async () =>
+  (await axiosInstance.get<MediaResponse>(`lists/view/${list_name}`)).data;
+
+export const getUser = async (user_name: string, password: string) =>
+  (
+    await axiosInstance.post<LoginResponse>('auth/login', {
+      user_name,
+      password,
+    })
+  ).data;
+
+export const createUser = async (
+  user_name: string,
+  password: string,
+  email: string,
+) =>
+  (
+    await axiosInstance.post<UserResponse>('auth/register', {
+      user_name,
+      password,
+      email,
+    })
+  ).data;

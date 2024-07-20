@@ -16,6 +16,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 const ExplorePage = () => {
   const lists = useAllLists();
@@ -35,10 +36,16 @@ const ExplorePage = () => {
                   className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2"
                 >
                   <Card>
-                    <CardContent className="flex aspect-square items-center justify-center p-6">
-                      <span>
-                        {list.list_name} by {list.user_name}
-                      </span>
+                    <CardContent className="flex flex-col gap-2 justify-between aspect-square p-6">
+                      <div className="flex flex-col">
+                        <span>{list.list_name}</span>
+                        <span className="italic text-xs">{list.user_name}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <Badge className="w-fit">
+                          {list.list_type.toUpperCase()}
+                        </Badge>
+                      </div>
                     </CardContent>
                   </Card>
                 </CarouselItem>

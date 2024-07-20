@@ -14,6 +14,7 @@ import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { getUser } from '../../../services/api';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -33,8 +34,13 @@ const LoginPage = () => {
       password: '',
     },
   });
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const loginResult = await getUser(values.username, values.password);
+    if (loginResult.success) {
+      console.log('works!', loginResult.token);
+    } else {
+      console.log('wrong info');
+    }
   };
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center gap-2">

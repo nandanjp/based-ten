@@ -154,11 +154,7 @@ export const useGroupMemberLists = ({
     queryFn: getGroupMemberLists({ group_id, orderByAuthor }),
   });
 
-export const useRecommendedGroups = ({
-  group_id,
-}: {
-  group_id: string;
-}) =>
+export const useRecommendedGroups = ({ group_id }: { group_id: string }) =>
   useQuery({
     queryKey: ['recommended-groups'],
     queryFn: getRecommendedGroups({ group_id }),

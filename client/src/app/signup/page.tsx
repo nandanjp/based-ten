@@ -14,9 +14,11 @@ import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { createUser } from '../../../services/api';
 
 const formSchema = z
   .object({
+    email: z.string().email(),
     username: z.string().min(2, {
       message: 'Username must be at least 2 characters.',
     }),
@@ -43,10 +45,20 @@ const SignUpPage = () => {
       username: '',
       password: '',
       confirmPassword: '',
+      email: '',
     },
   });
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const result = await createUser(
+      values.username,
+      values.password,
+      values.email,
+    );
+    if (result.success) {
+      console.log('user created', result.response);
+    } else {
+      console.log('failed to create user', result.error);
+    }
   };
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center gap-2">
@@ -55,6 +67,19 @@ const SignUpPage = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-1/4 flex flex-col gap-8"
         >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder="Email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="username"

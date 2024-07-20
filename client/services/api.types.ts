@@ -239,3 +239,8 @@ type BaseResponse = {
 export type MediaResponse = BaseResponse & {
   items: Media[] | VideoGame[] | Anime[] | Movie[] | Song[];
 };
+
+export type LoginResponse = {
+  success: boolean;
+  token: string;
+};
