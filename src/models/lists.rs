@@ -20,6 +20,27 @@ impl IntoSerial for List {
     }
 }
 
+#[derive(Debug, Clone, Serialize)]
+pub struct ListWithLikes {
+    pub user_name: String,
+    pub list_name: String,
+    pub list_type: ListType,
+    pub likes: i64,
+}
+
+impl IntoSerial for ListWithLikes {
+    type Serial = Self;
+
+    fn to_serial(&self) -> Self::Serial {
+        Self {
+            user_name: self.user_name.clone(),
+            list_name: self.list_name.clone(),
+            list_type: self.list_type,
+            likes: self.likes,
+        }
+    }
+}
+
 #[derive(Debug, Clone, Deserialize, Default)]
 pub struct QueryList {}
 
