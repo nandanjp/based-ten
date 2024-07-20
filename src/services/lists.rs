@@ -192,13 +192,14 @@ impl ListService {
     }
 
     pub async fn get_top_lists(
-        pool: &sqlx::PgPool,
-        query_obj: QueryList,
-    ) -> Result<Vec<TopList>, ErrorList> {
-        match query_obj {
-            QueryList {
-                limit_num: Some(limit_num),
-            } => sqlx::query!(
+    pool: &sqlx::PgPool,
+    query_obj: QueryList,
+) -> Result<Vec<TopList>, ErrorList> {
+    match query_obj {
+        QueryList {
+            limit_num: Some(limit_num),
+        } => {
+            sqlx::query!(
                 r#"WITH ListsWithLikes AS (
                         SELECT l.*
                         FROM Lists l
@@ -223,21 +224,23 @@ impl ListService {
             .fetch_all(pool)
             .await
             .map(|a| {
-                a.into_iter()
-                    .map(|a| TopList {
-                        user_name: a.username,
-                        list_name: a.listname,
-                        list_type: a.listtype,
-                        like_count: a.likecount.unwrap_or_default() as i32,
-                    })
-                    .collect::<Vec<TopList>>()
-            })
-            .map_err(|e| {
-                ErrorList(format!(
-                    "failed to retrieve all lists due to the following error: {e:#?}"
-                ))
-            }),
-            _ => sqlx::query!(
+                    a.into_iter()
+                        .map(|a| TopList {
+                            user_name: a.username,
+                            list_name: a.listname,
+                            list_type: a.listtype,
+                            like_count: a.likecount.unwrap_or_default() as i32,
+                        })
+                        .collect::<Vec<TopList>>()
+                })
+                .map_err(|e| {
+                    ErrorList(format!(
+                        "failed to retrieve all lists due to the following error: {e:#?}"
+                    ))
+                })
+        },
+        _ => {
+            sqlx::query!(
                 r#"WITH ListsWithLikes AS (
                         SELECT l.*
                         FROM Lists l
@@ -255,10 +258,11 @@ impl ListService {
                     )
                     SELECT userName, listName, listtype AS "listtype: ListType", likecount
                     FROM ListLikeCounts l
-                    ORDER BY l.likeCount DESC"#,)
-                .fetch_all(pool)
-                .await
-                .map(|a| {
+                    ORDER BY l.likeCount DESC"#,
+            )
+            .fetch_all(pool)
+            .await
+            .map(|a| {
                     a.into_iter()
                         .map(|a| TopList {
                             user_name: a.username,
@@ -270,11 +274,12 @@ impl ListService {
                 })
                 .map_err(|e| {
                     ErrorList(format!(
-                        "failed to retrieve all anime due to the following error: {e:#?}"
+                        "failed to retrieve all lists due to the following error: {e:#?}"
                     ))
-                }),
+                })
         }
     }
+}
 
     pub async fn create(pool: &sqlx::PgPool, create_obj: CreateList) -> Result<List, ErrorList> {
         sqlx::query!(r#"INSERT INTO Lists(userName, listName, listType) VALUES($1, $2, $3) RETURNING userName, listName, listtype AS "listtype: ListType""#, create_obj.user_name, create_obj.list_name, create_obj.list_type as ListType).fetch_one(pool).await.map(|a| List {

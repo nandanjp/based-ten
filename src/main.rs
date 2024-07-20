@@ -119,6 +119,7 @@ async fn main() {
                         .route("/", get(get_all_lists))
                         .route("/", post(create_list))
                         .route("/view/:list_name", get(get_list_and_items))
+                        .route("/top", get(get_some_top_lists))
                         .nest(
                             "/:user_name",
                             Router::new()
@@ -127,7 +128,6 @@ async fn main() {
                                 .route("/:list_name/items", get(get_user_list_items))
                                 .route("/:list_name", patch(update_list))
                                 .route("/:list_name", delete(delete_list))
-                                .route("/top", get(get_some_top_lists)),
                         ),
                 )
                 .nest(
