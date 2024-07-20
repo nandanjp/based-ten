@@ -29,6 +29,21 @@ pub async fn get_groups_by_id(
     )
 }
 
+pub async fn get_circles_by_id(
+    State(pool): State<PgPool>,
+    Path(id): Path<i32>,
+) -> impl IntoResponse {
+    get_list_response(
+        GroupsService::get_circles_by_id(&pool, id)
+            .await
+            .map_err(|e| {
+                format!("failed to retrieve circles by group id due to the following error: {e:#?}")
+            }),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn create_groups(
     State(pool): State<PgPool>,
     Json(create): Json<CreateGroups>,
