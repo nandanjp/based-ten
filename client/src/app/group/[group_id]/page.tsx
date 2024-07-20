@@ -17,6 +17,13 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+  import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from '@/components/ui/carousel';
 import { ChangeEvent, useState } from "react";
 
 const GroupPage = () => {
@@ -89,15 +96,24 @@ const GroupPage = () => {
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent className="m-4">
-            <div className="grid grid-cols-3 gap-4">
+            <Carousel>
+              <CarouselContent className="-ml-1">
                 {Array.isArray(recommended_groups.data?.response) && recommended_groups.data?.response.map((g) => (
-                  <GroupCard
-                    key={g.group_name}
-                    owned_by={g.owned_by!}
-                    group_name={g.group_name!}
-                  />
-                ))}
-            </div>
+                  <CarouselItem
+                    key={g.group_id}
+                    className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2"
+                  >
+                    <GroupCard
+                      key={g.group_name}
+                      owned_by={g.owned_by!}
+                      group_name={g.group_name!}
+                    />
+                  </CarouselItem>
+                ))}    
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
             </CollapsibleContent>
         </Collapsible>
       </div>
