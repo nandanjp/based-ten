@@ -38,10 +38,10 @@ const GroupPage = () => {
         <div className="flex items-center pt-12 pl-6 pb-6">
           <div className="grid gap-1">
             <div className="text-4xl font-bold text-primary-foreground">
-              {group_info.data.groups?.group_name}
+              {group_info.data.response?.group_name}
             </div>
             <div className="text-sm text-primary-foreground/80">
-              Owner: {group_info.data.groups?.owned_by}
+              Owner: {group_info.data.response?.owned_by}
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ const GroupPage = () => {
         </div>
         
         <div className="grid grid-cols-3 gap-4">
-            {group_member_lists.data.lists?.map((l) => (
+            {group_member_lists.data.response?.map((l) => (
               <ListCard
                 key={l.user_name}
                 list_author={l.user_name!}
@@ -70,6 +70,8 @@ const GroupPage = () => {
               />
             ))}
         </div>
+
+        
       </div>
     </div>
   );

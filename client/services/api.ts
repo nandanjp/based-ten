@@ -60,7 +60,8 @@ export const updateGame = async () => {};
 
 export const deleteGame = async () => {};
 
-export const getAllLists = async () => {};
+export const getAllLists = async () =>
+  (await axiosInstance.get<ListResponse>(`lists`)).data.response;
 
 export const createList = async () => {};
 
@@ -133,11 +134,19 @@ export const deleteUserFollower = async () => {};
 
 export const getAllGroups = async () => {};
 
-export const getGroupById = ({ group_id }: { group_id: string }) => async () =>
-  (await axiosInstance.get<GroupResponse>(`groups/${group_id}`)).data;
+export const getGroupById =
+  ({ group_id }: { group_id: string }) =>
+  async () =>
+    (await axiosInstance.get<GroupResponse>(`groups/${group_id}`)).data;
 
-export const getGroupMemberLists = ({ group_id, orderByAuthor }: { group_id: string, orderByAuthor: boolean }) => async() =>
-  (await axiosInstance.get<ListResponse>(`groups/${group_id}/lists?order_by_author=${orderByAuthor}`)).data;
+export const getGroupMemberLists =
+  ({ group_id, orderByAuthor }: { group_id: string; orderByAuthor: boolean }) =>
+  async () =>
+    (
+      await axiosInstance.get<ListResponse>(
+        `groups/${group_id}/lists?order_by_author=${orderByAuthor}`,
+      )
+    ).data;
 
 export const createGroup = async () => {};
 
@@ -145,7 +154,7 @@ export const deleteGroup = async () => {};
 
 export const getAllMedia = async () => {
   const rawResult = await axiosInstance.get(`media`);
-  return rawResult.data.media as Media[];
+  return rawResult.data.response as Media[];
 };
 
 export const getAllMediaByType = (mediaType: MediaType) => async () => {
@@ -153,16 +162,16 @@ export const getAllMediaByType = (mediaType: MediaType) => async () => {
   let items: Anime[] | Movie[] | Song[] | VideoGame[];
   switch (mediaType) {
     case MediaType.ANIME:
-      items = rawResult.data.anime as Anime[];
+      items = rawResult.data.response as Anime[];
       break;
     case MediaType.MOVIE:
-      items = rawResult.data.movies as Movie[];
+      items = rawResult.data.response as Movie[];
       break;
     case MediaType.SONG:
-      items = rawResult.data.songs as Song[];
+      items = rawResult.data.response as Song[];
       break;
     case MediaType.VIDEO_GAME:
-      items = rawResult.data.games as VideoGame[];
+      items = rawResult.data.response as VideoGame[];
   }
   return items;
 };
@@ -173,16 +182,16 @@ export const getMediaByTypeAndId =
     let item: Song | Anime | Movie | VideoGame;
     switch (mediaType) {
       case MediaType.ANIME:
-        item = rawResult.data.anime as Anime;
+        item = rawResult.data.response as Anime;
         break;
       case MediaType.MOVIE:
-        item = rawResult.data.movie as Movie;
+        item = rawResult.data.response as Movie;
         break;
       case MediaType.SONG:
-        item = rawResult.data.song as Song;
+        item = rawResult.data.response as Song;
         break;
       case MediaType.VIDEO_GAME:
-        item = rawResult.data.game as VideoGame;
+        item = rawResult.data.response as VideoGame;
     }
     return item;
   };

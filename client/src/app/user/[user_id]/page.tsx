@@ -57,10 +57,10 @@ const UserPage = () => {
         <div className="flex items-center pt-12 pl-6 pb-6">
           <div className="grid gap-1">
             <div className="text-4xl font-bold text-primary-foreground">
-              {user_info.data.user?.user_name}
+              {user_info.data.response?.user_name}
             </div>
             <div className="text-sm text-primary-foreground/80">
-              {user_info.data.user?.email}
+              {user_info.data.response?.email}
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ const UserPage = () => {
         <TabsContent value="lists" className="p-6">
           <div className="grid gap-4">
             <div className="text-3xl font-semibold">My Lists</div>
-            {user_lists.data.lists?.map((l) => (
+            {user_lists.data.response?.map((l) => (
               <ListCard
                 key={l.user_name}
                 list_author={l.user_name!}
@@ -90,7 +90,7 @@ const UserPage = () => {
         <TabsContent value="likes" className="p-6">
           <div className="grid gap-4">
             <div className="text-3xl font-semibold">Liked Lists</div>
-            {user_likes.data.likes?.map((l) => (
+            {user_likes.data.response?.map((l) => (
               <ListCard
                 key={l.liking_name.concat(l.list_name)}
                 list_author={l.liking_name}
@@ -103,7 +103,7 @@ const UserPage = () => {
         <TabsContent value="followers" className="p-6">
           <div className="grid gap-4">
             <div className="text-3xl font-semibold">Followers</div>
-            {user_followers.data.followmutuals?.map((f) => (
+            {user_followers.data.response?.map((f) => (
               <UserCardFollowBack
                 key={f.follower}
                 follower_email={f.follower}
@@ -115,7 +115,7 @@ const UserPage = () => {
         <TabsContent value="following" className="p-6">
           <div className="grid gap-4">
             <div className="text-3xl font-semibold">Following</div>
-            {user_following.data.follows?.map((f) => (
+            {user_following.data.response?.map((f) => (
               <UserCard key={f.following} user_email={f.following} />
             ))}
           </div>

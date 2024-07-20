@@ -8,7 +8,7 @@ use handlers::{
     follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id},
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
     groups::{
-        create_groups, delete_groups, get_all_groups, get_group_member_lists, get_groups_by_id,
+        create_groups, delete_groups, get_all_groups, get_group_member_lists, get_groups_by_id, get_circles_by_id,
     },
     likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
     listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
@@ -170,7 +170,8 @@ async fn main() {
                         .route("/:gid/:groupName/:ownedBy", post(create_groups))
                         .route("/:gid", get(get_groups_by_id))
                         .route("/:gid", delete(delete_groups))
-                        .route("/:gid/lists", get(get_group_member_lists)),
+                        .route("/:gid/lists", get(get_group_member_lists))
+                        .route("/:gid/circles", get(get_circles_by_id)),
                 ),
         )
         .layer(TraceLayer::new_for_http())

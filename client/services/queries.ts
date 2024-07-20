@@ -73,7 +73,7 @@ export const useGameById = async () =>
     queryFn: getGameById,
   });
 
-export const useAllLists = async () =>
+export const useAllLists = () =>
   useQuery({
     queryKey: ['lists'],
     queryFn: getAllLists,
@@ -135,13 +135,19 @@ export const useAllGroups = async () =>
 
 export const useGroupById = ({ group_id }: { group_id: string }) =>
   useQuery({
-    queryKey: ["group-by-id"],
+    queryKey: ['group-by-id'],
     queryFn: getGroupById({ group_id }),
   });
 
-export const useGroupMemberLists = ({ group_id, orderByAuthor }: { group_id: string, orderByAuthor: boolean}) =>
+export const useGroupMemberLists = ({
+  group_id,
+  orderByAuthor,
+}: {
+  group_id: string;
+  orderByAuthor: boolean;
+}) =>
   useQuery({
-    queryKey: ["group-member-lists"],
+    queryKey: ['group-member-lists'],
     queryFn: getGroupMemberLists({ group_id, orderByAuthor }),
   });
 
