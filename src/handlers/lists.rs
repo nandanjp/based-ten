@@ -67,6 +67,21 @@ pub async fn get_user_list_items(
     )
 }
 
+pub async fn get_user_explore_lists(
+    State(pool): State<PgPool>,
+    Path(user_name): Path<String>,
+) -> impl IntoResponse {
+    get_list_response(
+        ListService::get_explore_lists(&pool, user_name)
+            .await
+            .map_err(|e| {
+                format!("failed to retrieve user's Explore (recommended) lists due to the following error: {e:#?}")
+            }),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn create_list(
     State(pool): State<PgPool>,
     Json(create): Json<CreateList>,

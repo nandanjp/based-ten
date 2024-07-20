@@ -14,7 +14,7 @@ use handlers::{
     listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
     lists::{
         create_list, delete_list, get_all_lists, get_user_list, get_user_list_items,
-        get_user_lists, update_list,
+        get_user_lists, update_list, get_user_explore_lists,
     },
     media::get_all_media,
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
@@ -127,6 +127,11 @@ async fn main() {
                                 .route("/:list_name", patch(update_list))
                                 .route("/:list_name", delete(delete_list)),
                         ),
+                )
+                .nest(
+                    "/explore",
+                    Router::new()
+                        .route("/:user_name", get(get_user_explore_lists)),
                 )
                 .nest(
                     "/listitems",
