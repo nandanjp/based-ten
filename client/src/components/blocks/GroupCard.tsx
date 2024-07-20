@@ -15,7 +15,7 @@ interface GroupCardProps {
 
 export function GroupCard({ group_name, owned_by }: GroupCardProps) {
   return (
-    <Card className="w-[400px]">
+    <Card className="w-[300px]">
       <CardHeader>
         <CardTitle>{group_name}</CardTitle>
       </CardHeader>
