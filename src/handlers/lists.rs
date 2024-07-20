@@ -97,6 +97,21 @@ pub async fn get_user_explore_lists(
     )
 }
 
+pub async fn get_some_top_lists(
+    State(pool): State<PgPool>,
+    Query(query): Query<QueryList>,
+) -> impl IntoResponse {
+    get_list_response(
+        ListService::get_top_lists(&pool, query)
+            .await
+            .map_err(|e| {
+                format!("failed to retrieve all anime due to the following error: {e:#?}")
+            }),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn create_list(
     State(pool): State<PgPool>,
     Json(create): Json<CreateList>,

@@ -42,7 +42,10 @@ impl IntoSerial for ListWithLikes {
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
-pub struct QueryList {}
+pub struct QueryList {
+    pub limit_num: Option<i64>,
+}
+
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateList {

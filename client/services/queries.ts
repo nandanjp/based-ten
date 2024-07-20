@@ -23,6 +23,9 @@ import {
   getAllMediaByType,
   getGroupById,
   getGroupMemberLists,
+  getRecommendedGroups,
+  getRecommendedLists,
+  getList,
 } from './api';
 import { MediaType } from './api.types';
 export const useAllAnime = async () =>
@@ -151,6 +154,16 @@ export const useGroupMemberLists = ({
     queryFn: getGroupMemberLists({ group_id, orderByAuthor }),
   });
 
+export const useRecommendedGroups = ({
+  group_id,
+}: {
+  group_id: string;
+}) =>
+  useQuery({
+    queryKey: ['recommended-groups'],
+    queryFn: getRecommendedGroups({ group_id }),
+  });
+
 export const useUserFollowers = ({ email }: { email: string }) =>
   useQuery({
     queryKey: ['user-followers'],
@@ -173,4 +186,16 @@ export const useMediaByType = (mediaType: MediaType) =>
   useQuery({
     queryKey: ['get-media-by-type'],
     queryFn: getAllMediaByType(mediaType),
+  });
+
+export const useRecommendedLists = (userId: string) =>
+  useQuery({
+    queryKey: ['get-recommended-lists'],
+    queryFn: getRecommendedLists(userId),
+  });
+
+export const useListByName = (list_name: string) =>
+  useQuery({
+    queryKey: ['list'],
+    queryFn: getList(list_name),
   });

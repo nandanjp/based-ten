@@ -148,6 +148,15 @@ export const getGroupMemberLists =
       )
     ).data;
 
+export const getRecommendedGroups =
+  ({ group_id }: { group_id: string }) =>
+  async () =>
+    (
+      await axiosInstance.get<GroupResponse>(
+        `groups/${group_id}/circles`,
+      )
+    ).data;
+
 export const createGroup = async () => {};
 
 export const deleteGroup = async () => {};
@@ -195,3 +204,9 @@ export const getMediaByTypeAndId =
     }
     return item;
   };
+
+export const getRecommendedLists = (userId: string) => async () =>
+  (await axiosInstance.get<ListResponse>(`explore/${userId}`)).data.response;
+
+export const getList = (list_name: string) => async () =>
+  (await axiosInstance.get<ListResponse>(`lists/view/${list_name}`)).data;

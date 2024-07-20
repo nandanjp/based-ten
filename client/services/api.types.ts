@@ -139,6 +139,7 @@ export interface ListResponse {
     user_name: string;
     list_name: string;
     list_type: ListType;
+    likes: number;
   }[];
   error?: string;
 }
