@@ -85,7 +85,7 @@ pub async fn get_user_list_items(
     State(pool): State<Arc<AppState>>,
     Path((user_name, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    let response = ListService::get_user_list_and_items(&pool, user_name, list_name)
+    let response = ListService::get_user_list_and_items(&pool.db, user_name, list_name)
         .await
         .map_err(|e| format!("failed to retrieve user lists and items due to the following error: {e:#?}"));
     match response {

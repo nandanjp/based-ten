@@ -194,8 +194,8 @@ export const useRecommendedLists = (userId: string) =>
     queryFn: getRecommendedLists(userId),
   });
 
-export const useListByName = (list_name: string) =>
+export const useListByName = (list_name: string, user_name: string) =>
   useQuery({
     queryKey: ['list'],
-    queryFn: getList(list_name),
+    queryFn: getList(list_name, user_name),
   });
