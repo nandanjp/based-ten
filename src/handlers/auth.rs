@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use argon2::{
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Argon2,
@@ -6,7 +8,6 @@ use axum::{extract::State, response::IntoResponse, Json};
 use axum_extra::extract::cookie::{Cookie, SameSite};
 use http::{header, Response, StatusCode};
 use jsonwebtoken::{encode, EncodingKey, Header};
-use sqlx::PgPool;
 
 use crate::{
     models::{
@@ -14,17 +15,18 @@ use crate::{
         users::{CreateUser, LoginUserSchema},
     },
     services::users::UsersService,
+    AppState,
 };
 
 pub async fn register_user_handler(
-    State(pool): State<PgPool>,
+    State(pool): State<Arc<AppState>>,
     Json(body): Json<CreateUser>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let exists = sqlx::query!(
         "SELECT EXISTS(SELECT 1 FROM Users WHERE username = $1)",
         body.user_name.clone()
     )
-    .fetch_one(&pool)
+    .fetch_one(&pool.db)
     .await
     .map_err(|e| {
         (
@@ -69,7 +71,7 @@ pub async fn register_user_handler(
         password: hashed_password,
         user_name: body.user_name.to_owned(),
     };
-    let user = UsersService::create(&pool, body).await.map_err(|e| {
+    let user = UsersService::create(&pool.db, body).await.map_err(|e| {
         (
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(serde_json::json!({
@@ -93,10 +95,10 @@ pub async fn register_user_handler(
 }
 
 pub async fn login_user_handler(
-    State(pool): State<PgPool>,
+    State(pool): State<Arc<AppState>>,
     Json(body): Json<LoginUserSchema>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
-    let user = UsersService::get_by_id(&pool, body.user_name.clone())
+    let user = UsersService::get_by_id(&pool.db, body.user_name.clone())
         .await
         .map_err(|e| {
             (

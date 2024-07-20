@@ -1,23 +1,25 @@
+use std::sync::Arc;
+
 use axum::{
     body::Body,
     extract::{Request, State},
+    http::{header, StatusCode},
     middleware::Next,
     response::IntoResponse,
     Json,
 };
 use axum_extra::extract::CookieJar;
-use http::{header, StatusCode};
 use jsonwebtoken::{decode, DecodingKey, Validation};
-use sqlx::PgPool;
 
 use crate::{
     models::auth::{AuthError, TokenClaims},
     services::users::UsersService,
+    AppState,
 };
 
 pub async fn auth(
     cookie_jar: CookieJar,
-    State(pool): State<PgPool>,
+    State(data): State<Arc<AppState>>,
     mut req: Request<Body>,
     next: Next,
 ) -> Result<impl IntoResponse, (StatusCode, Json<AuthError>)> {
@@ -60,7 +62,7 @@ pub async fn auth(
     .claims;
 
     let user_name = claims.sub.to_owned();
-    let user = UsersService::get_by_id(&pool, user_name)
+    let user = UsersService::get_by_id(&data.db, user_name)
         .await
         .map_err(|e| {
             (
