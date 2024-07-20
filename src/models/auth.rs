@@ -9,7 +9,7 @@ pub struct TokenClaims {
     pub exp: usize,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct AuthError(pub String);
 impl Error for AuthError {
     fn new(err: String) -> Self {

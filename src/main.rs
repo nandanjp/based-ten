@@ -5,6 +5,7 @@ mod services;
 mod utils;
 use handlers::{
     anime::{create_anime, delete_anime, get_all_anime, get_anime_by_id, update_anime},
+    auth::{login_user_handler, logout_handler, register_user_handler},
     followmutual::get_mutual_follows_by_id,
     follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id},
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
@@ -25,13 +26,24 @@ use handlers::{
 };
 
 use axum::{
+    middleware as axum_middleware,
     routing::{delete, get, patch, post},
     Router,
 };
-use sqlx::postgres::PgPoolOptions;
-use std::time::Duration;
-use tower_http::trace::TraceLayer;
+use http::{
+    header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
+    HeaderValue, Method,
+};
+use middleware::auth;
+use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
+use std::{sync::Arc, time::Duration};
+use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
+#[derive(Clone)]
+struct AppState {
+    db: Pool<Postgres>,
+}
 
 #[tokio::main]
 async fn main() {
@@ -67,6 +79,19 @@ async fn main() {
 
     tracing::debug!("Now listening on port {port}");
 
+    let cors = CorsLayer::new()
+        .allow_origin(
+            format!("http://localhost:{port}")
+                .as_str()
+                .parse::<HeaderValue>()
+                .unwrap(),
+        )
+        .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
+        .allow_credentials(true)
+        .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE]);
+
+    let app_state = Arc::new(AppState { db: pool.clone() });
+
     let app = Router::new()
         .route(
             "/health",
@@ -75,6 +100,19 @@ async fn main() {
         .nest(
             "/api",
             Router::new()
+                .nest(
+                    "/auth",
+                    Router::new()
+                        .route("/register", post(register_user_handler))
+                        .route("/login", post(login_user_handler))
+                        .route(
+                            "/logout",
+                            get(logout_handler).route_layer(axum_middleware::from_fn_with_state(
+                                app_state.clone(),
+                                auth,
+                            )),
+                        ),
+                )
                 .nest(
                     "/anime",
                     Router::new()
@@ -181,23 +219,15 @@ async fn main() {
                         .route("/:gid/circles", get(get_circles_by_id)),
                 ),
         )
+        .with_state(app_state)
         .layer(TraceLayer::new_for_http())
         .layer(tower_http::timeout::TimeoutLayer::new(Duration::from_secs(
             10,
         )))
         .layer(tower_http::limit::RequestBodyLimitLayer::new(1024))
-        .layer(
-            tower_http::cors::CorsLayer::new()
-                .allow_methods([
-                    http::Method::GET,
-                    http::Method::POST,
-                    http::Method::PATCH,
-                    http::Method::DELETE,
-                ])
-                .allow_origin(tower_http::cors::Any),
-        );
+        .layer(cors);
 
-    axum::serve(listener, app.with_state(pool).into_make_service())
+    axum::serve(listener, app.into_make_service())
         .await
         .expect("failed to serve the axum server on the provided tcp listener")
 }
