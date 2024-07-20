@@ -215,10 +215,10 @@ impl ListService {
         match list.listtype {
             ListType::Anime => {
                 sqlx::query!(r#"
-                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, numepisodes, createdon, COUNT(*) as likes 
+                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, numepisodes, createdon, COUNT(*) as likes, listtype AS "listtype: ListType"
                     FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Anime ON ListItems.itemid = Anime.id
                     WHERE Lists.listname = $1 AND Lists.username = $2
-                    GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, numepisodes, createdon
+                    GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, numepisodes, createdon, listtype
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
                     "username": a.username,
                     "listname": a.listname,
@@ -229,14 +229,15 @@ impl ListService {
                     "numepisodes": a.numepisodes.unwrap_or_default(),
                     "createdon": a.createdon.unwrap().to_string(),
                     "likes": a.likes.unwrap_or_default(),
+                    "listtype": a.listtype
                 })).collect::<Vec<serde_json::Value>>()).map_err(|e| ErrorList(format!("failed to retrieve all details about the list with the given list name due to the following error: {e:#?}")))
             },
             ListType::Movies => {
                 sqlx::query!(r#"
-                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, createdon, COUNT(*) as likes 
+                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, createdon, COUNT(*) as likes, listtype AS "listtype: ListType"
                     FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Movies ON ListItems.itemid = Movies.id
                     WHERE Lists.listname = $1 AND Lists.username = $2
-                    GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, createdon
+                    GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, createdon, listtype
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
                     "username": a.username,
                     "listname": a.listname,
@@ -246,14 +247,15 @@ impl ListService {
                     "media_image": a.mediaimage,
                     "createdon": a.createdon.unwrap().to_string(),
                     "likes": a.likes.unwrap_or_default(),
+                    "listtype": a.listtype
                 })).collect::<Vec<serde_json::Value>>()).map_err(|e| ErrorList(format!("failed to retrieve all details about the list with the given list name due to the following error: {e:#?}")))
             },
             ListType::VideoGames => {
                 sqlx::query!(r#"
-                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, console, createdon, COUNT(*) as likes 
+                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, console, createdon, COUNT(*) as likes, listtype AS "listtype: ListType"
                     FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN VideoGames ON ListItems.itemid = VideoGames.id
                     WHERE Lists.listname = $1 AND Lists.username = $2
-                    GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, console, createdon
+                    GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, console, createdon, listtype
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
                     "username": a.username,
                     "listname": a.listname,
@@ -264,14 +266,15 @@ impl ListService {
                     "console": a.console.unwrap_or_default(),
                     "createdon": a.createdon.unwrap().to_string(),
                     "likes": a.likes.unwrap_or_default(),
+                    "listtype": a.listtype
                 })).collect::<Vec<serde_json::Value>>()).map_err(|e| ErrorList(format!("failed to retrieve all details about the list with the given list name due to the following error: {e:#?}")))
             },
             ListType::Songs => {
                 sqlx::query!(r#"
-                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, author, album, createdon, COUNT(*) as likes 
+                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, author, album, createdon, COUNT(*) as likes, listtype AS "listtype: ListType"
                     FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Songs ON ListItems.itemid = Songs.id
                     WHERE Lists.listname = $1 AND Lists.username = $2
-                    GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, author, album, createdon
+                    GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, author, album, createdon, listtype
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
                     "username": a.username,
                     "listname": a.listname,
@@ -283,6 +286,7 @@ impl ListService {
                     "album": a.album.unwrap_or_default(),
                     "createdon": a.createdon.unwrap().to_string(),
                     "likes": a.likes.unwrap_or_default(),
+                    "listtype": a.listtype
                 })).collect::<Vec<serde_json::Value>>()).map_err(|e| ErrorList(format!("failed to retrieve all details about the list with the given list name due to the following error: {e:#?}")))
             }
         }

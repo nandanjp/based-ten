@@ -49,7 +49,13 @@ const ViewListPage = () => {
         <div className="bg-black w-16 h-px" />
         <h2 className="py-1 font-bold"></h2>
         <h3 className="font-bold italic text-sm pb-4">
-          last updated {new Date().toISOString().slice(0, 10)}
+          created by {list.data.response?.[0]?.username}
+        </h3>
+        <h3 className="font-bold italic text-sm pb-4">
+          type: {list.data.response?.[0]?.listtype}
+        </h3>
+        <h3 className="font-bold italic text-sm pb-4">
+        {list.data.response?.[0]?.likes} likes
         </h3>
         <div className="flex gap-2">
         </div>
