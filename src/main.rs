@@ -1,4 +1,5 @@
 mod handlers;
+mod middleware;
 mod models;
 mod services;
 mod utils;
@@ -8,13 +9,14 @@ use handlers::{
     follows::{create_follow, delete_follow, get_all_follows, get_follows_by_id},
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
     groups::{
-        create_groups, delete_groups, get_all_groups, get_group_member_lists, get_groups_by_id, get_circles_by_id,
+        create_groups, delete_groups, get_all_groups, get_circles_by_id, get_group_member_lists,
+        get_groups_by_id,
     },
     likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
     listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
     lists::{
-        create_list, delete_list, get_all_lists, get_list_and_items, get_user_list,
-        get_user_list_items, get_user_lists, update_list, get_user_explore_lists,
+        create_list, delete_list, get_all_lists, get_list_and_items, get_user_explore_lists,
+        get_user_list, get_user_list_items, get_user_lists, update_list,
     },
     media::get_all_media,
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
@@ -131,8 +133,7 @@ async fn main() {
                 )
                 .nest(
                     "/explore",
-                    Router::new()
-                        .route("/:user_name", get(get_user_explore_lists)),
+                    Router::new().route("/:user_name", get(get_user_explore_lists)),
                 )
                 .nest(
                     "/listitems",

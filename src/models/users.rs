@@ -3,6 +3,7 @@ use time::OffsetDateTime;
 
 use crate::utils::traits::{Error, IntoSerial};
 
+#[derive(Clone)]
 pub struct User {
     pub email: String,
     pub user_name: String,
@@ -46,6 +47,12 @@ pub struct UpdateUser {
     pub email: Option<String>,
     pub user_name: Option<String>,
     pub password: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct LoginUserSchema {
+    pub user_name: String,
+    pub password: String,
 }
 
 #[derive(Debug, Clone)]
