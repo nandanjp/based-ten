@@ -156,8 +156,11 @@ impl ListService {
             GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, listtype
             ORDER BY rankinginlist"#, user_name, list_name
         )
-        .fetch_all(pool).await
-        .map(|a| a.into_iter().map(|a| FullListItem {
+        .fetch_all(pool)
+        .await
+        .map(|a| 
+            a.into_iter()
+            .map(|a| FullListItem {
                 user_name: a.username,
                 list_name: a.listname,
                 ranking_in_list: a.rankinginlist,
@@ -167,6 +170,25 @@ impl ListService {
             }).collect::<Vec<FullListItem>>()
         )
         .map_err(|e| ErrorListItem(format!("failed to retrieve items of the list with list_name = {list_name}, user_name = {user_name} due to the following error: {e:#?}")))
+    }
+
+    pub async fn get_explore_lists(
+            pool: &sqlx::PgPool,
+            user_name: String
+        ) -> Result<Vec<List>, ErrorList> {
+        sqlx::query_file!("sql/feature5/explore_lists.sql", user_name)
+            .fetch_all(pool)
+            .await
+            .map(|a| a.into_iter().map(|a| List {
+                user_name: a.username,
+                list_name: a.listname,
+                list_type: a.listtype,
+            }).collect::<Vec<List>>())
+            .map_err(|e| {
+                ErrorList(format!(
+                    "failed to retrieve explore lists due to the following error: {e:#?}"
+                ))
+            })
     }
 
     pub async fn create(pool: &sqlx::PgPool, create_obj: CreateList) -> Result<List, ErrorList> {
