@@ -30,10 +30,12 @@ const SearchPage = () => {
     <div
       style={{
         background: 'linear-gradient(to right, #d4e1f5, #ffcbb9, #ffe29e)',
+        backgroundSize: '200% 200%',
+        animation: 'gradientFlow 10s ease infinite',
       }}
       className="h-screen w-screen flex items-center flex-col"
     >
-      <Navbar />
+      <Navbar className="bg-opacity-25 bg-gray-900" />
       <div className="flex flex-col flex-auto justify-center items-center">
         <div className="flex flex-col text-center p-10">
           <h1

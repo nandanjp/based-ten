@@ -1,8 +1,15 @@
 import Link from 'next/link';
+import { NavbarProps } from './types';
+import { cn } from '@/lib/utils';
 
-const Navbar = () => {
+const Navbar = ({ className }: NavbarProps) => {
   return (
-    <div className="flex justify-between w-full bg-gray-600 text-white text-xl">
+    <div
+      className={cn([
+        className,
+        'flex justify-between w-full bg-gray-600 backdrop-filter backdrop-blur-xl text-white text-xl',
+      ])}
+    >
       <div className="flex gap-2">
         <Link href="/" className="hover:bg-gray-400 p-3">
           Home

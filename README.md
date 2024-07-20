@@ -90,6 +90,7 @@ Now, you can make normal HTTP requests to our backend server, with the following
 - `GET /api/lists/:email/:list_name/items`
 - `PATCH /api/lists/:email/:list_name`
 - `DELETE /api/lists/:email/:list_name`
+- `GET /api/lists/top`
 
 - `GET /api/listitems/:email/:listname/:item_id`
 - `POST /api/listitems/:email/:listname/:item_id`
@@ -118,6 +119,7 @@ Now, you can make normal HTTP requests to our backend server, with the following
 - `GET /api/groups/:gid`
 - `DELETE /api/groups/:gid`
 
+- `GET /api/explore/:user_name`
 
 #### Website Pages
 - Search (Main Page)
