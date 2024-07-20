@@ -31,7 +31,10 @@ use axum::{
     Router,
 };
 use http::{
-    header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
+    header::{
+        ACCEPT, ACCESS_CONTROL_ALLOW_HEADERS, ACCESS_CONTROL_ALLOW_ORIGIN, AUTHORIZATION,
+        CONTENT_TYPE,
+    },
     HeaderValue, Method,
 };
 use middleware::auth;
@@ -81,14 +84,20 @@ async fn main() {
 
     let cors = CorsLayer::new()
         .allow_origin(
-            format!("0.0.0.0:{port}")
+            format!("http://localhost:{port}")
                 .as_str()
                 .parse::<HeaderValue>()
                 .unwrap(),
         )
         .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
         .allow_credentials(true)
-        .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE]);
+        .allow_headers([
+            AUTHORIZATION,
+            ACCEPT,
+            CONTENT_TYPE,
+            ACCESS_CONTROL_ALLOW_ORIGIN,
+            ACCESS_CONTROL_ALLOW_HEADERS,
+        ]);
 
     let app_state = Arc::new(AppState { db: pool.clone() });
 
