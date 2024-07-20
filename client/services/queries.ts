@@ -23,6 +23,7 @@ import {
   getAllMediaByType,
   getGroupById,
   getGroupMemberLists,
+  getRecommendedLists,
 } from './api';
 import { MediaType } from './api.types';
 export const useAllAnime = async () =>
@@ -173,4 +174,10 @@ export const useMediaByType = (mediaType: MediaType) =>
   useQuery({
     queryKey: ['get-media-by-type'],
     queryFn: getAllMediaByType(mediaType),
+  });
+
+export const useRecommendedLists = (userId: string) =>
+  useQuery({
+    queryKey: ['get-recommended-lists'],
+    queryFn: getRecommendedLists(userId),
   });
