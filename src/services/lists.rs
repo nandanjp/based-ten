@@ -3,7 +3,7 @@ use serde::Serialize;
 use crate::{
     models::{
         listitems::ErrorListItem,
-        lists::{CreateList, ErrorList, List, ListType, QueryList, UpdateList},
+        lists::{CreateList, ErrorList, List, TopList, ListType, QueryList, UpdateList},
     },
     utils::traits::IntoSerial,
 };
@@ -121,6 +121,91 @@ impl ListService {
             }).collect::<Vec<FullListItem>>()
         )
         .map_err(|e| ErrorListItem(format!("failed to retrieve items of the list with list_name = {list_name}, user_name = {user_name} due to the following error: {e:#?}")))
+    }
+
+    pub async fn get_top_lists(
+        pool: &sqlx::PgPool,
+        query_obj: QueryList,
+    ) -> Result<Vec<TopList>, ErrorList> {
+        match query_obj {
+            QueryList {
+                limit_num: Some(limit_num),
+            } => sqlx::query!(
+                r#"WITH ListsWithLikes AS (
+                        SELECT l.*
+                        FROM Lists l
+                            JOIN Likes lk on l.listName = lk.listName
+                    ),
+                    ListLikeCounts AS (
+                        SELECT lwl.listName,
+                            lwl.username,
+                            lwl.listType,
+                            COUNT(*) as likeCount
+                        FROM ListsWithLikes lwl
+                        GROUP BY lwl.username,
+                            lwl.listName,
+                            lwl.listType
+                    )
+                    SELECT userName, listName, listtype AS "listtype: ListType", likecount
+                    FROM ListLikeCounts l
+                    ORDER BY l.likeCount DESC
+                    LIMIT $1"#,
+                limit_num,
+            )
+            .fetch_all(pool)
+            .await
+            .map(|a| {
+                a.into_iter()
+                    .map(|a| TopList {
+                        user_name: a.username,
+                        list_name: a.listname,
+                        list_type: a.listtype,
+                        like_count: a.likecount.unwrap_or_default() as i32,
+                    })
+                    .collect::<Vec<TopList>>()
+            })
+            .map_err(|e| {
+                ErrorList(format!(
+                    "failed to retrieve all lists due to the following error: {e:#?}"
+                ))
+            }),
+            _ => sqlx::query!(
+                r#"WITH ListsWithLikes AS (
+                        SELECT l.*
+                        FROM Lists l
+                            JOIN Likes lk on l.listName = lk.listName
+                    ),
+                    ListLikeCounts AS (
+                        SELECT lwl.listName,
+                            lwl.username,
+                            lwl.listType,
+                            COUNT(*) as likeCount
+                        FROM ListsWithLikes lwl
+                        GROUP BY lwl.username,
+                            lwl.listName,
+                            lwl.listType
+                    )
+                    SELECT userName, listName, listtype AS "listtype: ListType", likecount
+                    FROM ListLikeCounts l
+                    ORDER BY l.likeCount DESC"#,)
+                .fetch_all(pool)
+                .await
+                .map(|a| {
+                    a.into_iter()
+                        .map(|a| TopList {
+                            user_name: a.username,
+                            list_name: a.listname,
+                            list_type: a.listtype,
+                            like_count: a.likecount.unwrap_or_default() as i32,
+                        })
+                        .collect::<Vec<TopList>>()
+                })
+                .map_err(|e| {
+                    ErrorList(format!(
+                        "failed to retrieve all anime due to the following error: {e:#?}"
+                    ))
+                }),
+        }
     }
 
     pub async fn create(pool: &sqlx::PgPool, create_obj: CreateList) -> Result<List, ErrorList> {
