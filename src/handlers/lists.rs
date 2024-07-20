@@ -28,15 +28,27 @@ pub async fn get_list_and_items(
     State(pool): State<PgPool>,
     Path(list_name): Path<String>,
 ) -> impl IntoResponse {
-    get_list_response(
-        ListService::get_by_list_and_items_by_name(&pool, list_name)
-            .await
-            .map_err(|e| {
-                format!("failed to retrieve all lists due to the following error: {e:#?}")
-            }),
-        StatusCode::OK,
-        StatusCode::BAD_REQUEST,
-    )
+    let response = ListService::get_by_list_and_items_by_name(&pool, list_name)
+        .await
+        .map_err(|e| format!("failed to retrieve all lists due to the following error: {e:#?}"));
+    match response {
+        Ok(result) => (
+            StatusCode::OK,
+            Json(serde_json::json!({
+                "success": true,
+                "response": result,
+                "error": false
+            })),
+        ),
+        Err(err) => (
+            StatusCode::BAD_REQUEST,
+            Json(serde_json::json!({
+                "success": false,
+                "response": "None",
+                "error": err
+            })),
+        ),
+    }
 }
 
 pub async fn get_user_lists(
@@ -102,11 +114,9 @@ pub async fn get_some_top_lists(
     Query(query): Query<QueryList>,
 ) -> impl IntoResponse {
     get_list_response(
-        ListService::get_top_lists(&pool, query)
-            .await
-            .map_err(|e| {
-                format!("failed to retrieve all anime due to the following error: {e:#?}")
-            }),
+        ListService::get_top_lists(&pool, query).await.map_err(|e| {
+            format!("failed to retrieve all anime due to the following error: {e:#?}")
+        }),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
