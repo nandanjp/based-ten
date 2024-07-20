@@ -81,7 +81,7 @@ async fn main() {
 
     let cors = CorsLayer::new()
         .allow_origin(
-            format!("http://localhost:{port}")
+            format!("0.0.0.0:{port}")
                 .as_str()
                 .parse::<HeaderValue>()
                 .unwrap(),
