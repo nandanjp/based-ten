@@ -198,3 +198,6 @@ export const getMediaByTypeAndId =
 
 export const getRecommendedLists = (userId: string) => async () =>
   (await axiosInstance.get<ListResponse>(`explore/${userId}`)).data.response;
+
+export const getList = (list_name: string) => async () =>
+  (await axiosInstance.get<ListResponse>(`lists/view/${list_name}`)).data;

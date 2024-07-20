@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Trash2, Upload, View } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { MediaType } from '../../../services/api.types';
+import { MediaType } from '../../../../services/api.types';
 import { useRouter } from 'next/navigation';
-import { useMediaByType, useMediaByTypeAndId } from '../../../services/queries';
+import { useMediaByType, useMediaByTypeAndId } from '../../../../services/queries';
 import { ViewListItem } from '@/components/blocks/AddListItem/ViewListItem';
 import { useParams } from 'next/navigation';
+import { useListByName } from '../../../../services/queries';
 
 const placeholderItems: ListItem[] = Array.from({ length: 10 }, (_, index) => ({
   media_image: 'https://via.placeholder.com/150',
@@ -20,9 +21,27 @@ const ViewListPage = () => {
   // const [listItems, setListItems] = useState<Array<ListItem | undefined>>(
   //   Array(10),
   // );
-  // const list = useListByName(list_name);
+  // console.log(list_name);
+  const list = useListByName(list_name);
   const listItems = placeholderItems;
   
+  if (list.isPending) {
+    return <span>Loading...</span>;
+  }
+
+  if (list.isError) {
+    return <span>There was an error in retrieving the list!</span>;
+  }
+
+  if (list.isFetching) {
+    return <span>Fetching the list...</span>;
+  }
+
+  if (!list.data) {
+    return <span>There is no list data!</span>;
+  }
+
+  console.log(list.data);
 
   return (
     <div className="p-8 h-full flex justify-between">
