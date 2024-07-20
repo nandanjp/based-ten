@@ -2,7 +2,7 @@ WITH YourRankedItems AS (
         SELECT li.username, li.itemID, l.listType
         FROM ListItems li JOIN Lists l ON li.username = l.username
             AND li.listName = l.listName
-        WHERE l.username = 'john.smith'
+        WHERE l.username = $1
     ),
     SimilarLists AS (
         SELECT l.username, l.listName, l.listType, COUNT(lk.likerName) AS likes
@@ -31,5 +31,5 @@ WITH YourRankedItems AS (
         GROUP BY sl.username, sl.listName, sl.likes, sl.listType
     )
     
-    SELECT * FROM RecommendedLists
+    SELECT username, listName, likes, listType AS "listtype: ListType", similarity FROM RecommendedLists
     ORDER BY similarity DESC, likes DESC;

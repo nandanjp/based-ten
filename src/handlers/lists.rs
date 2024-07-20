@@ -24,6 +24,21 @@ pub async fn get_all_lists(
     )
 }
 
+pub async fn get_list_and_items(
+    State(pool): State<PgPool>,
+    Path(list_name): Path<String>,
+) -> impl IntoResponse {
+    get_list_response(
+        ListService::get_by_list_and_items_by_name(&pool, list_name)
+            .await
+            .map_err(|e| {
+                format!("failed to retrieve all lists due to the following error: {e:#?}")
+            }),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn get_user_lists(
     State(pool): State<PgPool>,
     Path(user_name): Path<String>,
@@ -61,6 +76,21 @@ pub async fn get_user_list_items(
             .await
             .map_err(|e| {
                 format!("failed to retrieve all list items due to the following error: {e:#?}")
+            }),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
+pub async fn get_user_explore_lists(
+    State(pool): State<PgPool>,
+    Path(user_name): Path<String>,
+) -> impl IntoResponse {
+    get_list_response(
+        ListService::get_explore_lists(&pool, user_name)
+            .await
+            .map_err(|e| {
+                format!("failed to retrieve user's Explore (recommended) lists due to the following error: {e:#?}")
             }),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,

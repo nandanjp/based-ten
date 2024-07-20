@@ -8,24 +8,19 @@ import { MediaType } from '../../../services/api.types';
 import { useRouter } from 'next/navigation';
 import { useMediaByType, useMediaByTypeAndId } from '../../../services/queries';
 import { ViewListItem } from '@/components/blocks/AddListItem/ViewListItem';
+import { useParams } from 'next/navigation';
 
 const placeholderItems: ListItem[] = Array.from({ length: 10 }, (_, index) => ({
   media_image: 'https://via.placeholder.com/150',
   title: 'A Real Item'
 }));
 
-const ViewListPage = ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) => {
-  const router = useRouter();
-  const mediaType = searchParams['mediaType'] as MediaType;
-  const allItems = useMediaByType(mediaType);
-
+const ViewListPage = () => {
+  const { list_name } = useParams<{ list_name: string }>();
   // const [listItems, setListItems] = useState<Array<ListItem | undefined>>(
   //   Array(10),
   // );
+  // const list = useListByName(list_name);
   const listItems = placeholderItems;
   
 
