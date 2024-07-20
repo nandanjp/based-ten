@@ -13,6 +13,9 @@ import {
   Song,
   VideoGame,
   GroupResponse,
+  ListItemResponse,
+  ListItemsResponse,
+  MediaResponse
 } from './api.types';
 
 const BASE_URL = `http://127.0.0.1:5000/api`;
@@ -209,4 +212,4 @@ export const getRecommendedLists = (userId: string) => async () =>
   (await axiosInstance.get<ListResponse>(`explore/${userId}`)).data.response;
 
 export const getList = (list_name: string) => async () =>
-  (await axiosInstance.get<ListResponse>(`lists/view/${list_name}`)).data;
+  (await axiosInstance.get<MediaResponse>(`lists/view/${list_name}`)).data;

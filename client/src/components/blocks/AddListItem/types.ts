@@ -5,7 +5,7 @@ import {
   Movie,
   Song,
   VideoGame,
-} from '@/app/api/media/types';
+} from '@/../services/api.types';
 
 export type ListItem = Anime | Movie | Song | VideoGame;
 

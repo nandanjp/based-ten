@@ -83,15 +83,27 @@ pub async fn get_user_list_items(
     State(pool): State<PgPool>,
     Path((user_name, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    get_list_response(
-        ListService::get_user_list_and_items(&pool, user_name, list_name)
-            .await
-            .map_err(|e| {
-                format!("failed to retrieve all list items due to the following error: {e:#?}")
-            }),
-        StatusCode::OK,
-        StatusCode::BAD_REQUEST,
-    )
+    let response = ListService::get_user_list_and_items(&pool, user_name, list_name)
+        .await
+        .map_err(|e| format!("failed to retrieve user lists and items due to the following error: {e:#?}"));
+    match response {
+        Ok(result) => (
+            StatusCode::OK,
+            Json(serde_json::json!({
+                "success": true,
+                "response": result,
+                "error": false
+            })),
+        ),
+        Err(err) => (
+            StatusCode::BAD_REQUEST,
+            Json(serde_json::json!({
+                "success": false,
+                "response": "None",
+                "error": err
+            })),
+        ),
+    }
 }
 
 pub async fn get_user_explore_lists(
