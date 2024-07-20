@@ -33,7 +33,7 @@ use axum::{
 use http::{
     header::{
         ACCEPT, ACCESS_CONTROL_ALLOW_HEADERS, ACCESS_CONTROL_ALLOW_ORIGIN, AUTHORIZATION,
-        CONTENT_TYPE,
+        CONTENT_TYPE, ORIGIN,
     },
     HeaderValue, Method,
 };
@@ -82,16 +82,7 @@ async fn main() {
 
     tracing::debug!("Now listening on port {port}");
 
-    let cors = CorsLayer::new()
-        .allow_origin(tower_http::cors::Any)
-        .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::DELETE])
-        .allow_headers([
-            AUTHORIZATION,
-            ACCEPT,
-            CONTENT_TYPE,
-            ACCESS_CONTROL_ALLOW_ORIGIN,
-            ACCESS_CONTROL_ALLOW_HEADERS,
-        ]);
+    let cors = CorsLayer::permissive();
 
     let app_state = Arc::new(AppState { db: pool.clone() });
 
@@ -223,12 +214,12 @@ async fn main() {
                 ),
         )
         .with_state(app_state)
+        .layer(cors)
         .layer(TraceLayer::new_for_http())
         .layer(tower_http::timeout::TimeoutLayer::new(Duration::from_secs(
             10,
         )))
-        .layer(tower_http::limit::RequestBodyLimitLayer::new(1024))
-        .layer(cors);
+        .layer(tower_http::limit::RequestBodyLimitLayer::new(1024));
 
     axum::serve(listener, app.into_make_service())
         .await
