@@ -1,0 +1,16 @@
+[{
+  "username": "john.doe",
+  "listname": "Cool Movies",
+  "likes": 0,
+  "similarity": 10
+}, {
+  "username": "joshua.white",
+  "listname": "The 10 Movies Ever",
+  "likes": 0,
+  "similarity": 9
+}, {
+  "username": "michael.brown",
+  "listname": "My Favourite Movies",
+  "likes": 10,
+  "similarity": 8
+}]

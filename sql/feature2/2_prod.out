@@ -1,0 +1,141 @@
+[{
+  "listname": "Anime Extravaganza",
+  "listtype": "anime",
+  "username": "john.smith"
+}, {
+  "listname": "Best Anime",
+  "listtype": "anime",
+  "username": "james.moore"
+}, {
+  "listname": "Anime Adventures",
+  "listtype": "anime",
+  "username": "benjamin.martinez"
+}, {
+  "listname": "Anime Picks",
+  "listtype": "anime",
+  "username": "sebastian.allen"
+}, {
+  "listname": "Anime Picks",
+  "listtype": "anime",
+  "username": "anna.perez"
+}, {
+  "listname": "Anime Picks",
+  "listtype": "anime",
+  "username": "emily.ward"
+}, {
+  "listname": "Top Anime",
+  "listtype": "anime",
+  "username": "isabella.watson"
+}, {
+  "listname": "Anime Night",
+  "listtype": "anime",
+  "username": "nathan.lee"
+}, {
+  "listname": "Top Anime",
+  "listtype": "anime",
+  "username": "ava.brooks"
+}, {
+  "listname": "Anime Picks",
+  "listtype": "anime",
+  "username": "jacob.ross"
+}, {
+  "listname": "Best Anime",
+  "listtype": "anime",
+  "username": "ethan.ramirez"
+}, {
+  "listname": "Must-See Movies",
+  "listtype": "movies",
+  "username": "lily.hernandez"
+}, {
+  "listname": "Classic Movies",
+  "listtype": "movies",
+  "username": "joseph.evans"
+}, {
+  "listname": "Movie Marathon",
+  "listtype": "movies",
+  "username": "mia.hughes"
+}, {
+  "listname": "Movie Classics",
+  "listtype": "movies",
+  "username": "ariana.turner"
+}, {
+  "listname": "Top Movies",
+  "listtype": "movies",
+  "username": "ryan.cooper"
+}, {
+  "listname": "Movie Favorites",
+  "listtype": "movies",
+  "username": "isabella.ward"
+}, {
+  "listname": "Top Movies",
+  "listtype": "movies",
+  "username": "zoey.bailey"
+}, {
+  "listname": "Top Movies",
+  "listtype": "movies",
+  "username": "jacob.bailey"
+}, {
+  "listname": "Top Action Movies",
+  "listtype": "movies",
+  "username": "john.smith"
+}, {
+  "listname": "Drama Series",
+  "listtype": "movies",
+  "username": "emma.brown"
+}, {
+  "listname": "Favorite Movies",
+  "listtype": "movies",
+  "username": "ava.taylor"
+}, {
+  "listname": "Great Movies",
+  "listtype": "movies",
+  "username": "amelia.garcia"
+}, {
+  "listname": "Favorite Hits",
+  "listtype": "songs",
+  "username": "william.harris"
+}, {
+  "listname": "Great Songs",
+  "listtype": "songs",
+  "username": "gabriel.king"
+}, {
+  "listname": "Favorite Songs",
+  "listtype": "songs",
+  "username": "noah.parker"
+}, {
+  "listname": "Top Songs",
+  "listtype": "songs",
+  "username": "aria.stewart"
+}, {
+  "listname": "Top Hits",
+  "listtype": "songs",
+  "username": "william.thompson"
+}, {
+  "listname": "Top Hits",
+  "listtype": "songs",
+  "username": "lincoln.roberts"
+}, {
+  "listname": "Chill Beats",
+  "listtype": "songs",
+  "username": "john.smith"
+}, {
+  "listname": "Retro Hits",
+  "listtype": "songs",
+  "username": "aubrey.wood"
+}, {
+  "listname": "Hit Songs",
+  "listtype": "songs",
+  "username": "james.moore"
+}, {
+  "listname": "Best Hits",
+  "listtype": "songs",
+  "username": "noah.kelly"
+}, {
+  "listname": "Favorite Games",
+  "listtype": "videogames",
+  "username": "oliver.cooper"
+}, {
+  "listname": "Favorite Games",
+  "listtype": "videogames",
+  "username": "samuel.russell"
+}]

@@ -1,0 +1,27 @@
+[package]
+name = "based-ten"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = { version = "0.7.5", features = ["macros"] }
+chrono = "0.4.38"
+dotenvy = "0.15.7"
+futures = "0.3.30"
+http = "1.1.0"
+serde = { version = "1.0.203", features = ["derive"] }
+sqlx = { version = "0.7.4", features = ["bigdecimal", "json", "macros", "postgres", "runtime-tokio-native-tls", "time"] }
+thiserror = "1.0.61"
+time = "0.3.36"
+tokio = { version = "1.38.0", features = ["full"] }
+tower-http = { version = "0.5.2", features = [
+    "cors",
+    "limit",
+    "timeout",
+    "trace",
+] }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+
+[workspace]
+members = ["seed"]

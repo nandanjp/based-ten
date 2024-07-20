@@ -1,0 +1,13 @@
+[{
+  "following": "michael.brown",
+  "followsback": false
+}, {
+  "following": "sarah.jones",
+  "followsback": true
+}, {
+  "following": "david.wilson",
+  "followsback": false
+}, {
+  "following": "amanda.taylor",
+  "followsback": true
+}]

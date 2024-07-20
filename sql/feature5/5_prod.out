@@ -1,0 +1,256 @@
+[{
+  "username": "mia.hughes",
+  "listname": "Movie Marathon",
+  "likes": 30,
+  "similarity": 4
+}, {
+  "username": "sophia.thomas",
+  "listname": "Anime Favorites",
+  "likes": 70,
+  "similarity": 2
+}, {
+  "username": "carter.lewis",
+  "listname": "Favorite Movies",
+  "likes": 60,
+  "similarity": 2
+}, {
+  "username": "amelia.reed",
+  "listname": "Favorite Movies",
+  "likes": 50,
+  "similarity": 2
+}, {
+  "username": "ava.brooks",
+  "listname": "Top Anime",
+  "likes": 50,
+  "similarity": 2
+}, {
+  "username": "oliver.watson",
+  "listname": "Anime Adventures",
+  "likes": 40,
+  "similarity": 2
+}, {
+  "username": "james.cooper",
+  "listname": "Anime Adventures",
+  "likes": 40,
+  "similarity": 2
+}, {
+  "username": "nathan.lee",
+  "listname": "Anime Night",
+  "likes": 40,
+  "similarity": 2
+}, {
+  "username": "isabelle.nelson",
+  "listname": "Favorite Songs",
+  "likes": 30,
+  "similarity": 2
+}, {
+  "username": "ethan.murphy",
+  "listname": "Favorite Movies",
+  "likes": 30,
+  "similarity": 2
+}, {
+  "username": "mason.roberts",
+  "listname": "Top Hits",
+  "likes": 20,
+  "similarity": 2
+}, {
+  "username": "ethan.anderson",
+  "listname": "Top Songs",
+  "likes": 20,
+  "similarity": 2
+}, {
+  "username": "lily.hernandez",
+  "listname": "Must-See Movies",
+  "likes": 90,
+  "similarity": 1
+}, {
+  "username": "mia.martin",
+  "listname": "Anime Night",
+  "likes": 80,
+  "similarity": 1
+}, {
+  "username": "gabriel.king",
+  "listname": "Great Songs",
+  "likes": 80,
+  "similarity": 1
+}, {
+  "username": "madison.davis",
+  "listname": "Top Anime Series",
+  "likes": 70,
+  "similarity": 1
+}, {
+  "username": "isabella.white",
+  "listname": "Pop Culture Songs",
+  "likes": 70,
+  "similarity": 1
+}, {
+  "username": "jacob.ross",
+  "listname": "Anime Picks",
+  "likes": 70,
+  "similarity": 1
+}, {
+  "username": "mia.martin",
+  "listname": "Movie Night",
+  "likes": 60,
+  "similarity": 1
+}, {
+  "username": "sophia.thomas",
+  "listname": "Classic Movies",
+  "likes": 50,
+  "similarity": 1
+}, {
+  "username": "ava.taylor",
+  "listname": "Favorite Movies",
+  "likes": 50,
+  "similarity": 1
+}, {
+  "username": "joshua.jones",
+  "listname": "Blockbuster Movies",
+  "likes": 50,
+  "similarity": 1
+}, {
+  "username": "zoe.scott",
+  "listname": "Anime Binge",
+  "likes": 50,
+  "similarity": 1
+}, {
+  "username": "aria.stewart",
+  "listname": "Top Songs",
+  "likes": 50,
+  "similarity": 1
+}, {
+  "username": "chloe.sullivan",
+  "listname": "Movie Marathon",
+  "likes": 50,
+  "similarity": 1
+}, {
+  "username": "mia.phillips",
+  "listname": "Top Songs",
+  "likes": 50,
+  "similarity": 1
+}, {
+  "username": "mia.myers",
+  "listname": "Classic Movies",
+  "likes": 40,
+  "similarity": 1
+}, {
+  "username": "ella.hill",
+  "listname": "Best Songs",
+  "likes": 40,
+  "similarity": 1
+}, {
+  "username": "jack.howard",
+  "listname": "Anime Extravaganza",
+  "likes": 40,
+  "similarity": 1
+}, {
+  "username": "joshua.jones",
+  "listname": "Must-Watch Anime",
+  "likes": 40,
+  "similarity": 1
+}, {
+  "username": "amelia.cook",
+  "listname": "Top Songs",
+  "likes": 40,
+  "similarity": 1
+}, {
+  "username": "sophia.wood",
+  "listname": "Best Anime",
+  "likes": 40,
+  "similarity": 1
+}, {
+  "username": "logan.jenkins",
+  "listname": "Classic Songs",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "nathan.baker",
+  "listname": "Retro Hits",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "daniel.miller",
+  "listname": "Old School Hits",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "olivia.wilson",
+  "listname": "Thriller Movies",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "sebastian.allen",
+  "listname": "Anime Picks",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "ariana.turner",
+  "listname": "Movie Classics",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "liam.jenkins",
+  "listname": "Top Movies",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "julian.rivera",
+  "listname": "Top Anime",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "hannah.gonzalez",
+  "listname": "Top Movies",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "daniel.ramirez",
+  "listname": "Best Anime",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "wyatt.nguyen",
+  "listname": "Favorite Movies",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "daniel.miller",
+  "listname": "Top Anime Picks",
+  "likes": 30,
+  "similarity": 1
+}, {
+  "username": "dylan.mitchell",
+  "listname": "Top Hits",
+  "likes": 20,
+  "similarity": 1
+}, {
+  "username": "carter.lewis",
+  "listname": "Anime Collection",
+  "likes": 20,
+  "similarity": 1
+}, {
+  "username": "emma.sullivan",
+  "listname": "Top Hits",
+  "likes": 20,
+  "similarity": 1
+}, {
+  "username": "oliver.phillips",
+  "listname": "Anime Night",
+  "likes": 20,
+  "similarity": 1
+}, {
+  "username": "avery.hall",
+  "listname": "Classic Hits",
+  "likes": 20,
+  "similarity": 1
+}, {
+  "username": "joseph.evans",
+  "listname": "Classic Movies",
+  "likes": 10,
+  "similarity": 1
+}, {
+  "username": "daniel.miller",
+  "listname": "Sci-Fi Movies",
+  "likes": 10,
+  "similarity": 1
+}]
