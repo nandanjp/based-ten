@@ -161,16 +161,16 @@ export const getAllMediaByType = (mediaType: MediaType) => async () => {
   let items: Anime[] | Movie[] | Song[] | VideoGame[];
   switch (mediaType) {
     case MediaType.ANIME:
-      items = rawResult.data.anime as Anime[];
+      items = rawResult.data.response as Anime[];
       break;
     case MediaType.MOVIE:
-      items = rawResult.data.movies as Movie[];
+      items = rawResult.data.response as Movie[];
       break;
     case MediaType.SONG:
-      items = rawResult.data.songs as Song[];
+      items = rawResult.data.response as Song[];
       break;
     case MediaType.VIDEO_GAME:
-      items = rawResult.data.games as VideoGame[];
+      items = rawResult.data.response as VideoGame[];
   }
   return items;
 };
@@ -181,16 +181,16 @@ export const getMediaByTypeAndId =
     let item: Song | Anime | Movie | VideoGame;
     switch (mediaType) {
       case MediaType.ANIME:
-        item = rawResult.data.anime as Anime;
+        item = rawResult.data.response as Anime;
         break;
       case MediaType.MOVIE:
-        item = rawResult.data.movie as Movie;
+        item = rawResult.data.response as Movie;
         break;
       case MediaType.SONG:
-        item = rawResult.data.song as Song;
+        item = rawResult.data.response as Song;
         break;
       case MediaType.VIDEO_GAME:
-        item = rawResult.data.game as VideoGame;
+        item = rawResult.data.response as VideoGame;
     }
     return item;
   };
