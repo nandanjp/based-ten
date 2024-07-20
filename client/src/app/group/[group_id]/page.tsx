@@ -1,8 +1,15 @@
 "use client";
 
 import { ListCard } from "@/components/blocks/ListCard";
+import { GroupCard } from "@/components/blocks/GroupCard";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@radix-ui/react-collapsible';
+import { ChevronsUpDown, Heart } from 'lucide-react';
 import { useParams } from "next/navigation";
-import { useGroupById, useGroupMemberLists} from "../../../../services/queries";
+import { useGroupById, useGroupMemberLists, useRecommendedGroups} from "../../../../services/queries";
 import {
     Select,
     SelectContent,
@@ -17,6 +24,7 @@ const GroupPage = () => {
   const group_info = useGroupById({ group_id });
   const [orderByAuthor, setOrdering] = useState(true);
   const group_member_lists = useGroupMemberLists({ group_id, orderByAuthor });
+  const recommended_groups = useRecommendedGroups({ group_id });
 
   const handleChangeListOrdering = (value: string) => {
     setOrdering(value == "usernames")
@@ -70,9 +78,31 @@ const GroupPage = () => {
               />
             ))}
         </div>
-
-        
       </div>
+
+      <div className="p-12">
+        <Collapsible>
+          <CollapsibleTrigger className="flex gap-2">
+            <div className="flex justify-between py-6">
+                <div className="text-3xl font-semibold pb-6 mr-4">Recommended Groups</div>
+                <ChevronsUpDown />
+            </div>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="m-4">
+            <div className="grid grid-cols-3 gap-4">
+                {Array.isArray(recommended_groups.data?.response) && recommended_groups.data?.response.map((g) => (
+                  <GroupCard
+                    key={g.group_name}
+                    owned_by={g.owned_by!}
+                    group_name={g.group_name!}
+                  />
+                ))}
+            </div>
+            </CollapsibleContent>
+        </Collapsible>
+      </div>
+
+
     </div>
   );
 };

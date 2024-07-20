@@ -148,6 +148,15 @@ export const getGroupMemberLists =
       )
     ).data;
 
+export const getRecommendedGroups =
+  ({ group_id }: { group_id: string }) =>
+  async () =>
+    (
+      await axiosInstance.get<GroupResponse>(
+        `groups/${group_id}/circles`,
+      )
+    ).data;
+
 export const createGroup = async () => {};
 
 export const deleteGroup = async () => {};
