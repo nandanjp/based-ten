@@ -76,7 +76,7 @@ export type CreateLikeType = z.infer<typeof create_like>;
 
 export interface AnimeResponse {
   success: boolean;
-  anime?: {
+  response?: {
     id: number;
     title: string;
     media_image: string;
@@ -88,7 +88,7 @@ export interface AnimeResponse {
 
 export interface GameResponse {
   success: boolean;
-  game?: {
+  response?: {
     id: number;
     title: string;
     media_image: string;
@@ -100,7 +100,7 @@ export interface GameResponse {
 
 export interface SongResponse {
   success: boolean;
-  song?: {
+  response?: {
     id: number;
     title: string;
     media_image: string;
@@ -112,7 +112,7 @@ export interface SongResponse {
 
 export interface MovieResponse {
   success: boolean;
-  movie?: {
+  response?: {
     id: number;
     title: string;
     media_image: string;
@@ -123,7 +123,7 @@ export interface MovieResponse {
 
 export interface UserResponse {
   success: boolean;
-  user?: {
+  response?: {
     email: string;
     user_name: string;
     password: string;
@@ -134,7 +134,7 @@ export interface UserResponse {
 
 export interface ListResponse {
   success: boolean;
-  lists?: {
+  response?: {
     user_name: string;
     list_name: string;
     list_type: ListType;
@@ -144,7 +144,7 @@ export interface ListResponse {
 
 export interface ListItemResponse {
   success: boolean;
-  list_item?: {
+  response?: {
     user_name: string;
     list_name: string;
     ranking_in_list: number;
@@ -155,7 +155,7 @@ export interface ListItemResponse {
 
 export interface LikeResponse {
   success: boolean;
-  likes?: {
+  response?: {
     liker_name: string;
     liking_name: string;
     list_name: string;
@@ -165,7 +165,7 @@ export interface LikeResponse {
 
 export interface GroupResponse {
   success: boolean;
-  groups?: {
+  response?: {
     gid: number;
     group_name: string;
     owned_by: string;
@@ -175,7 +175,7 @@ export interface GroupResponse {
 
 export interface FollowResponse {
   success: boolean;
-  follows?: {
+  response?: {
     follower: string;
     following: string;
   }[];
@@ -183,7 +183,7 @@ export interface FollowResponse {
 
 export interface FollowMutualResponse {
   success: boolean;
-  followmutuals?: {
+  response?: {
     follower: string;
     follows_back: boolean;
   }[];

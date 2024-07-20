@@ -57,10 +57,10 @@ const UserPage = () => {
         <div className="flex items-center pt-12 pl-6 pb-6">
           <div className="grid gap-1">
             <div className="text-4xl font-bold text-primary-foreground">
-              {user_info.data.user?.user_name}
+              {user_info.data.response?.user_name}
             </div>
             <div className="text-sm text-primary-foreground/80">
-              {user_info.data.user?.email}
+              {user_info.data.response?.email}
             </div>
           </div>
         </div>
