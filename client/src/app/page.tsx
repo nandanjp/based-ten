@@ -30,6 +30,8 @@ const SearchPage = () => {
     <div
       style={{
         background: 'linear-gradient(to right, #d4e1f5, #ffcbb9, #ffe29e)',
+        backgroundSize: '200% 200%',
+        animation: 'gradientFlow 10s ease infinite',
       }}
       className="h-screen w-screen flex items-center flex-col"
     >

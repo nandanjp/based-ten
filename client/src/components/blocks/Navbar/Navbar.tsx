@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between w-full bg-gray-600 text-white text-xl">
+    <div className="flex justify-between w-full bg-gray-900 bg-opacity-25 backdrop-filter backdrop-blur-xl text-white text-xl">
       <div className="flex gap-2">
         <Link href="/" className="hover:bg-gray-400 p-3">
           Home
