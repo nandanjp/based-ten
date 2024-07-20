@@ -60,7 +60,8 @@ export const updateGame = async () => {};
 
 export const deleteGame = async () => {};
 
-export const getAllLists = async () => {};
+export const getAllLists = async () =>
+  (await axiosInstance.get<ListResponse>(`lists`)).data.response;
 
 export const createList = async () => {};
 
