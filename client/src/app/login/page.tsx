@@ -13,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -24,6 +25,7 @@ const formSchema = z.object({
 });
 
 const LoginPage = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -69,7 +71,9 @@ const LoginPage = () => {
           />
           <div className="flex flex-row-reverse items-center gap-4">
             <Button type="submit">Submit</Button>
-            <Button type="button">Sign Up</Button>
+            <Button type="button" onClick={() => router.push('signup')}>
+              Sign Up
+            </Button>
           </div>
         </form>
       </Form>

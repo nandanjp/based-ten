@@ -70,6 +70,8 @@ const GroupPage = () => {
               />
             ))}
         </div>
+
+        
       </div>
     </div>
   );

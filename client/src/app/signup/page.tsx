@@ -13,23 +13,36 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  password: z.string().min(2, {
-    message: 'Password must be at least 2 characters.',
-  }),
-  confirmPassword: z.string().min(2),
-});
+const formSchema = z
+  .object({
+    username: z.string().min(2, {
+      message: 'Username must be at least 2 characters.',
+    }),
+    password: z.string().min(2, {
+      message: 'Password must be at least 2 characters.',
+    }),
+    confirmPassword: z.string(),
+  })
+  .superRefine(({ confirmPassword, password }, ctx) => {
+    if (confirmPassword !== password) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'The passwords do not match',
+        path: ['confirmPassword'],
+      });
+    }
+  });
 
 const SignUpPage = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: '',
       password: '',
+      confirmPassword: '',
     },
   });
   const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -68,9 +81,28 @@ const SignUpPage = () => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Confirm Password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="flex flex-row-reverse items-center gap-4">
             <Button type="submit">Submit</Button>
-            <Button type="button">Sign Up</Button>
+            <Button type="button" onClick={() => router.push('login')}>
+              Log In
+            </Button>
           </div>
         </form>
       </Form>
