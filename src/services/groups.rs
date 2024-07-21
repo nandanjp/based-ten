@@ -41,6 +41,29 @@ impl GroupsService {
             })
     }
 
+    pub async fn get_by_user(pool: &sqlx::PgPool, user_id: String) -> Result<Vec<Group>, GroupsError> {
+        sqlx::query!(r#"SELECT g.gid, g.groupname, g.ownedby
+                    FROM Groups g
+                    JOIN GroupMembers gm ON g.gid = gm.gid
+                    WHERE gm.username = $1"#, user_id)
+            .fetch_all(pool)
+            .await
+            .map(|a| {
+                a.into_iter()
+                    .map(|a| Group {
+                        gid: a.gid,
+                        group_name: a.groupname,
+                        owned_by: a.ownedby,
+                    })
+                    .collect::<Vec<Group>>()
+            })
+            .map_err(|e| {
+                GroupsError(format!(
+                    "failed to retrieve a group with username = {user_id} due to the following error: {e:#?}"
+                ))
+            })
+    }
+
     pub async fn get_circles_by_id(pool: &sqlx::PgPool, gid: i32) -> Result<Vec<Group>, GroupsError> {
         sqlx::query!(r#"WITH RECURSIVE Circles AS (
                         (SELECT g.gid, g.groupName, g.ownedBy, 1 AS level
@@ -56,6 +79,7 @@ impl GroupsService {
                         )
                     )
                     SELECT DISTINCT gid, groupName, ownedBy FROM Circles
+                    WHERE gid != $1
                     ORDER BY gid"#, gid)
             .fetch_all(pool)
             .await

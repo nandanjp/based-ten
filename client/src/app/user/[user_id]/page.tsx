@@ -2,6 +2,7 @@
 
 import { ListCard } from '@/components/blocks/ListCard';
 import { UserCard } from '@/components/blocks/UserCard';
+import { GroupCard } from '@/components/blocks/GroupCard';
 import { UserCardFollowBack } from '@/components/blocks/UserCardFollowBack';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useParams } from 'next/navigation';
@@ -11,7 +12,9 @@ import {
   useUserFollowing,
   useUserFollowers,
   useUserLikes,
+  useUserGroups,
 } from '../../../../services/queries';
+import GradientHeader from '@/components/ui/gradient-header';
 
 const UserPage = () => {
   const { user_id } = useParams<{ user_id: string }>();
@@ -20,13 +23,15 @@ const UserPage = () => {
   const user_following = useUserFollowing({ email: user_id });
   const user_followers = useUserFollowers({ email: user_id });
   const user_likes = useUserLikes({ email: user_id });
+  const user_groups = useUserGroups({ email: user_id });
 
   if (
     user_lists.isPending ||
     user_info.isPending ||
     user_following.isPending ||
     user_followers.isPending ||
-    user_likes.isPending
+    user_likes.isPending ||
+    user_groups.isPending
   ) {
     return <span>Loading....</span>;
   }
@@ -36,12 +41,13 @@ const UserPage = () => {
     user_info.isError ||
     user_following.isError ||
     user_followers.isError ||
-    user_likes.isError
+    user_likes.isError ||
+    user_groups.isError
   ) {
     return <span>there was an error!</span>;
   }
 
-  if (user_lists.isFetching || user_info.isFetching || user_likes.isFetching) {
+  if (user_lists.isFetching || user_info.isFetching || user_likes.isFetching || user_followers.isFetching || user_following.isFetching || user_groups.isFetching) {
     return <span>data being fetched</span>;
   }
 
@@ -52,31 +58,23 @@ const UserPage = () => {
   console.log(user_info.data);
 
   return (
-    <div className="w-full xl mx-auto">
-      <div className="bg-primary p-6">
-        <div className="flex items-center pt-12 pl-6 pb-6">
-          <div className="grid gap-1">
-            <div className="text-4xl font-bold text-primary-foreground">
-              {user_info.data.response?.user_name}
-            </div>
-            <div className="text-sm text-primary-foreground/80">
-              {user_info.data.response?.email}
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="w-screen">
+      <GradientHeader 
+        title={user_info.data.response?.user_name} 
+        subtitle={user_info.data.response?.email} 
+      />
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
-          <TabsTrigger value="lists">My Lists</TabsTrigger>
+          <TabsTrigger value="lists">Lists</TabsTrigger>
           <TabsTrigger value="likes">Liked Lists</TabsTrigger>
           <TabsTrigger value="followers">Followers</TabsTrigger>
           <TabsTrigger value="following">Following</TabsTrigger>
-          <TabsTrigger value="groups">My Groups</TabsTrigger>
+          <TabsTrigger value="groups">Groups</TabsTrigger>
           <TabsTrigger value="account">Account</TabsTrigger>
         </TabsList>
         <TabsContent value="lists" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">My Lists</div>
+          <div className="text-3xl font-semibold mb-6">Lists</div>
+            <div className="grid grid-cols-3 gap-4">
             {user_lists.data.response?.map((l) => (
               <ListCard
                 key={l.user_name}
@@ -88,8 +86,8 @@ const UserPage = () => {
           </div>
         </TabsContent>
         <TabsContent value="likes" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Liked Lists</div>
+          <div className="text-3xl font-semibold mb-6">Liked Lists</div>
+            <div className="grid grid-cols-3 gap-4">
             {user_likes.data.response?.map((l) => (
               <ListCard
                 key={l.liking_name.concat(l.list_name)}
@@ -121,8 +119,16 @@ const UserPage = () => {
           </div>
         </TabsContent>
         <TabsContent value="groups" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Groups</div>
+        <div className="text-3xl font-semibold mb-6">Groups</div>
+          <div className="grid grid-cols-3 gap-4">
+            {user_groups.data.response?.map((g) => (
+              <GroupCard
+                key={g.group_name}
+                group_name={g.group_name}
+                group_id={g.gid}
+                owned_by={g.owned_by}
+              />
+            ))}
           </div>
         </TabsContent>
         <TabsContent value="account" className="p-6">

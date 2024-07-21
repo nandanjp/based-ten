@@ -11,7 +11,7 @@ use handlers::{
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
     groups::{
         create_groups, delete_groups, get_all_groups, get_circles_by_id, get_group_member_lists,
-        get_groups_by_id,
+        get_groups_by_id, get_groups_by_user,
     },
     likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
     listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
@@ -210,7 +210,8 @@ async fn main() {
                         .route("/:gid", get(get_groups_by_id))
                         .route("/:gid", delete(delete_groups))
                         .route("/:gid/lists", get(get_group_member_lists))
-                        .route("/:gid/circles", get(get_circles_by_id)),
+                        .route("/:gid/circles", get(get_circles_by_id))
+                        .route("/users/:user_name", get(get_groups_by_user)),
                 ),
         )
         .with_state(app_state)
