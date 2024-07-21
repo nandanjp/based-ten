@@ -1,8 +1,18 @@
 import Image from "next/image";
 import { ViewListItemProps } from "./types";
+import { Anime, MediaType, Movie, Song, VideoGame } from "../../../../services/api.types";
+
+type ViewListItemProps = {
+  listItem: VideoGame | Anime | Movie | Song;
+};
 
 const ViewListItem = (props: ViewListItemProps) => {
   const { listItem } = props;
+
+  // const renderDescription = () => {
+  //   if (typeof listItem === typeof Anime)
+  // };
+
   return (
     <div
         className="flex gap-4 justify-normal rounded-2xl px-8 py-10 w-80 bg-primary text-white hover:bg-gray-700"
