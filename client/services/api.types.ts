@@ -140,7 +140,7 @@ export type Media = {
   created_on: string;
   media_image: string;
   title: string;
-  type: MediaType;
+  listtype: MediaType;
 };
 
 export type VideoGame = Media & {
@@ -155,6 +155,7 @@ export type Movie = Media;
 
 export type Song = Media & {
   author: string;
+  album: string;
 };
 
 type BaseResponse = {
@@ -163,7 +164,7 @@ type BaseResponse = {
 };
 
 export type MediaResponse = BaseResponse & {
-  items: Media[] | VideoGame[] | Anime[] | Movie[] | Song[];
+  response: ((VideoGame | Anime | Movie | Song) & { likes: number })[];
 };
 
 export type LoginResponse = {
