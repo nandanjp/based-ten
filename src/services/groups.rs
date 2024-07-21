@@ -56,6 +56,7 @@ impl GroupsService {
                         )
                     )
                     SELECT DISTINCT gid, groupName, ownedBy FROM Circles
+                    WHERE gid != $1
                     ORDER BY gid"#, gid)
             .fetch_all(pool)
             .await
