@@ -14,7 +14,7 @@ import { Button } from "../ui/button";
 interface GroupCardProps {
   group_name: string;
   owned_by: string;
-  group_id: string;
+  group_id: number;
 }
 
 export function GroupCard({ group_name, owned_by, group_id }: GroupCardProps) {

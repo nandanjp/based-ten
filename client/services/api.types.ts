@@ -112,6 +112,16 @@ export interface GroupResponse {
   error?: string;
 }
 
+export interface GroupsResponse {
+  success: boolean;
+  response?: {
+    gid: number;
+    group_name: string;
+    owned_by: string;
+  }[];
+  error?: string;
+}
+
 export interface FollowResponse {
   success: boolean;
   response?: {
