@@ -67,7 +67,7 @@ const UserPage = () => {
       </div>
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
-          <TabsTrigger value="lists">My Lists</TabsTrigger>
+          <TabsTrigger value="lists">Lists</TabsTrigger>
           <TabsTrigger value="likes">Liked Lists</TabsTrigger>
           <TabsTrigger value="followers">Followers</TabsTrigger>
           <TabsTrigger value="following">Following</TabsTrigger>
@@ -76,7 +76,7 @@ const UserPage = () => {
         </TabsList>
         <TabsContent value="lists" className="p-6">
           <div className="grid gap-4">
-            <div className="text-3xl font-semibold">My Lists</div>
+            <div className="text-3xl font-semibold">Lists</div>
             {user_lists.data.response?.map((l) => (
               <ListCard
                 key={l.user_name}
