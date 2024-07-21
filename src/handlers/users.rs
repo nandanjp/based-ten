@@ -13,9 +13,9 @@ pub async fn get_all_users(
     Query(query): Query<QueryUser>,
 ) -> impl IntoResponse {
     get_list_response(
-        UsersService::get_all(&pool.db, query).await.map_err(|e| {
-            format!("failed to retrieve all users due to the following error: {e:#?}")
-        }),
+        UsersService::get_all(&pool.db, query)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -28,7 +28,7 @@ pub async fn get_user_by_id(
     get_one_response(
         UsersService::get_by_id(&pool.db, user_name)
             .await
-            .map_err(|e| format!("failed to retrieve a user due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -39,11 +39,9 @@ pub async fn create_user(
     Json(create): Json<CreateUser>,
 ) -> impl IntoResponse {
     get_one_response(
-        UsersService::create(&pool.db, create).await.map_err(|e| {
-            format!(
-                "failed to create a user with the given details due to the following error: {e:#?}"
-            )
-        }),
+        UsersService::create(&pool.db, create)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
         StatusCode::BAD_REQUEST,
     )
@@ -57,11 +55,7 @@ pub async fn update_user(
     get_one_response(
         UsersService::update(&pool.db, update, user_name)
             .await
-            .map_err(|e| {
-                format!(
-                "failed to update a user with the given details due to the following error: {e:#?}"
-            )
-            }),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -74,7 +68,7 @@ pub async fn delete_user(
     get_one_response(
         UsersService::delete(&pool.db, user_name)
             .await
-            .map_err(|e| format!("failed to delete user due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )

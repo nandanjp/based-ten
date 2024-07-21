@@ -86,9 +86,9 @@ pub async fn register_user_handler(
         "success": false,
         "response": serde_json::json!({
             "email": user.email.to_owned(),
-            "user_name": user.user_name.to_owned(),
-            "password": user.password.to_owned(),
-            "created_at": user.created_at.to_string(),
+            "user_name": user.username.to_owned(),
+            "password": user.userpassword.to_owned(),
+            "created_at": user.createdat,
         }),
         "error": format!("User with the given user_name already exists!")
     })))
@@ -111,7 +111,7 @@ pub async fn login_user_handler(
             )
         })?;
 
-    if !match PasswordHash::new(&user.password) {
+    if !match PasswordHash::new(&user.userpassword) {
         Ok(parsed_hash) => Argon2::default()
             .verify_password(body.password.as_bytes(), &parsed_hash)
             .map_or(false, |_| true),
@@ -129,7 +129,7 @@ pub async fn login_user_handler(
 
     let now = chrono::Utc::now();
     let claims = TokenClaims {
-        sub: user.user_name.clone(),
+        sub: user.username.clone(),
         exp: (now + chrono::Duration::minutes(60)).timestamp() as usize,
         iat: now.timestamp() as usize,
     };

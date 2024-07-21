@@ -11,5 +11,11 @@ pub async fn get_mutual_follows_by_id(
     State(pool): State<Arc<AppState>>,
     Path(follower_email): Path<String>,
 ) -> impl IntoResponse {
-    get_list_response(FollowMutualService::get_by_mutual_follower(&pool.db, follower_email).await.map_err(|e| format!("failed to retrieve a user's mutual followers due to the following error: {e:#?}")), StatusCode::OK, StatusCode::BAD_REQUEST)
+    get_list_response(
+        FollowMutualService::get_by_mutual_follower(&pool.db, follower_email)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
 }

@@ -11,13 +11,13 @@ use handlers::{
     game::{create_game, delete_game, get_all_games, get_game_by_id, update_game},
     groups::{
         create_groups, delete_groups, get_all_groups, get_circles_by_id, get_group_member_lists,
-        get_groups_by_id,
+        get_group_members, get_groups_by_id,
     },
     likes::{create_like, delete_like, get_all_likes, get_likes_by_id},
     listitems::{create_list_item, delete_list_item, get_list_item, update_list_item},
     lists::{
-        create_list, delete_list, get_all_lists, get_list_and_items, get_some_top_lists,
-        get_user_explore_lists, get_user_list, get_user_list_items, get_user_lists, update_list,
+        create_list, delete_list, get_all_lists, get_some_top_lists, get_user_explore_lists,
+        get_user_list, get_user_list_items, get_user_lists, update_list,
     },
     media::get_all_media,
     movies::{create_movie, delete_movie, get_all_movies, get_movie_by_id, update_movie},
@@ -30,14 +30,7 @@ use axum::{
     routing::{delete, get, patch, post},
     Router,
 };
-use http::{
-    header::{
-        ACCEPT, ACCESS_CONTROL_ALLOW_HEADERS, ACCESS_CONTROL_ALLOW_ORIGIN, AUTHORIZATION,
-        CONTENT_TYPE, ORIGIN,
-    },
-    HeaderValue, Method,
-};
-use middleware::auth;
+use middleware::auth::auth;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use std::{sync::Arc, time::Duration};
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
@@ -79,11 +72,7 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{port}"))
         .await
         .expect("failed to retrieve a tcp listener: could not start up a server on the given port");
-
-    tracing::debug!("Now listening on port {port}");
-
     let cors = CorsLayer::permissive();
-
     let app_state = Arc::new(AppState { db: pool.clone() });
 
     let app = Router::new()
@@ -152,7 +141,6 @@ async fn main() {
                     Router::new()
                         .route("/", get(get_all_lists))
                         .route("/", post(create_list))
-                        .route("/view/:list_name", get(get_list_and_items))
                         .route("/top", get(get_some_top_lists))
                         .nest(
                             "/:user_name",
@@ -208,6 +196,7 @@ async fn main() {
                         .route("/", get(get_all_groups))
                         .route("/:gid/:groupName/:ownedBy", post(create_groups))
                         .route("/:gid", get(get_groups_by_id))
+                        .route("/:gid/members", get(get_group_members))
                         .route("/:gid", delete(delete_groups))
                         .route("/:gid/lists", get(get_group_member_lists))
                         .route("/:gid/circles", get(get_circles_by_id)),
@@ -221,6 +210,7 @@ async fn main() {
         )))
         .layer(tower_http::limit::RequestBodyLimitLayer::new(1024));
 
+    tracing::debug!("Now listening on port {port}");
     axum::serve(listener, app.into_make_service())
         .await
         .expect("failed to serve the axum server on the provided tcp listener")

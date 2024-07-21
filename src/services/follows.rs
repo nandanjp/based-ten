@@ -9,38 +9,18 @@ impl FollowsService {
         match query_obj {
             QueryFollow {
                 following: Some(following),
-            } => sqlx::query!(r#"SELECT * FROM Follows WHERE following = $1"#, following)
+            } => sqlx::query_as!(
+                Follow,
+                r#"SELECT * FROM Follows WHERE following = $1"#,
+                following
+            )
             .fetch_all(pool)
             .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| Follow {
-                        follower: a.follower,
-                        following: a.following,
-                    })
-                    .collect::<Vec<Follow>>()
-            })
-            .map_err(|e| {
-                FollowError(format!(
-                    "failed to retrieve followers where following = {following} due to the following error: {e:#?}"
-                ))
-            }),
-            _ => sqlx::query!(r#"SELECT * FROM Follows"#)
-            .fetch_all(pool)
-            .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| Follow {
-                        follower: a.follower,
-                        following: a.following,
-                    })
-                    .collect::<Vec<Follow>>()
-            })
-            .map_err(|e| {
-                FollowError(format!(
-                    "failed to retrieve all follows due to the following error: {e:#?}"
-                ))
-            })
+            .map_err(|e| FollowError(format!("failed to retrieve followers: {e:#?}"))),
+            _ => sqlx::query_as!(Follow, r#"SELECT * FROM Follows"#)
+                .fetch_all(pool)
+                .await
+                .map_err(|e| FollowError(format!("failed to retrieve followers: {e:#?}"))),
         }
     }
 
@@ -48,33 +28,33 @@ impl FollowsService {
         pool: &sqlx::PgPool,
         follower: String,
     ) -> Result<Vec<Follow>, FollowError> {
-        sqlx::query!(r#"SELECT * FROM Follows WHERE follower = $1"#, follower)
-            .fetch_all(pool)
-            .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| Follow {
-                        follower: a.follower,
-                        following: a.following,
-                    })
-                    .collect::<Vec<Follow>>()
-            })
-            .map_err(|e| {
-                FollowError(format!(
-                    "failed to retrieve following of a user with user_name = {follower} due to the following error: {e:#?}"
-                ))
-            })
+        sqlx::query_as!(
+            Follow,
+            r#"SELECT * FROM Follows WHERE follower = $1"#,
+            follower
+        )
+        .fetch_all(pool)
+        .await
+        .map_err(|e| {
+            FollowError(format!(
+                "failed to retrieve following of {follower}: {e:#?}"
+            ))
+        })
     }
 
     pub async fn create(
         pool: &sqlx::PgPool,
         create_obj: CreateFollow,
     ) -> Result<Follow, FollowError> {
-        sqlx::query!(r#"INSERT INTO Follows(follower, following) VALUES($1, $2) RETURNING follower, following"#, create_obj.follower, create_obj.following)
-        .fetch_one(pool).await.map(|a| Follow {
-            follower: a.follower,
-            following: a.following,
-        }).map_err(|e| FollowError(format!("failed to create follow due to the following error: {e:#?}")))
+        sqlx::query_as!(
+            Follow,
+            r#"INSERT INTO Follows(follower, following) VALUES($1, $2) RETURNING *"#,
+            create_obj.follower,
+            create_obj.following
+        )
+        .fetch_one(pool)
+        .await
+        .map_err(|e| FollowError(format!("failed to create follow: {e:#?}")))
     }
 
     pub async fn delete(
@@ -82,10 +62,14 @@ impl FollowsService {
         follower: String,
         following: String,
     ) -> Result<Follow, FollowError> {
-        sqlx::query!(r#"DELETE FROM Follows WHERE follower = $1 AND following = $2 RETURNING follower, following"#, follower, following)
-        .fetch_one(pool).await.map(|a| Follow {
-            follower: a.follower,
-            following: a.following,
-        }).map_err(|e| FollowError(format!("failed to delete follow with follower = {follower} and following = {following} due to the following error: {e:#?}")))
+        sqlx::query_as!(
+            Follow,
+            r#"DELETE FROM Follows WHERE follower = $1 AND following = $2 RETURNING *"#,
+            follower,
+            following
+        )
+        .fetch_one(pool)
+        .await
+        .map_err(|e| FollowError(format!("failed to delete follow: {e:#?}")))
     }
 }

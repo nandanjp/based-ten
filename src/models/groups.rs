@@ -1,24 +1,17 @@
 use serde::{Deserialize, Serialize};
 
-use crate::utils::traits::{Error, IntoSerial};
-
-#[derive(Clone, Debug, Serialize)]
+#[derive(Debug, Deserialize, sqlx::FromRow, Serialize, Clone)]
 pub struct Group {
     pub gid: i32,
-    pub group_name: String,
-    pub owned_by: String,
+    pub groupname: String,
+    pub ownedby: String,
 }
 
-impl IntoSerial for Group {
-    type Serial = Self;
-
-    fn to_serial(&self) -> Self::Serial {
-        Self {
-            gid: self.gid,
-            group_name: self.group_name.clone(),
-            owned_by: self.owned_by.clone(),
-        }
-    }
+#[derive(Debug, Deserialize, sqlx::FromRow, Serialize, Clone)]
+pub struct GroupRecursive {
+    pub gid: Option<i32>,
+    pub groupname: Option<String>,
+    pub ownedby: Option<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Default)]
@@ -26,8 +19,9 @@ pub struct QueryGroups {
     pub order_by_author: Option<bool>,
 }
 
+#[derive(Debug, Clone, Serialize)]
 pub struct GroupMember {
-    pub user_name: String,
+    pub username: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -37,25 +31,11 @@ pub struct CreateGroups {
     pub owned_by: String,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-pub struct UpdateGroups {
-    pub group_name: Option<String>,
-    pub owned_by: Option<String>,
-}
-
 #[derive(Debug, Clone)]
 pub struct GroupsError(pub String);
-impl Error for GroupsError {
-    fn new(err: String) -> Self {
-        Self(err)
-    }
-}
+
 impl std::fmt::Display for GroupsError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "failed to retrieve group due to the following error: {:#?}",
-            self.0
-        )
+        write!(f, "{}", self.0)
     }
 }

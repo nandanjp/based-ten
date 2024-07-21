@@ -14,9 +14,9 @@ pub async fn get_all_anime(
     Query(query): Query<AnimeQuery>,
 ) -> impl IntoResponse {
     get_list_response(
-        AnimeService::get_all(&pool.db, query).await.map_err(|e| {
-            format!("failed to retrieve all anime due to the following error: {e:#?}")
-        }),
+        AnimeService::get_all(&pool.db, query)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -29,7 +29,7 @@ pub async fn get_anime_by_id(
     get_one_response(
         AnimeService::get_by_id(&pool.db, id)
             .await
-            .map_err(|e| format!("failed to retrieve an anime due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -42,7 +42,7 @@ pub async fn create_anime(
     get_one_response(
         AnimeService::create(&pool.db, create)
             .await
-            .map_err(|e| format!("failed to create anime due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
         StatusCode::BAD_REQUEST,
     )
@@ -56,7 +56,7 @@ pub async fn update_anime(
     get_one_response(
         AnimeService::update(&pool.db, update, id)
             .await
-            .map_err(|e| format!("failed to update anime due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -69,7 +69,7 @@ pub async fn delete_anime(
     get_one_response(
         AnimeService::delete(&pool.db, id)
             .await
-            .map_err(|e| format!("failed to delete anime due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )

@@ -1,5 +1,4 @@
 use axum::async_trait;
-use serde::Serialize;
 
 #[async_trait]
 pub trait GeneralService {
@@ -25,13 +24,4 @@ pub trait GeneralService {
         id: i32,
     ) -> Result<Self::Response, Self::Error>;
     async fn delete(pool: &sqlx::PgPool, id: i32) -> Result<Self::Response, Self::Error>;
-}
-
-pub trait IntoSerial {
-    type Serial: Serialize;
-    fn to_serial(&self) -> Self::Serial;
-}
-
-pub trait Error {
-    fn new(err: String) -> Self;
 }

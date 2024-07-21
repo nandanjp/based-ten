@@ -15,7 +15,7 @@ pub async fn get_all_follows(
     get_list_response(
         FollowsService::get_all(&pool.db, query)
             .await
-            .map_err(|e| format!("failed to retrieve follows due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -28,9 +28,7 @@ pub async fn get_follows_by_id(
     get_list_response(
         FollowsService::get_by_id(&pool.db, user_name)
             .await
-            .map_err(|e| {
-                format!("failed to retrieve a user's following due to the following error: {e:#?}")
-            }),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -43,7 +41,7 @@ pub async fn create_follow(
     get_one_response(
         FollowsService::create(&pool.db, create)
             .await
-            .map_err(|e| format!("failed to create follow due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
         StatusCode::BAD_REQUEST,
     )
@@ -57,7 +55,7 @@ pub async fn delete_follow(
     get_one_response(
         FollowsService::delete(&pool.db, follower, following)
             .await
-            .map_err(|e| format!("failed to delete follow due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )

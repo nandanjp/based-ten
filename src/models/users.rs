@@ -1,35 +1,12 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use time::OffsetDateTime;
 
-use crate::utils::traits::{Error, IntoSerial};
-
-#[derive(Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize, sqlx::FromRow)]
 pub struct User {
     pub email: String,
-    pub user_name: String,
-    pub password: String,
-    pub created_at: OffsetDateTime,
-}
-
-impl IntoSerial for User {
-    type Serial = UserSerial;
-
-    fn to_serial(&self) -> Self::Serial {
-        Self::Serial {
-            email: self.email.clone(),
-            user_name: self.user_name.clone(),
-            password: self.password.clone(),
-            created_at: self.created_at.to_string(),
-        }
-    }
-}
-
-#[derive(Clone, Debug, Serialize)]
-pub struct UserSerial {
-    pub email: String,
-    pub user_name: String,
-    pub password: String,
-    pub created_at: String,
+    pub username: String,
+    pub userpassword: String,
+    pub createdat: Option<DateTime<Utc>>,
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
@@ -57,17 +34,9 @@ pub struct LoginUserSchema {
 
 #[derive(Debug, Clone)]
 pub struct UserError(pub String);
-impl Error for UserError {
-    fn new(err: String) -> Self {
-        Self(err)
-    }
-}
+
 impl std::fmt::Display for UserError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "failed to retrieve user due to the following error: {:#?}",
-            self.0
-        )
+        write!(f, "{}", self.0)
     }
 }
