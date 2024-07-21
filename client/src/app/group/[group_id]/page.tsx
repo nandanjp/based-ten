@@ -25,6 +25,7 @@ import {
     CarouselPrevious,
   } from '@/components/ui/carousel';
 import { ChangeEvent, useState } from "react";
+import GradientHeader from "@/components/ui/gradient-header";
 
 const GroupPage = () => {
   const { group_id } = useParams<{ group_id: string }>();
@@ -49,18 +50,10 @@ const GroupPage = () => {
 
   return (
     <div className="w-full xl mx-auto">
-      <div className="bg-primary p-6">
-        <div className="flex items-center pt-12 pl-6 pb-6">
-          <div className="grid gap-1">
-            <div className="text-4xl font-bold text-primary-foreground">
-              {group_info.data.response?.group_name}
-            </div>
-            <div className="text-sm text-primary-foreground/80">
-              Owner: {group_info.data.response?.owned_by}
-            </div>
-          </div>
-        </div>
-      </div>
+      <GradientHeader
+        title={group_info.data.response?.group_name}
+        subtitle={group_info.data.response?.owned_by}
+      />
       <div className="p-12">
         <div className="flex justify-between py-6">
             <div className="text-3xl font-semibold pb-6">Member lists</div>

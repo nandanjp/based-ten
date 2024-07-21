@@ -12,6 +12,7 @@ import {
   useUserFollowers,
   useUserLikes,
 } from '../../../../services/queries';
+import GradientHeader from '@/components/ui/gradient-header';
 
 const UserPage = () => {
   const { user_id } = useParams<{ user_id: string }>();
@@ -53,24 +54,10 @@ const UserPage = () => {
 
   return (
     <div className="w-screen">
-      <div style={{
-        height: '10rem',
-        background: 'linear-gradient(to right, #d4e1f5, #ffcbb9, #ffe29e)',
-        backgroundSize: '150% 150%',
-        animation: 'gradientFlow 10s ease infinite',
-      }}
-      className="flex items-center justify-center flex-col">
-        <div className="flex items-center  pt-12 pl-6 pb-6">
-          <div className="grid gap-1 text-center">
-            <div className="text-4xl font-bold text-primary-foreground" style={{ textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}>
-              {user_info.data.response?.user_name}
-            </div>
-            <div className="text-sm text-primary-foreground/80" style={{ textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)' }}>
-              {user_info.data.response?.email}
-            </div>
-          </div>
-        </div>
-      </div>
+      <GradientHeader 
+        title={user_info.data.response?.user_name} 
+        subtitle={user_info.data.response?.email} 
+      />
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
           <TabsTrigger value="lists">Lists</TabsTrigger>
