@@ -48,6 +48,18 @@ impl GeneralService for AnimeService {
                 .map_err(|e| AnimeError(format!("failed to retrieve all anime: {e:#?}")))
             },
             AnimeQuery {
+                title: Some(title), ..
+            } => sqlx::query_as!(
+                Self::Response,
+                r#"SELECT * FROM Anime WHERE similarity(title, $1) > 0.15 ORDER BY similarity(title, $1) DESC OFFSET $2 LIMIT $3"#,
+                title,
+                page * limit,
+                limit
+            )
+            .fetch_all(pool)
+            .await
+            .map_err(|e| AnimeError(format!("failed to retrieve all anime: {e:#?}"))),
+            AnimeQuery {
                 sort_key: Some(key), ..
             } => match key {
                 AnimeSortKey::Title => sqlx::query_as!(

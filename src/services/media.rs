@@ -33,6 +33,12 @@ impl MediaService {
                 .await
                 .map_err(|e| MediaError(format!("failed to retrieve all media: {e:#?}")))
             },
+            QueryMedia{title: Some(title), ..} => sqlx::query_as!(Media,
+                r#"SELECT id, title, mediaimage, createdon, type AS "typ: ListType" FROM Media WHERE similarity(title, $1) > 0.15 ORDER BY similarity(title, $1) DESC OFFSET $2 LIMIT $3"#, title, page * limit, limit
+            )
+            .fetch_all(pool)
+            .await
+            .map_err(|e| MediaError(format!("failed to retrieve all media: {e:#?}"))),
             QueryMedia {
                 sort_key: Some(key), ..
             } => match key {

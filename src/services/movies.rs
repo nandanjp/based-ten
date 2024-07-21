@@ -37,6 +37,18 @@ impl GeneralService for MovieService {
                 .await
                 .map_err(|e| ErrorMovie(format!("failed to retrieve all movies: {e:#?}"))),
             },
+            QueryMovie {
+                title: Some(title), ..
+            } => sqlx::query_as!(
+                Self::Response,
+                r#"SELECT * FROM Movies WHERE similarity(title, $1) > 0.15 ORDER BY similarity(title, $1) DESC OFFSET $2 LIMIT $3"#,
+                title,
+                page * limit,
+                limit
+            )
+            .fetch_all(pool)
+            .await
+            .map_err(|e| ErrorMovie(format!("failed to retrieve all movies: {e:#?}"))),
             _ => sqlx::query_as!(
                 Self::Response,
                 r#"SELECT * FROM Movies OFFSET $1 LIMIT $2"#,

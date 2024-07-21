@@ -20,6 +20,7 @@ pub enum SongSortKey {
 
 #[derive(Debug, Clone, Deserialize, Default)]
 pub struct QuerySong {
+    pub title: Option<String>,
     pub author: Option<String>,
     pub page: Option<i64>,
     pub limit: Option<i64>,

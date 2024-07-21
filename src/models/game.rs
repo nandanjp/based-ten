@@ -19,6 +19,7 @@ pub enum GameSortKey {
 
 #[derive(Debug, Clone, Deserialize, Default)]
 pub struct QueryGame {
+    pub title: Option<String>,
     pub console: Option<String>,
     pub page: Option<i64>,
     pub limit: Option<i64>,

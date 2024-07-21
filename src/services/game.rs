@@ -47,6 +47,16 @@ impl GeneralService for GameService {
                 .await
                 .map_err(|e| ErrorGame(format!("failed to get all video games: {e:#?}"))),
             },
+            QueryGame{title: Some(title), ..} => sqlx::query_as!(
+                    Self::Response,
+                    "SELECT * FROM VideoGames WHERE similarity(title, $1) > 0.15 ORDER BY similarity(title, $1) DESC OFFSET $2 LIMIT $3",
+                    title,
+                    page * limit,
+                    limit
+                )
+                .fetch_all(pool)
+                .await
+                .map_err(|e| ErrorGame(format!("failed to get all video games: {e:#?}"))),
             QueryGame {
                 sort_key: Some(key), ..
             } => match key {

@@ -72,6 +72,18 @@ impl GeneralService for SongService {
                 .await
                 .map_err(|e| ErrorSong(format!("failed to retrieve all songs: {e:#?}"))),
             },
+            QuerySong {
+                title: Some(title), ..
+            } => sqlx::query_as!(
+                Self::Response,
+                "SELECT * FROM Songs WHERE similarity(title, $1) > 0.15 ORDER BY similarity(title, $1) DESC OFFSET $2 LIMIT $3",
+                title,
+                page * limit,
+                limit,
+            )
+            .fetch_all(pool)
+            .await
+            .map_err(|e| ErrorSong(format!("failed to retrieve all songs: {e:#?}"))),
             _ => sqlx::query_as!(
                 Self::Response,
                 "SELECT * FROM Songs OFFSET $1 LIMIT $2",

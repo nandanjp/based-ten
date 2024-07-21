@@ -1,4 +1,5 @@
 -- Add up migration script here
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE TABLE Movies (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,

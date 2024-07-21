@@ -22,6 +22,7 @@ pub enum MediaSortKey {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct QueryMedia {
+    pub title: Option<String>,
     pub media_type: Option<ListType>,
     pub page: Option<i64>,
     pub limit: Option<i64>,
