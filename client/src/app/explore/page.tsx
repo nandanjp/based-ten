@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import GradientHeader from '@/components/ui/gradient-header';
 
 const ExplorePage = () => {
   const lists = useAllLists();
@@ -24,8 +25,8 @@ const ExplorePage = () => {
   return (
     <div className="w-screen h-screen text-gray-600">
       <Navbar />
+      <GradientHeader title="Explore" />
       <div className="flex flex-col p-4 gap-8">
-        <h1 className="text-4xl font-bold">Explore Lists</h1>
         <div className="flex flex-col w-full items-center gap-4">
           <h2 className="text-lg font-semibold">Recommended Lists for You</h2>
           <Carousel className="w-1/2">
