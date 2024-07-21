@@ -100,13 +100,14 @@ const GroupPage = () => {
               <CarouselContent className="-ml-1">
                 {Array.isArray(recommended_groups.data?.response) && recommended_groups.data?.response.map((g) => (
                   <CarouselItem
-                    key={g.group_id}
+                    key={g.gid}
                     className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2"
                   >
                     <GroupCard
                       key={g.group_name}
                       owned_by={g.owned_by!}
                       group_name={g.group_name!}
+                      group_id={g.gid!}
                     />
                   </CarouselItem>
                 ))}    
