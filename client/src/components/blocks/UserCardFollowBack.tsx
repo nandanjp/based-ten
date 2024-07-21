@@ -2,11 +2,13 @@ import * as React from "react";
 
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 import { Button } from "@/components/ui/button"
 
 interface UserCardFollowBackProps {
@@ -22,7 +24,14 @@ export function UserCardFollowBack({ follower_email, follows_back }: UserCardFol
       <CardHeader>
         <div className="flex p-4 justify-between">
             <CardTitle className="text-lg overflow-ellipsis font-normal">{follower_email}</CardTitle>
-            <Button variant={buttonVariant}>{buttonText}</Button>
+            <div className="flex space-x-3">
+              <Button variant={buttonVariant}>{buttonText}</Button>
+              <Link href={`/user/${follower_email}`}>
+                <Button variant={'default'}>
+                  View Profile
+                </Button>
+              </Link>
+            </div>
         </div>
       </CardHeader>
     </Card>
