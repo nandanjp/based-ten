@@ -1,3 +1,7 @@
+use argon2::{
+    password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
+    Argon2,
+};
 use serde::Deserialize;
 
 use super::traits::Commit;
@@ -24,10 +28,18 @@ impl Commit for User {
             .iter()
             .map(|u| u.user_name.clone())
             .collect::<Vec<String>>();
+
+        let salt = SaltString::generate(&mut OsRng);
         let passwords = values
-            .iter()
-            .map(|u| u.password.clone())
-            .collect::<Vec<String>>();
+            .into_iter()
+            .map(|u| {
+                Argon2::default()
+                    .hash_password(u.password.as_bytes(), &salt)
+                    .map(|hash| hash.to_string())
+                    .map_err(|_| "failed to hash password")
+            })
+            .collect::<Result<Vec<String>, _>>()?;
+
         let _ = sqlx::query!(
             r#"
             INSERT INTO Users(email, username, userpassword)
