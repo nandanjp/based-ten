@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import {
   ListResponse,
   UserResponse,
@@ -14,52 +14,10 @@ import {
   GroupResponse,
   MediaResponse,
   LoginResponse,
-} from './api.types';
+} from "./api.types";
 
 const BASE_URL = `http://127.0.0.1:5000/api`;
 const axiosInstance = axios.create({ baseURL: BASE_URL });
-
-export const getAllAnime = async () => {};
-
-export const getAnimeById = async () => {};
-
-export const createAnimeById = async () => {};
-
-export const updateAnimeById = async () => [];
-
-export const deleteAnimeById = async () => {
-  '/anime';
-};
-
-export const getAllMovies = async () => {};
-
-export const getMovieById = async () => {};
-
-export const createMovie = async () => {};
-
-export const updateMovie = async () => {};
-
-export const deleteMovie = async () => {};
-
-export const getAllSongs = async () => {};
-
-export const getSongById = async () => {};
-
-export const createSong = async () => {};
-
-export const updateSong = async () => {};
-
-export const deleteSong = async () => {};
-
-export const getAllGames = async () => {};
-
-export const getGameById = async () => {};
-
-export const createGame = async () => {};
-
-export const updateGame = async () => {};
-
-export const deleteGame = async () => {};
 
 export const getAllLists = async () =>
   (await axiosInstance.get<ListResponse>(`lists`)).data.response;
@@ -72,32 +30,18 @@ export const getUsersLists =
     (await axiosInstance.get<ListResponse>(`lists/${email}`)).data;
 
 export const getUserList = async () =>
-  (await axiosInstance.get<UserResponse[]>('users')).data;
+  (await axiosInstance.get<UserResponse[]>("users")).data;
 
 export const getUserListItems = async ({ id }: { id: string }) =>
   (await axiosInstance.get<UserResponse>(`users/${id}`)).data;
 
-export const updateUserList = async () => {};
-
-export const deleteUserList = async () => {};
-
-export const getUserListItem = async () => {};
-
-export const createUserListItem = async () => {};
-
-export const updateUserListItem = async () => {};
-
-export const deleteUserListItem = async () => {};
-
 export const getAllUsers = async () =>
-  (await axiosInstance.get<UserResponse[]>('users')).data;
+  (await axiosInstance.get<UserResponse[]>("users")).data;
 
 export const getUserByEmail =
   ({ email }: { email: string }) =>
   async () =>
     (await axiosInstance.get<UserResponse>(`users/${email}`)).data;
-
-export const updateUser = async () => {};
 
 export const deleteUser = async ({ email }: { email: string }) =>
   (await axiosInstance.delete<UserResponse>(`users/${email}`)).data;
@@ -108,14 +52,6 @@ export const getUserLikes =
   ({ email }: { email: string }) =>
   async () =>
     (await axiosInstance.get<LikeResponse>(`likes/${email}`)).data;
-
-export const createLike = async () => [];
-
-export const deleteLike = async () => {};
-
-export const getAllFollows = async () => {};
-
-export const createFollows = async () => {};
 
 export const getUserFollowing =
   ({ email }: { email: string }) =>
@@ -128,10 +64,6 @@ export const getUserFollowers =
     (await axiosInstance.get<FollowMutualResponse>(`follow/mutual/${email}`))
       .data;
 
-export const deleteUserFollower = async () => {};
-
-export const getAllGroups = async () => {};
-
 export const getGroupById =
   ({ group_id }: { group_id: string }) =>
   async () =>
@@ -142,7 +74,7 @@ export const getGroupMemberLists =
   async () =>
     (
       await axiosInstance.get<ListResponse>(
-        `groups/${group_id}/lists?order_by_author=${orderByAuthor}`,
+        `groups/${group_id}/lists?order_by_author=${orderByAuthor}`
       )
     ).data;
 
@@ -150,10 +82,6 @@ export const getRecommendedGroups =
   ({ group_id }: { group_id: string }) =>
   async () =>
     (await axiosInstance.get<GroupResponse>(`groups/${group_id}/circles`)).data;
-
-export const createGroup = async () => {};
-
-export const deleteGroup = async () => {};
 
 export const getAllMedia = async () => {
   const rawResult = await axiosInstance.get(`media`);
@@ -203,11 +131,15 @@ export const getRecommendedLists = (userId: string) => async () =>
   (await axiosInstance.get<ListResponse>(`explore/${userId}`)).data.response;
 
 export const getList = (list_name: string, user_name: string) => async () =>
-  (await axiosInstance.get<MediaResponse>(`lists/${user_name}/${list_name}/items`)).data;
+  (
+    await axiosInstance.get<MediaResponse>(
+      `lists/${user_name}/${list_name}/items`
+    )
+  ).data;
 
 export const getUser = async (user_name: string, password: string) =>
   (
-    await axiosInstance.post<LoginResponse>('auth/login', {
+    await axiosInstance.post<LoginResponse>("auth/login", {
       user_name,
       password,
     })
@@ -216,10 +148,10 @@ export const getUser = async (user_name: string, password: string) =>
 export const createUser = async (
   user_name: string,
   password: string,
-  email: string,
+  email: string
 ) =>
   (
-    await axiosInstance.post<UserResponse>('auth/register', {
+    await axiosInstance.post<UserResponse>("auth/register", {
       user_name,
       password,
       email,

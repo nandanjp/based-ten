@@ -1,19 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 import {
-  getAllAnime,
-  getAllFollows,
-  getAllGames,
-  getAllGroups,
   getAllLists,
   getAllMedia,
-  getAllMovies,
-  getAllSongs,
   getAllUsers,
   getUserByEmail,
-  getAnimeById,
-  getGameById,
-  getMovieById,
-  getSongById,
   getUserList,
   getUsersLists,
   getUserFollowing,
@@ -26,119 +16,60 @@ import {
   getRecommendedGroups,
   getRecommendedLists,
   getList,
-} from './api';
-import { MediaType } from './api.types';
-export const useAllAnime = async () =>
-  useQuery({
-    queryKey: ['anime'],
-    queryFn: getAllAnime,
-  });
-
-export const useAnimeById = async () =>
-  useQuery({
-    queryKey: ['animeid'],
-    queryFn: getAnimeById,
-  });
-
-export const useAllMovies = async () =>
-  useQuery({
-    queryKey: ['movies'],
-    queryFn: getAllMovies,
-  });
-
-export const useMovieById = async () =>
-  useQuery({
-    queryKey: ['movieid'],
-    queryFn: getMovieById,
-  });
-
-export const useAllSongs = async () =>
-  useQuery({
-    queryKey: ['songs'],
-    queryFn: getAllSongs,
-  });
-
-export const useSongById = async () =>
-  useQuery({
-    queryKey: ['songid'],
-    queryFn: getSongById,
-  });
-
-export const useAllGames = async () =>
-  useQuery({
-    queryKey: ['games'],
-    queryFn: getAllGames,
-  });
-
-export const useGameById = async () =>
-  useQuery({
-    queryKey: ['gameid'],
-    queryFn: getGameById,
-  });
+} from "./api";
+import { MediaType } from "./api.types";
 
 export const useAllLists = () =>
   useQuery({
-    queryKey: ['lists'],
+    queryKey: ["lists"],
     queryFn: getAllLists,
   });
 
 export const useUsersLists = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ['user-lists'],
+    queryKey: ["user-lists"],
     queryFn: getUsersLists({ email }),
   });
 
 export const useUserList = async () =>
   useQuery({
-    queryKey: ['user-list'],
+    queryKey: ["user-list"],
     queryFn: getUserList,
   });
 
 export const useAllUsers = async () =>
   useQuery({
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: getAllUsers,
   });
 
 export const useUser = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ['user'],
+    queryKey: ["user"],
     queryFn: getUserByEmail({ email }),
   });
 
 export const useAllLikes = async () =>
   useQuery({
-    queryKey: ['likes'],
+    queryKey: ["likes"],
     queryFn: getAllLists,
   });
 
 export const useUserLikes = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ['user-likes'],
+    queryKey: ["user-likes"],
     queryFn: getUserLikes({ email }),
-  });
-
-export const useAllFollows = async () =>
-  useQuery({
-    queryKey: ['follows'],
-    queryFn: getAllFollows,
   });
 
 export const useUserFollowing = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ['user-following'],
+    queryKey: ["user-following"],
     queryFn: getUserFollowing({ email }),
-  });
-
-export const useAllGroups = async () =>
-  useQuery({
-    queryKey: ['groups'],
-    queryFn: getAllGroups,
   });
 
 export const useGroupById = ({ group_id }: { group_id: string }) =>
   useQuery({
-    queryKey: ['group-by-id'],
+    queryKey: ["group-by-id"],
     queryFn: getGroupById({ group_id }),
   });
 
@@ -150,48 +81,48 @@ export const useGroupMemberLists = ({
   orderByAuthor: boolean;
 }) =>
   useQuery({
-    queryKey: ['group-member-lists'],
+    queryKey: ["group-member-lists"],
     queryFn: getGroupMemberLists({ group_id, orderByAuthor }),
   });
 
 export const useRecommendedGroups = ({ group_id }: { group_id: string }) =>
   useQuery({
-    queryKey: ['recommended-groups'],
+    queryKey: ["recommended-groups"],
     queryFn: getRecommendedGroups({ group_id }),
   });
 
 export const useUserFollowers = ({ email }: { email: string }) =>
   useQuery({
-    queryKey: ['user-followers'],
+    queryKey: ["user-followers"],
     queryFn: getUserFollowers({ email }),
   });
 
 export const useAllMedia = () =>
   useQuery({
-    queryKey: ['get-all-media'],
+    queryKey: ["get-all-media"],
     queryFn: getAllMedia,
   });
 
 export const useMediaByTypeAndId = (mediaType: MediaType, id: string) =>
   useQuery({
-    queryKey: ['get-all-media-by-type-and-id'],
+    queryKey: ["get-all-media-by-type-and-id"],
     queryFn: getMediaByTypeAndId(mediaType, id),
   });
 
 export const useMediaByType = (mediaType: MediaType) =>
   useQuery({
-    queryKey: ['get-media-by-type'],
+    queryKey: ["get-media-by-type"],
     queryFn: getAllMediaByType(mediaType),
   });
 
 export const useRecommendedLists = (userId: string) =>
   useQuery({
-    queryKey: ['get-recommended-lists'],
+    queryKey: ["get-recommended-lists"],
     queryFn: getRecommendedLists(userId),
   });
 
 export const useListByName = (list_name: string, user_name: string) =>
   useQuery({
-    queryKey: ['list'],
+    queryKey: ["list"],
     queryFn: getList(list_name, user_name),
   });

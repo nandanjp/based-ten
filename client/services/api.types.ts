@@ -1,79 +1,5 @@
-import { z } from 'zod';
-
-export const listTypes = ['anime', 'movies', 'songs', 'videogames'] as const;
+export const listTypes = ["anime", "movies", "songs", "videogames"] as const;
 export type ListType = (typeof listTypes)[number];
-export const create_anime = z.object({
-  id: z.number().positive(),
-  title: z.string(),
-  media_image: z.string(),
-  num_episodes: z.number().positive(),
-  created_on: z.string().date(),
-});
-
-export const create_movies = z.object({});
-
-export const create_game = z.object({
-  id: z.number().positive(),
-  title: z.string(),
-  media_image: z.string(),
-  console: z.string(),
-  created_on: z.string().date(),
-});
-
-export const create_song = z.object({
-  id: z.number().positive(),
-  title: z.string(),
-  author: z.string(),
-  media_image: z.string(),
-  created_on: z.string().date(),
-});
-
-export const create_user = z.object({
-  email: z.string().email(),
-  display_name: z.string(),
-  password: z.string(),
-});
-
-export const create_list = z.object({
-  email: z.string().email(),
-  list_name: z.string(),
-  list_type: z.enum(['anime', 'movies', 'songs', 'videogames']),
-});
-
-export const create_list_item = z.object({
-  email: z.string().email(),
-  list_name: z.string(),
-  ranking_in_list: z.number().min(1).max(10),
-  item_id: z.number().positive(),
-});
-
-export const create_group = z.object({
-  gid: z.number().positive(),
-  group_name: z.string(),
-  owned_by: z.string(),
-});
-
-export const create_follow = z.object({
-  follower_email: z.string().email(),
-  following_email: z.string().email(),
-});
-
-export const create_like = z.object({
-  liker_email: z.string().email(),
-  liking_email: z.string().email(),
-  list_name: z.string(),
-});
-
-export type CreateAnimeType = z.infer<typeof create_anime>;
-export type CreateMovieType = z.infer<typeof create_movies>;
-export type CreateSongType = z.infer<typeof create_song>;
-export type CreateVideoGameType = z.infer<typeof create_game>;
-export type CreateUserType = z.infer<typeof create_user>;
-export type CreateListType = z.infer<typeof create_list>;
-export type CreateListItemType = z.infer<typeof create_list_item>;
-export type CreateGroupType = z.infer<typeof create_group>;
-export type CreateFollowType = z.infer<typeof create_follow>;
-export type CreateLikeType = z.infer<typeof create_like>;
 
 export interface AnimeResponse {
   success: boolean;
@@ -203,10 +129,10 @@ export interface FollowMutualResponse {
 }
 
 export enum MediaType {
-  SONG = 'songs',
-  VIDEO_GAME = 'videogames',
-  ANIME = 'anime',
-  MOVIE = 'movies',
+  SONG = "songs",
+  VIDEO_GAME = "videogames",
+  ANIME = "anime",
+  MOVIE = "movies",
 }
 
 export type Media = {
