@@ -25,6 +25,20 @@ impl UsersService {
         .map_err(|e| UserError(format!("failed to retrieve a user {user_name}: {e:#?}")))
     }
 
+    pub async fn does_user_exist(
+        pool: &sqlx::PgPool,
+        user_name: String,
+    ) -> Result<Option<bool>, String> {
+        sqlx::query!(
+            "SELECT EXISTS(SELECT 1 FROM Users WHERE username = $1)",
+            user_name
+        )
+        .fetch_one(pool)
+        .await
+        .map(|r| r.exists)
+        .map_err(|e| format!("Database error: {e}"))
+    }
+
     pub async fn create(pool: &sqlx::PgPool, create_obj: CreateUser) -> Result<User, UserError> {
         sqlx::query_as!(
             User,

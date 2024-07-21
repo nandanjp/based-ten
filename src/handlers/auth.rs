@@ -22,23 +22,18 @@ pub async fn register_user_handler(
     State(pool): State<Arc<AppState>>,
     Json(body): Json<CreateUser>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
-    let exists = sqlx::query!(
-        "SELECT EXISTS(SELECT 1 FROM Users WHERE username = $1)",
-        body.user_name.clone()
-    )
-    .fetch_one(&pool.db)
-    .await
-    .map_err(|e| {
-        (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(serde_json::json!({
-                "success": false,
-                "response": false,
-                "error": format!("Database error: {}", e)
-            })),
-        )
-    })?
-    .exists;
+    let exists = UsersService::does_user_exist(&pool.db, body.user_name.clone())
+        .await
+        .map_err(|e| {
+            (
+                StatusCode::CONFLICT,
+                Json(serde_json::json!({
+                    "success": false,
+                    "response": false,
+                    "error": format!("{e}")
+                })),
+            )
+        })?;
 
     if let Some(true) = exists {
         return Err((
@@ -46,7 +41,7 @@ pub async fn register_user_handler(
             Json(serde_json::json!({
                 "success": false,
                 "response": false,
-                "error": format!("User with the given user_name already exists!")
+                "error": format!("User with the given user name already exists!")
             })),
         ));
     }
@@ -60,18 +55,22 @@ pub async fn register_user_handler(
                 Json(serde_json::json!({
                     "success": false,
                     "response": false,
-                    "error": format!("Error while hashing password {}", e)
+                    "error": format!("Error while hashing password {e}")
                 })),
             )
         })
         .map(|hash| hash.to_string())?;
 
-    let body = CreateUser {
-        email: body.email.to_owned(),
-        password: hashed_password,
-        user_name: body.user_name.to_owned(),
-    };
-    let user = UsersService::create(&pool.db, body).await.map_err(|e| {
+    let user = UsersService::create(
+        &pool.db,
+        CreateUser {
+            email: body.email.to_owned(),
+            password: hashed_password,
+            user_name: body.user_name.to_owned(),
+        },
+    )
+    .await
+    .map_err(|e| {
         (
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(serde_json::json!({
@@ -83,14 +82,14 @@ pub async fn register_user_handler(
     })?;
 
     Ok(Json(serde_json::json!({
-        "success": false,
+        "success": true,
         "response": serde_json::json!({
             "email": user.email.to_owned(),
             "user_name": user.username.to_owned(),
             "password": user.userpassword.to_owned(),
             "created_at": user.createdat,
         }),
-        "error": format!("User with the given user_name already exists!")
+        "error": false
     })))
 }
 
@@ -106,7 +105,7 @@ pub async fn login_user_handler(
                 Json(serde_json::json!({
                     "success": false,
                     "response": false,
-                    "error": format!("Invalid email or password: {}", e)
+                    "error": format!("Invalid user_name or password: {}", e)
                 })),
             )
         })?;
@@ -122,7 +121,7 @@ pub async fn login_user_handler(
             Json(serde_json::json!({
                 "success": false,
                 "response": false,
-                "error": format!("Invalid email or password")
+                "error": format!("Invalid user_name or password")
             })),
         ));
     }
