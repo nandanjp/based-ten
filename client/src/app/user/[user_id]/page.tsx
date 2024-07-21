@@ -73,8 +73,8 @@ const UserPage = () => {
           <TabsTrigger value="account">Account</TabsTrigger>
         </TabsList>
         <TabsContent value="lists" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Lists</div>
+          <div className="text-3xl font-semibold mb-6">Lists</div>
+            <div className="grid grid-cols-3 gap-4">
             {user_lists.data.response?.map((l) => (
               <ListCard
                 key={l.user_name}
@@ -86,8 +86,8 @@ const UserPage = () => {
           </div>
         </TabsContent>
         <TabsContent value="likes" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Liked Lists</div>
+          <div className="text-3xl font-semibold mb-6">Liked Lists</div>
+            <div className="grid grid-cols-3 gap-4">
             {user_likes.data.response?.map((l) => (
               <ListCard
                 key={l.liking_name.concat(l.list_name)}
@@ -119,8 +119,8 @@ const UserPage = () => {
           </div>
         </TabsContent>
         <TabsContent value="groups" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Groups</div>
+        <div className="text-3xl font-semibold mb-6">Groups</div>
+          <div className="grid grid-cols-3 gap-4">
             {user_groups.data.response?.map((g) => (
               <GroupCard
                 key={g.group_name}
