@@ -251,11 +251,15 @@ impl ListService {
         }
     }
 
-    pub async fn create(pool: &sqlx::PgPool, create_obj: CreateList) -> Result<List, ErrorList> {
+    pub async fn create(
+        pool: &sqlx::PgPool,
+        user_name: String,
+        create_obj: CreateList,
+    ) -> Result<List, ErrorList> {
         sqlx::query_as!(
             List,
             r#"INSERT INTO Lists(userName, listName, listType) VALUES($1, $2, $3) RETURNING username, listname, listtype AS "listtype: ListType""#,
-            create_obj.user_name,
+            user_name,
             create_obj.list_name,
             create_obj.list_type as ListType
         )

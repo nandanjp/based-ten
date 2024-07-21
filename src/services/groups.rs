@@ -19,6 +19,20 @@ impl GroupsService {
             .map_err(|e| GroupsError(format!("failed to retrieve group = {gid}: {e:#?}")))
     }
 
+    pub async fn get_user_groups(
+        pool: &sqlx::PgPool,
+        username: String,
+    ) -> Result<Vec<Group>, GroupsError> {
+        sqlx::query_as!(
+            Group,
+            r#"SELECT * FROM GROUPS WHERE ownedby = $1"#,
+            username
+        )
+        .fetch_all(pool)
+        .await
+        .map_err(|e| GroupsError(format!("failed to retrieve user's groups: {e:#?}")))
+    }
+
     pub async fn get_circles_by_id(
         pool: &sqlx::PgPool,
         gid: i32,
@@ -53,6 +67,7 @@ impl GroupsService {
 
     pub async fn create(
         pool: &sqlx::PgPool,
+        username: String,
         create_obj: CreateGroups,
     ) -> Result<Group, GroupsError> {
         sqlx::query_as!(
@@ -60,7 +75,7 @@ impl GroupsService {
             r#"INSERT INTO Groups(gid, groupName, ownedBy) VALUES($1, $2, $3) RETURNING *"#,
             create_obj.gid,
             create_obj.group_name,
-            create_obj.owned_by
+            username
         )
         .fetch_one(pool)
         .await
@@ -76,6 +91,22 @@ impl GroupsService {
         .fetch_one(pool)
         .await
         .map_err(|e| GroupsError(format!("failed to delete group = {gid}: {e:#?}")))
+    }
+
+    pub async fn delete_user_group(
+        pool: &sqlx::PgPool,
+        username: String,
+        group_name: String,
+    ) -> Result<Group, GroupsError> {
+        sqlx::query_as!(
+            Group,
+            r#"DELETE FROM Groups WHERE ownedby = $1 AND groupname = $2 RETURNING *"#,
+            username,
+            group_name
+        )
+        .fetch_one(pool)
+        .await
+        .map_err(|e| GroupsError(format!("failed to delete user's group: {e:#?}")))
     }
 
     pub async fn get_member_lists(

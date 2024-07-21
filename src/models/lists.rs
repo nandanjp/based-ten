@@ -22,7 +22,6 @@ pub struct QueryList {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateList {
-    pub user_name: String,
     pub list_name: String,
     pub list_type: ListType,
 }

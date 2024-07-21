@@ -28,7 +28,6 @@ pub struct GroupMember {
 pub struct CreateGroups {
     pub gid: i32,
     pub group_name: String,
-    pub owned_by: String,
 }
 
 #[derive(Debug, Clone)]
