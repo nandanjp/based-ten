@@ -1,72 +1,84 @@
-'use client';
+"use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createUser, getUser } from "../../services/api";
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
-} from '@/components/ui/form';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { createUser } from '../../../services/api';
+} from "./ui/form";
+import CardWrapper from "./CardWrapper";
+import { useState } from "react";
+import { useFormStatus } from "react-dom";
+import { useRouter } from "next/navigation";
 
-const formSchema = z
+const SignupFormSchema = z
   .object({
     email: z.string().email(),
     username: z.string().min(2, {
-      message: 'Username must be at least 2 characters.',
+      message: "Username must be at least 2 characters.",
     }),
     password: z.string().min(2, {
-      message: 'Password must be at least 2 characters.',
+      message: "Password must be at least 2 characters.",
     }),
     confirmPassword: z.string(),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
       ctx.addIssue({
-        code: 'custom',
-        message: 'The passwords do not match',
-        path: ['confirmPassword'],
+        code: "custom",
+        message: "The passwords do not match",
+        path: ["confirmPassword"],
       });
     }
   });
 
-const SignUpPage = () => {
+export default function SignupForm() {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [loading, setLoading] = useState(false);
+
+  const form = useForm<z.infer<typeof SignupFormSchema>>({
+    resolver: zodResolver(SignupFormSchema),
     defaultValues: {
-      username: '',
-      password: '',
-      confirmPassword: '',
-      email: '',
+      username: "",
+      password: "",
+      confirmPassword: "",
+      email: "",
     },
   });
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof SignupFormSchema>) => {
+    setLoading(true);
     const result = await createUser(
       values.username,
       values.password,
-      values.email,
+      values.email
     );
     if (result.success) {
-      console.log('user created', result.response);
+      router.push("/login");
+      console.log("user created", result.response);
     } else {
-      console.log('failed to create user', result.error);
+      console.log("failed to create user", result.error);
     }
   };
+
+  const { pending } = useFormStatus();
+
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center gap-2">
+    <CardWrapper
+      label="Create an account"
+      title="Sign up"
+      backButtonHref={"/login"}
+      backButtonLabel="Already have an account? Login here"
+    >
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-1/4 flex flex-col gap-8"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="email"
@@ -123,16 +135,11 @@ const SignUpPage = () => {
               </FormItem>
             )}
           />
-          <div className="flex flex-row-reverse items-center gap-4">
-            <Button type="submit">Submit</Button>
-            <Button type="button" onClick={() => router.push('login')}>
-              Log In
-            </Button>
-          </div>
+          <Button type="submit" className="w-full" disabled={pending}>
+            {loading ? "Loading..." : "Sign up"}
+          </Button>
         </form>
       </Form>
-    </div>
+    </CardWrapper>
   );
-};
-
-export default SignUpPage;
+}

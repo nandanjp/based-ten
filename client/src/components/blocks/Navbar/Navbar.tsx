@@ -1,33 +1,37 @@
-import Link from 'next/link';
-import { NavbarProps } from './types';
-import { cn } from '@/lib/utils';
+"use client";
 
-const Navbar = ({ className }: NavbarProps) => {
+import React, { useState } from "react";
+import { HoveredLink, Menu, MenuItem } from "@/components/ui/navbar-menu";
+import { cn } from "@/lib/utils";
+
+function Navbar({ className }: { className?: string }) {
+  const [active, setActive] = useState<string | null>(null);
   return (
-    <div
-      className={cn([
-        className,
-        'flex justify-between w-full bg-gray-600 backdrop-filter backdrop-blur-xl text-white text-xl',
-      ])}
-    >
-      <div className="flex gap-2">
-        <Link href="/" className="hover:bg-gray-400 p-3">
-          Home
-        </Link>
-        <Link href="/explore" className="hover:bg-gray-400 p-3">
-          Explore
-        </Link>
-      </div>
-      <div className="flex gap-2">
-        <Link href="/login" className="hover:bg-gray-400 p-3">
-          Log In
-        </Link>
-        <Link href="/signup" className="hover:bg-gray-400 p-3">
-          Sign Up
-        </Link>
-      </div>
+    <div className={cn("fixed inset-x-0 w-full mx-auto z-50", className)}>
+      <Menu setActive={setActive}>
+        <div className="flex justify-between items-center w-full">
+          <MenuItem setActive={setActive} active={active} item="Services">
+            <div className="flex flex-col space-y-4 text-sm">
+              <HoveredLink href="/">Home</HoveredLink>
+              <HoveredLink href="/explore">Explore</HoveredLink>
+              <HoveredLink href="/login">Login</HoveredLink>
+              <HoveredLink href="/signup">Signup</HoveredLink>
+            </div>
+          </MenuItem>
+          <div className="flex gap-8 justify-center items-center">
+            <MenuItem setActive={setActive} active={active} item="Menu">
+              <div className="flex flex-col space-y-4 text-sm">
+                <HoveredLink href="/">Home</HoveredLink>
+                <HoveredLink href="/explore">Explore</HoveredLink>
+                <HoveredLink href="/login">Login</HoveredLink>
+                <HoveredLink href="/signup">Signup</HoveredLink>
+              </div>
+            </MenuItem>
+          </div>
+        </div>
+      </Menu>
     </div>
   );
-};
+}
 
 export default Navbar;

@@ -83,10 +83,12 @@ export const getRecommendedGroups =
   async () =>
     (await axiosInstance.get<GroupResponse>(`groups/${group_id}/circles`)).data;
 
-export const getAllMedia = async () => {
-  const rawResult = await axiosInstance.get(`media`);
-  return rawResult.data.response as Media[];
-};
+export const getAllMedia =
+  ({ title }: { title: string | null }) =>
+  async () => {
+    const rawResult = await axiosInstance.get(`media`);
+    return rawResult.data.response as Media[];
+  };
 
 export const getAllMediaByType = (mediaType: MediaType) => async () => {
   const rawResult = await axiosInstance.get(`${mediaType}`);
@@ -137,13 +139,14 @@ export const getList = (list_name: string, user_name: string) => async () =>
     )
   ).data;
 
-export const getUser = async (user_name: string, password: string) =>
-  (
-    await axiosInstance.post<LoginResponse>("auth/login", {
-      user_name,
-      password,
-    })
-  ).data;
+export const getUser = async (user_name: string, password: string) => {
+  const res = await axiosInstance.post<LoginResponse>("auth/login", {
+    user_name,
+    password,
+  });
+  console.log(res.headers);
+  return res.data;
+};
 
 export const createUser = async (
   user_name: string,

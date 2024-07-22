@@ -97,10 +97,10 @@ export const useUserFollowers = ({ email }: { email: string }) =>
     queryFn: getUserFollowers({ email }),
   });
 
-export const useAllMedia = () =>
+export const useAllMedia = (title: string | null) =>
   useQuery({
     queryKey: ["get-all-media"],
-    queryFn: getAllMedia,
+    queryFn: getAllMedia({ title }),
   });
 
 export const useMediaByTypeAndId = (mediaType: MediaType, id: string) =>
