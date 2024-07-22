@@ -12,6 +12,7 @@ import {
   Song,
   VideoGame,
   GroupResponse,
+  GroupsResponse,
   MediaResponse,
   LoginResponse,
 } from "./api.types";
@@ -52,6 +53,11 @@ export const getUserLikes =
   ({ email }: { email: string }) =>
   async () =>
     (await axiosInstance.get<LikeResponse>(`likes/${email}`)).data;
+
+export const getUserGroups =
+  ({ email }: { email: string }) =>
+  async () =>
+    (await axiosInstance.get<GroupsResponse>(`groups/users/${email}`)).data;
 
 export const getUserFollowing =
   ({ email }: { email: string }) =>

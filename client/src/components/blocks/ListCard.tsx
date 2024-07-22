@@ -2,11 +2,14 @@ import * as React from "react";
 
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
+import { Button } from "../ui/button";
 
 interface ListCardProps {
   list_name: string;
@@ -24,6 +27,13 @@ export function ListCard({ list_name, list_author, list_type }: ListCardProps) {
       <CardFooter className="flex justify-between">
         <p className="">Created by {list_author}</p>
       </CardFooter>
+      <CardContent>
+          <Link href={`/view-list/${list_author}/${list_name}`}>
+            <Button variant={'default'}>
+              View List
+            </Button>
+          </Link>
+        </CardContent>
     </Card>
   );
 }

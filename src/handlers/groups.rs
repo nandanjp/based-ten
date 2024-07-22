@@ -59,6 +59,19 @@ pub async fn get_group_members(
     )
 }
 
+pub async fn get_groups_by_user(
+    State(pool): State<Arc<AppState>>,
+    Path(user_id): Path<String>,
+) -> impl IntoResponse {
+    get_list_response(
+        GroupsService::get_by_user(&pool.db, user_id)
+            .await
+            .map_err(|e| format!("failed to retrieve groups by user due to the following error: {e:#?}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn get_circles_by_id(
     State(pool): State<Arc<AppState>>,
     Path(id): Path<i32>,

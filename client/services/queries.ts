@@ -16,6 +16,7 @@ import {
   getRecommendedGroups,
   getRecommendedLists,
   getList,
+  getUserGroups,
 } from "./api";
 import { MediaType } from "./api.types";
 
@@ -59,6 +60,12 @@ export const useUserLikes = ({ email }: { email: string }) =>
   useQuery({
     queryKey: ["user-likes"],
     queryFn: getUserLikes({ email }),
+  });
+
+export const useUserGroups = ({ email }: { email: string }) =>
+  useQuery({
+    queryKey: ["user-groups"],
+    queryFn: getUserGroups({ email }),
   });
 
 export const useUserFollowing = ({ email }: { email: string }) =>

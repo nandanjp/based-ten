@@ -12,4 +12,5 @@ WITH RECURSIVE Circles AS (
   )
 )
 SELECT DISTINCT gid, groupName, ownedBy FROM Circles
+WHERE gid != 1
 ORDER BY gid;
