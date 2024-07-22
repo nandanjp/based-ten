@@ -39,7 +39,7 @@ async fn main() {
         .to_string();
     let pool = PgPoolOptions::new()
         .max_connections(5)
-        .acquire_timeout(Duration::from_secs(3))
+        .acquire_timeout(Duration::from_secs(10))
         .connect(&db_str)
         .await
         .expect(&format!(
