@@ -1,21 +1,21 @@
-'use client';
-import { Media } from '../../services/api.types';
+"use client";
+import { Media } from "../../services/api.types";
 import {
   Command,
   CommandEmpty,
   CommandList,
   CommandInput,
-} from '@/components/ui/command';
-import { CommandItem } from 'cmdk';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useAllMedia } from '../../services/queries';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import Navbar from '@/components/blocks/Navbar/Navbar';
+} from "@/components/ui/command";
+import { CommandItem } from "cmdk";
+import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
+import { useAllMedia } from "../../services/queries";
+import Navbar from "@/components/blocks/Navbar/Navbar";
+import { UserContext } from "./context";
 
 const SearchPage = () => {
   const router = useRouter();
+  const { user } = useContext(UserContext);
   const [open, setOpen] = useState<boolean>(false);
   const media = useAllMedia();
   const handleValueChange = (value: string) => {
@@ -29,9 +29,9 @@ const SearchPage = () => {
   return (
     <div
       style={{
-        background: 'linear-gradient(to right, #d4e1f5, #ffcbb9, #ffe29e)',
-        backgroundSize: '200% 200%',
-        animation: 'gradientFlow 10s ease infinite',
+        background: "linear-gradient(to right, #d4e1f5, #ffcbb9, #ffe29e)",
+        backgroundSize: "200% 200%",
+        animation: "gradientFlow 10s ease infinite",
       }}
       className="h-screen w-screen flex items-center flex-col"
     >
@@ -39,7 +39,7 @@ const SearchPage = () => {
       <div className="flex flex-col flex-auto justify-center items-center">
         <div className="flex flex-col text-center p-10">
           <h1
-            style={{ textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}
+            style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)" }}
             className="mb-5 text-white text-5xl"
           >
             Let's Rank It.

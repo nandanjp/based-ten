@@ -132,18 +132,29 @@ export const getMediaByTypeAndId =
     }
     return item;
   };
+export const getRecommendedLists = async () => {
+  const token = localStorage.getItem("token");
+  return (
+    await axiosInstance.get<ListResponse>(`explore/user`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+  ).data.response;
+};
 
-export const getRecommendedLists = (userId: string) => async () =>
-  (await axiosInstance.get<ListResponse>(`explore/${userId}`)).data.response;
-
-export const getList = (list_name: string, user_name: string) => async () =>
-  (
-    await axiosInstance.get<MediaResponse>(
-      `lists/${user_name}/${list_name}/items`
-    )
+export const getList = (list_name: string, user_name: string) => async () => {
+  const token = localStorage.getItem("token");
+  return (
+    await axiosInstance.get<MediaResponse>(`lists/user/${list_name}/items`, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
   ).data;
+};
 
-export const getUser = async (user_name: string, password: string) =>
+export const loginUser = async (user_name: string, password: string) =>
   (
     await axiosInstance.post<LoginResponse>("auth/login", {
       user_name,
@@ -163,3 +174,20 @@ export const createUser = async (
       email,
     })
   ).data;
+
+export const getCurrentUser = async (): Promise<UserResponse> => {
+  const token = localStorage.getItem("token");
+  try {
+    const result = await axiosInstance.get<UserResponse>("users/user", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    return result.data;
+  } catch {
+    console.log("invalid token");
+    return {
+      success: false,
+    };
+  }
+};

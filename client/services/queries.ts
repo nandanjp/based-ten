@@ -122,10 +122,10 @@ export const useMediaByType = (mediaType: MediaType) =>
     queryFn: getAllMediaByType(mediaType),
   });
 
-export const useRecommendedLists = (userId: string) =>
+export const useRecommendedLists = () =>
   useQuery({
     queryKey: ["get-recommended-lists"],
-    queryFn: getRecommendedLists(userId),
+    queryFn: getRecommendedLists,
   });
 
 export const useListByName = (list_name: string, user_name: string) =>

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { ListCard } from '@/components/blocks/ListCard';
-import { UserCard } from '@/components/blocks/UserCard';
-import { GroupCard } from '@/components/blocks/GroupCard';
-import { UserCardFollowBack } from '@/components/blocks/UserCardFollowBack';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useParams } from 'next/navigation';
+import { ListCard } from "@/components/blocks/ListCard";
+import { UserCard } from "@/components/blocks/UserCard";
+import { GroupCard } from "@/components/blocks/GroupCard";
+import { UserCardFollowBack } from "@/components/blocks/UserCardFollowBack";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useParams } from "next/navigation";
 import {
   useUsersLists,
   useUser,
@@ -13,8 +13,8 @@ import {
   useUserFollowers,
   useUserLikes,
   useUserGroups,
-} from '../../../../services/queries';
-import GradientHeader from '@/components/ui/gradient-header';
+} from "../../../../services/queries";
+import GradientHeader from "@/components/ui/gradient-header";
 
 const UserPage = () => {
   const { user_id } = useParams<{ user_id: string }>();
@@ -47,7 +47,14 @@ const UserPage = () => {
     return <span>there was an error!</span>;
   }
 
-  if (user_lists.isFetching || user_info.isFetching || user_likes.isFetching || user_followers.isFetching || user_following.isFetching || user_groups.isFetching) {
+  if (
+    user_lists.isFetching ||
+    user_info.isFetching ||
+    user_likes.isFetching ||
+    user_followers.isFetching ||
+    user_following.isFetching ||
+    user_groups.isFetching
+  ) {
     return <span>data being fetched</span>;
   }
 
@@ -59,9 +66,9 @@ const UserPage = () => {
 
   return (
     <div className="w-screen">
-      <GradientHeader 
-        title={user_info.data.response?.user_name} 
-        subtitle={user_info.data.response?.email} 
+      <GradientHeader
+        title={user_info.data.response?.username}
+        subtitle={user_info.data.response?.email}
       />
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
@@ -74,7 +81,7 @@ const UserPage = () => {
         </TabsList>
         <TabsContent value="lists" className="p-6">
           <div className="text-3xl font-semibold mb-6">Lists</div>
-            <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {user_lists.data.response?.map((l) => (
               <ListCard
                 key={l.user_name}
@@ -87,7 +94,7 @@ const UserPage = () => {
         </TabsContent>
         <TabsContent value="likes" className="p-6">
           <div className="text-3xl font-semibold mb-6">Liked Lists</div>
-            <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             {user_likes.data.response?.map((l) => (
               <ListCard
                 key={l.liking_name.concat(l.list_name)}
@@ -119,7 +126,7 @@ const UserPage = () => {
           </div>
         </TabsContent>
         <TabsContent value="groups" className="p-6">
-        <div className="text-3xl font-semibold mb-6">Groups</div>
+          <div className="text-3xl font-semibold mb-6">Groups</div>
           <div className="grid grid-cols-3 gap-4">
             {user_groups.data.response?.map((g) => (
               <GroupCard

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ReactQueryClientProvider } from "@/components/client-provider";
+import { ThemeProvider } from "next-themes";
+import Providers from "@/components/Providers";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +18,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReactQueryClientProvider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-      </html>
-    </ReactQueryClientProvider>
+    <html lang="en">
+      <body
+        className={cn(
+          "min-h-screen bg-background antialiased",
+          inter.className
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>{children}</Providers>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

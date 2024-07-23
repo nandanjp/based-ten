@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Form,
@@ -7,39 +7,49 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { getUser } from '../../../services/api';
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { getCurrentUser, loginUser } from "../../../services/api";
+import { useContext } from "react";
+import { UserContext } from "../context";
 
 const formSchema = z.object({
   username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+    message: "Username must be at least 2 characters.",
   }),
   password: z.string().min(2, {
-    message: 'Password must be at least 2 characters.',
+    message: "Password must be at least 2 characters.",
   }),
 });
 
 const LoginPage = () => {
   const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
     },
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const loginResult = await getUser(values.username, values.password);
+    const loginResult = await loginUser(values.username, values.password);
     if (loginResult.success) {
-      console.log('works!', loginResult.token);
+      localStorage.setItem("token", loginResult.token);
+      const userResponse = await getCurrentUser();
+      if (userResponse.response) {
+        setUser(userResponse.response);
+      }
+      router.push("/");
     } else {
-      console.log('wrong info');
+      form.setError("password", {
+        message: "Invalid username or password",
+      });
     }
   };
   return (
@@ -77,7 +87,7 @@ const LoginPage = () => {
           />
           <div className="flex flex-row-reverse items-center gap-4">
             <Button type="submit">Submit</Button>
-            <Button type="button" onClick={() => router.push('signup')}>
+            <Button type="button" onClick={() => router.push("signup")}>
               Sign Up
             </Button>
           </div>

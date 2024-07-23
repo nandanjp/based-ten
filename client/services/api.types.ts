@@ -48,14 +48,16 @@ export interface MovieResponse {
   error?: string;
 }
 
+export type User = {
+  createdat: string;
+  email: string;
+  username: string;
+  userpassword: string;
+};
+
 export interface UserResponse {
   success: boolean;
-  response?: {
-    email: string;
-    user_name: string;
-    password: string;
-    created_at: string;
-  };
+  response?: User;
   error?: string;
 }
 
@@ -150,7 +152,7 @@ export type Media = {
   created_on: string;
   media_image: string;
   title: string;
-  listtype: MediaType;
+  type: MediaType;
 };
 
 export type VideoGame = Media & {

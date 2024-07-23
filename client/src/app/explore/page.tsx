@@ -1,27 +1,27 @@
-'use client';
-import Navbar from '@/components/blocks/Navbar/Navbar';
+"use client";
+import Navbar from "@/components/blocks/Navbar/Navbar";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@radix-ui/react-collapsible';
-import { ChevronsUpDown, Heart } from 'lucide-react';
-import { useAllLists, useRecommendedLists } from '../../../services/queries';
-import { listTypes } from '../../../services/api.types';
+} from "@radix-ui/react-collapsible";
+import { ChevronsUpDown, Heart } from "lucide-react";
+import { useAllLists, useRecommendedLists } from "../../../services/queries";
+import { listTypes } from "../../../services/api.types";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/ui/carousel';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import GradientHeader from '@/components/ui/gradient-header';
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import GradientHeader from "@/components/ui/gradient-header";
 
 const ExplorePage = () => {
   const lists = useAllLists();
-  const recommendedLists = useRecommendedLists('ethan.ramirez');
+  const recommendedLists = useRecommendedLists();
   return (
     <div className="w-screen h-screen text-gray-600">
       <Navbar />
@@ -56,8 +56,8 @@ const ExplorePage = () => {
             <CarouselNext />
           </Carousel>
         </div>
-        {listTypes.map((listType) => (
-          <Collapsible>
+        {listTypes.map((listType, index) => (
+          <Collapsible key={index}>
             <CollapsibleTrigger className="flex gap-2">
               <ChevronsUpDown />
               <h2 className="text-2xl">{listType.toUpperCase()}</h2>
@@ -78,10 +78,10 @@ const ExplorePage = () => {
                         className="cursor-pointer"
                         onClick={(event) =>
                           event.currentTarget.setAttribute(
-                            'fill',
-                            event.currentTarget.getAttribute('fill') === 'pink'
-                              ? 'none'
-                              : 'pink',
+                            "fill",
+                            event.currentTarget.getAttribute("fill") === "pink"
+                              ? "none"
+                              : "pink"
                           )
                         }
                       />
