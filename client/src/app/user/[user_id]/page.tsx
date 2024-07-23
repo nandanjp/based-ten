@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParams } from "next/navigation";
 import {
   useUsersLists,
-  useUser,
+  useCurrentUser,
   useUserFollowing,
   useUserFollowers,
   useUserLikes,
@@ -18,7 +18,7 @@ import GradientHeader from "@/components/ui/gradient-header";
 
 const UserPage = () => {
   const { user_id } = useParams<{ user_id: string }>();
-  const user_info = useUser({ email: user_id });
+  const user_info = useCurrentUser();
   const user_lists = useUsersLists({ email: user_id });
   const user_following = useUserFollowing({ email: user_id });
   const user_followers = useUserFollowers({ email: user_id });

@@ -22,10 +22,10 @@ pub async fn get_all_groups(State(pool): State<Arc<AppState>>) -> impl IntoRespo
 
 pub async fn get_user_groups(
     State(pool): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Path(user_name): Path<String>,
 ) -> impl IntoResponse {
     get_list_response(
-        GroupsService::get_user_groups(&pool.db, user.username)
+        GroupsService::get_user_groups(&pool.db, user_name)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,

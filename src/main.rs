@@ -50,7 +50,7 @@ async fn main() {
         .unwrap()
         .parse::<u32>()
         .expect("failed to retrieve a valid port");
-    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}"))
+    let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{port}"))
         .await
         .expect("failed to retrieve a tcp listener: could not start up a server on the given port");
     let cors = CorsLayer::permissive();

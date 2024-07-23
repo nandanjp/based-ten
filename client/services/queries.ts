@@ -17,6 +17,7 @@ import {
   getRecommendedLists,
   getList,
   getUserGroups,
+  getCurrentUser,
 } from "./api";
 import { MediaType } from "./api.types";
 
@@ -48,6 +49,12 @@ export const useUser = ({ email }: { email: string }) =>
   useQuery({
     queryKey: ["user"],
     queryFn: getUserByEmail({ email }),
+  });
+
+export const useCurrentUser = () =>
+  useQuery({
+    queryKey: ["current-user"],
+    queryFn: getCurrentUser,
   });
 
 export const useAllLikes = async () =>

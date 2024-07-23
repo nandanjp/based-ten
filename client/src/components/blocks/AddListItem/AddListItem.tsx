@@ -25,7 +25,7 @@ export const AddListItem = (props: AddListItemProps) => {
       >
         {listItem ? (
           <>
-            <Image src={'/eepy.png'} alt={listItem.title} width={48} height={48} />
+            <Image src={listItem.media_image} alt={listItem.title} width={48} height={48} />
             <div className="flex flex-col gap-2 items-center justify-center">
               <h1 className="font-semibold italic text-base">
                 {listItem.title}

@@ -42,10 +42,10 @@ export const getAllUsers = async () =>
 export const getUserByEmail =
   ({ email }: { email: string }) =>
   async () =>
-    (await axiosInstance.get<UserResponse>(`users/${email}`)).data;
+    (await axiosInstance.get<UserResponse>(`user/${email}`)).data;
 
 export const deleteUser = async ({ email }: { email: string }) =>
-  (await axiosInstance.delete<UserResponse>(`users/${email}`)).data;
+  (await axiosInstance.delete<UserResponse>(`user/${email}`)).data;
 
 export const getAllLikes = async () => {};
 
@@ -57,7 +57,7 @@ export const getUserLikes =
 export const getUserGroups =
   ({ email }: { email: string }) =>
   async () =>
-    (await axiosInstance.get<GroupsResponse>(`groups/users/${email}`)).data;
+    (await axiosInstance.get<GroupsResponse>(`groups/user/${email}`)).data;
 
 export const getUserFollowing =
   ({ email }: { email: string }) =>
@@ -67,7 +67,7 @@ export const getUserFollowing =
 export const getUserFollowers =
   ({ email }: { email: string }) =>
   async () =>
-    (await axiosInstance.get<FollowMutualResponse>(`follow/mutual/${email}`))
+    (await axiosInstance.get<FollowMutualResponse>(`follow/${email}/mutual`))
       .data;
 
 export const getGroupById =
