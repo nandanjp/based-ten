@@ -1,11 +1,9 @@
-use std::path::Path;
 use std::sync::Arc;
 
-use crate::models::users::User;
 use crate::services::followmutual::FollowMutualService;
 use crate::utils::response::get_list_response;
 use crate::AppState;
-use axum::extract::State;
+use axum::extract::{Path, State};
 use axum::response::IntoResponse;
 use http::StatusCode;
 

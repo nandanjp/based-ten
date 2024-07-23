@@ -84,7 +84,7 @@ pub fn create_media_router() -> Router<Arc<AppState>> {
     Router::new().route("/", get(get_all_media))
 }
 
-pub fn create_lists_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
+pub fn create_lists_router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/", get(get_all_lists))
         .route("/top", get(get_some_top_lists))
@@ -139,7 +139,7 @@ pub fn create_user_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
         )
 }
 
-pub fn create_likes_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
+pub fn create_likes_routes() -> Router<Arc<AppState>> {
     Router::new()
         .route("/", get(get_all_likes))
         .route("/", post(create_like))
@@ -152,7 +152,7 @@ pub fn create_likes_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/:liker/:liking/:list_name", delete(delete_like))
 }
 
-pub fn create_follow_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
+pub fn create_follow_routes() -> Router<Arc<AppState>> {
     Router::new()
         .route("/", get(get_all_follows))
         .route("/", post(create_follow))
@@ -166,7 +166,7 @@ pub fn create_follow_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/:follower/:following", delete(delete_follows))
 }
 
-pub fn create_groups_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
+pub fn create_groups_router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/", get(get_all_groups))
         .nest(

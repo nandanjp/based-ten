@@ -70,16 +70,16 @@ async fn main() {
                 .nest("/songs", create_songs_router())
                 .nest("/videogames", create_games_router())
                 .nest("/media", create_media_router())
-                .nest("/lists", create_lists_router(app_state.clone()))
+                .nest("/lists", create_lists_router())
                 .nest("/explore", create_explore_router(app_state.clone()))
                 .nest(
                     "/listitems/user",
                     create_listitems_router(app_state.clone()),
                 )
                 .nest("/users", create_user_routes(app_state.clone()))
-                .nest("/likes", create_likes_routes(app_state.clone()))
-                .nest("/follow", create_follow_routes(app_state.clone()))
-                .nest("/groups", create_groups_router(app_state.clone())),
+                .nest("/likes", create_likes_routes())
+                .nest("/follow", create_follow_routes())
+                .nest("/groups", create_groups_router()),
         )
         .with_state(app_state)
         .layer(cors)

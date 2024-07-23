@@ -1,13 +1,11 @@
 use std::sync::Arc;
 
 use crate::models::follows::{CreateFollow, QueryFollow};
-use crate::models::users::User;
 use crate::services::follows::FollowsService;
 use crate::utils::response::{get_list_response, get_one_response};
 use crate::AppState;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
-use axum::Extension;
 use http::StatusCode;
 
 pub async fn get_all_follows(

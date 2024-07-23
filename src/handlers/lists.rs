@@ -110,11 +110,11 @@ pub async fn get_some_top_lists(
 
 pub async fn create_list(
     State(pool): State<Arc<AppState>>,
-    Path(user): Path<String>,
+    Path(username): Path<String>,
     Json(create): Json<CreateList>,
 ) -> impl IntoResponse {
     get_one_response(
-        ListService::create(&pool.db, user.username, create)
+        ListService::create(&pool.db, username, create)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
