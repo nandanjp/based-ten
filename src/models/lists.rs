@@ -43,6 +43,7 @@ impl std::fmt::Display for ErrorList {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, sqlx::Type, Deserialize, Serialize)]
 #[sqlx(rename_all = "lowercase", type_name = "listtype")]
+#[serde(rename_all = "lowercase")]
 pub enum ListType {
     Anime,
     Movies,
