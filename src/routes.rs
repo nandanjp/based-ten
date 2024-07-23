@@ -149,7 +149,6 @@ pub fn create_likes_routes() -> Router<Arc<AppState>> {
                 .route("/", get(get_likes_by_id))
                 .route("/:liking/:list_name", delete(delete_user_likes)),
         )
-        .route("/:liker/:liking/:list_name", delete(delete_like))
 }
 
 pub fn create_follow_routes() -> Router<Arc<AppState>> {
@@ -163,14 +162,13 @@ pub fn create_follow_routes() -> Router<Arc<AppState>> {
                 .route("/:following", delete(delete_follow))
                 .route("/mutual", get(get_mutual_follows_by_id)),
         )
-        .route("/:follower/:following", delete(delete_follows))
 }
 
 pub fn create_groups_router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/", get(get_all_groups))
         .nest(
-            "/:user_name",
+            "/user/:user_name",
             Router::new()
                 .route("/", get(get_user_groups))
                 .route("/", post(create_groups))

@@ -10,6 +10,7 @@ import {
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { AddListItemProps } from './types';
+import Image from 'next/image';
 
 export const AddListItem = (props: AddListItemProps) => {
   const { onClick, listItem, list } = props;
@@ -24,7 +25,7 @@ export const AddListItem = (props: AddListItemProps) => {
       >
         {listItem ? (
           <>
-            <img src={listItem.media_image} className="w-12 h-12" />
+            <Image src={'/eepy.png'} alt={listItem.title} width={48} height={48} />
             <div className="flex flex-col gap-2 items-center justify-center">
               <h1 className="font-semibold italic text-base">
                 {listItem.title}
