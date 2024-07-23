@@ -24,7 +24,7 @@ const ExplorePage = () => {
   const recommendedLists = useRecommendedLists();
   return (
     <div className="w-screen h-screen text-gray-600">
-      <Navbar />
+      <Navbar className="bg-transparent" />
       <GradientHeader title="Explore" />
       <div className="flex flex-col p-4 gap-8">
         <div className="flex flex-col w-full items-center gap-4">

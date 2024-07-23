@@ -11,7 +11,7 @@ const Navbar = ({ className }: NavbarProps) => {
     <div
       className={cn([
         className,
-        "flex justify-between w-full bg-gray-600 backdrop-filter backdrop-blur-xl text-xl",
+        "flex justify-between w-full backdrop-filter backdrop-blur-xl text-xl",
       ])}
     >
       <div className="flex gap-2">
