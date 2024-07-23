@@ -21,9 +21,9 @@ pub async fn get_all_songs(
     Query(query): Query<QuerySong>,
 ) -> impl IntoResponse {
     get_list_response(
-        SongService::get_all(&pool.db, query).await.map_err(|e| {
-            format!("failed to retrieve all songs due to the following error: {e:#?}")
-        }),
+        SongService::get_all(&pool.db, query)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -34,9 +34,9 @@ pub async fn get_song_by_id(
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
     get_one_response(
-        SongService::get_by_id(&pool.db, id).await.map_err(|e| {
-            format!("failed to retrieve song with id = {id} due to the following error: {e:#?}")
-        }),
+        SongService::get_by_id(&pool.db, id)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -47,9 +47,9 @@ pub async fn create_song(
     Json(create): Json<CreateSong>,
 ) -> impl IntoResponse {
     get_one_response(
-        SongService::create(&pool.db, create).await.map_err(|e| {
-            format!("failed to create song with given details due to the following error: {e:#?}")
-        }),
+        SongService::create(&pool.db, create)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
         StatusCode::BAD_REQUEST,
     )
@@ -63,11 +63,7 @@ pub async fn update_song(
     get_one_response(
         SongService::update(&pool.db, update, id)
             .await
-            .map_err(|e| {
-                format!(
-                    "failed to update song with given details due to the following error: {e:#?}"
-                )
-            }),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -80,7 +76,7 @@ pub async fn delete_song(
     get_one_response(
         SongService::delete(&pool.db, id)
             .await
-            .map_err(|e| format!("failed to dekete song due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )

@@ -1,18 +1,33 @@
 use std::sync::Arc;
 
-use crate::models::groups::{CreateGroups, QueryGroups, UpdateGroups};
+use crate::models::groups::{CreateGroups, QueryGroups};
+use crate::models::users::User;
 use crate::services::groups::GroupsService;
 use crate::utils::response::{get_list_response, get_one_response};
 use crate::AppState;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
+use axum::Extension;
 use http::StatusCode;
 
 pub async fn get_all_groups(State(pool): State<Arc<AppState>>) -> impl IntoResponse {
     get_list_response(
-        GroupsService::get_all(&pool.db).await.map_err(|e| {
-            format!("failed to retrieve all groups due to the following error: {e:#?}")
-        }),
+        GroupsService::get_all(&pool.db)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
+pub async fn get_user_groups(
+    State(pool): State<Arc<AppState>>,
+    Extension(user): Extension<User>,
+) -> impl IntoResponse {
+    get_list_response(
+        GroupsService::get_user_groups(&pool.db, user.username)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -25,20 +40,20 @@ pub async fn get_groups_by_id(
     get_one_response(
         GroupsService::get_by_id(&pool.db, id)
             .await
-            .map_err(|e| format!("failed to retrieve group due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
 }
 
-pub async fn get_groups_by_user(
+pub async fn get_group_members(
     State(pool): State<Arc<AppState>>,
-    Path(user_id): Path<String>,
+    Path(id): Path<i32>,
 ) -> impl IntoResponse {
-    get_list_response(
-        GroupsService::get_by_user(&pool.db, user_id)
+    get_one_response(
+        GroupsService::get_members(&pool.db, id)
             .await
-            .map_err(|e| format!("failed to retrieve groups by user due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -51,9 +66,7 @@ pub async fn get_circles_by_id(
     get_list_response(
         GroupsService::get_circles_by_id(&pool.db, id)
             .await
-            .map_err(|e| {
-                format!("failed to retrieve circles by group id due to the following error: {e:#?}")
-            }),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -61,27 +74,14 @@ pub async fn get_circles_by_id(
 
 pub async fn create_groups(
     State(pool): State<Arc<AppState>>,
+    Extension(user): Extension<User>,
     Json(create): Json<CreateGroups>,
 ) -> impl IntoResponse {
     get_one_response(
-        GroupsService::create(&pool.db, create)
+        GroupsService::create(&pool.db, user.username, create)
             .await
-            .map_err(|e| format!("failed to create group due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
-        StatusCode::BAD_REQUEST,
-    )
-}
-
-pub async fn update_groups(
-    State(pool): State<Arc<AppState>>,
-    Path(id): Path<i32>,
-    Json(update): Json<UpdateGroups>,
-) -> impl IntoResponse {
-    get_one_response(
-        GroupsService::update(&pool.db, update, id)
-            .await
-            .map_err(|e| format!("failed to update group due to the following error: {e:#?}")),
-        StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
 }
@@ -93,7 +93,21 @@ pub async fn delete_groups(
     get_one_response(
         GroupsService::delete(&pool.db, id)
             .await
-            .map_err(|e| format!("failed to delete group due to the following error: {e:#?}")),
+            .map_err(|e| format!("{e}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
+pub async fn delete_user_group(
+    State(pool): State<Arc<AppState>>,
+    Path(group_name): Path<String>,
+    Extension(user): Extension<User>,
+) -> impl IntoResponse {
+    get_one_response(
+        GroupsService::delete_user_group(&pool.db, user.username, group_name)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -107,9 +121,7 @@ pub async fn get_group_member_lists(
     get_list_response(
         GroupsService::get_member_lists(&pool.db, id, order_by_author)
             .await
-            .map_err(|e| {
-                format!("failed to retrieve group member lists due to the following error: {e:#?}")
-            }),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )

@@ -21,9 +21,9 @@ pub async fn get_all_movies(
     Query(query): Query<QueryMovie>,
 ) -> impl IntoResponse {
     get_list_response(
-        MovieService::get_all(&pool.db, query).await.map_err(|e| {
-            format!("failed to retrieve all movies due to the following error: {e:#?}")
-        }),
+        MovieService::get_all(&pool.db, query)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -34,9 +34,9 @@ pub async fn get_movie_by_id(
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
     get_one_response(
-        MovieService::get_by_id(&pool.db, id).await.map_err(|e| {
-            format!("failed to retrieve movie with id = {id} due to the following error: {e:#?}")
-        }),
+        MovieService::get_by_id(&pool.db, id)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -47,9 +47,9 @@ pub async fn create_movie(
     Json(create): Json<CreateMovie>,
 ) -> impl IntoResponse {
     get_one_response(
-        MovieService::create(&pool.db, create).await.map_err(|e| {
-            format!("failed to create movie with given details due to the following error: {e:#?}")
-        }),
+        MovieService::create(&pool.db, create)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
         StatusCode::BAD_REQUEST,
     )
@@ -63,11 +63,7 @@ pub async fn update_movie(
     get_one_response(
         MovieService::update(&pool.db, update, id)
             .await
-            .map_err(|e| {
-                format!(
-                    "failed to update movie with given details due to the following error: {e:#?}"
-                )
-            }),
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )
@@ -78,9 +74,9 @@ pub async fn delete_movie(
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
     get_one_response(
-        MovieService::delete(&pool.db, id).await.map_err(|e| {
-            format!("failed to delete movie with id = {id} due to the following error: {e:#?}")
-        }),
+        MovieService::delete(&pool.db, id)
+            .await
+            .map_err(|e| format!("{e}")),
         StatusCode::OK,
         StatusCode::BAD_REQUEST,
     )

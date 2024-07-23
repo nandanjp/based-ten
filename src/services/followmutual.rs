@@ -6,7 +6,9 @@ impl FollowMutualService {
         pool: &sqlx::PgPool,
         user_name: String,
     ) -> Result<Vec<FollowMutual>, FollowMutualError> {
-        sqlx::query!(r#"WITH mutuals AS (
+        sqlx::query_as!(
+            FollowMutual,
+            r#"WITH mutuals AS (
                         SELECT f1.follower
                         FROM Follows f1, Follows f2
                         WHERE f1.following = $1
@@ -19,21 +21,15 @@ impl FollowMutualService {
                         ELSE FALSE
                     END as followsBack
                     FROM Follows
-                    WHERE following = $1;"#, user_name)
-            .fetch_all(pool)
-            .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| FollowMutual {
-                        follower: a.follower,
-                        follows_back: a.followsback.unwrap_or(false),
-                    })
-                    .collect::<Vec<FollowMutual>>()
-            })
-            .map_err(|e| {
-                FollowMutualError(format!(
-                    "failed to retrieve mutual followers for user_name = {user_name} due to the following error: {e:#?}"
-                ))
-            })
+                    WHERE following = $1;"#,
+            user_name
+        )
+        .fetch_all(pool)
+        .await
+        .map_err(|e| {
+            FollowMutualError(format!(
+                "failed to retrieve mutual followers for {user_name}: {e:#?}"
+            ))
+        })
     }
 }

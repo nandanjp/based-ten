@@ -1,7 +1,12 @@
-use crate::models::{
-    lists::ListType,
-    media::{Media, MediaError, QueryMedia},
+use crate::{
+    models::{
+        lists::ListType,
+        media::{Media, MediaError, MediaSortKey, QueryMedia},
+    },
+    utils::functions::page_limit,
 };
+
+const NUM_ROWS: i64 = 12341;
 
 pub struct MediaService;
 impl MediaService {
@@ -9,79 +14,53 @@ impl MediaService {
         pool: &sqlx::PgPool,
         query_obj: QueryMedia,
     ) -> Result<Vec<Media>, MediaError> {
+        let (limit, page) = page_limit(NUM_ROWS, query_obj.limit, query_obj.page);
+
         match query_obj {
             QueryMedia {
-                media_type: Some(media_type),
-            } => sqlx::query!(
-                r#"SELECT id, title, mediaimage, createdon, type AS "type: ListType" FROM Media WHERE type = $1"#, media_type as ListType
+                media_type: Some(media_type), sort_key: Some(key), ..
+            } => match key {
+                MediaSortKey::Title => sqlx::query_as!(Media,
+                    r#"SELECT id, title, mediaimage, createdon, type AS "typ: ListType" FROM Media WHERE type = $1 ORDER BY title OFFSET $2 LIMIT $3"#, media_type as ListType, page * limit, limit
+                )
+                .fetch_all(pool)
+                .await
+                .map_err(|e| MediaError(format!("failed to retrieve all media: {e:#?}"))),
+                MediaSortKey::Type => sqlx::query_as!(Media,
+                    r#"SELECT id, title, mediaimage, createdon, type AS "typ: ListType" FROM Media WHERE type = $1 ORDER BY type OFFSET $2 LIMIT $3"#, media_type as ListType, page * limit, limit
+                )
+                .fetch_all(pool)
+                .await
+                .map_err(|e| MediaError(format!("failed to retrieve all media: {e:#?}")))
+            },
+            QueryMedia{title: Some(title), ..} => sqlx::query_as!(Media,
+                r#"SELECT id, title, mediaimage, createdon, type AS "typ: ListType" FROM Media WHERE similarity(title, $1) > 0.15 ORDER BY similarity(title, $1) DESC OFFSET $2 LIMIT $3"#, title, page * limit, limit
             )
             .fetch_all(pool)
             .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| Media {
-                        id: a.id.unwrap(),
-                        title: a.title.unwrap(),
-                        media_image: a.mediaimage.unwrap(),
-                        created_on: a.createdon.unwrap(),
-                        media_type: a.r#type.unwrap(),
-                    })
-                    .collect::<Vec<Media>>()
-            })
-            .map_err(|e| {
-                MediaError(format!(
-                    "failed to retrieve all media due to the following error: {e:#?}"
-                ))
-            }),
-            _ => sqlx::query!(
-                r#"SELECT id, title, mediaimage, createdon, type AS "type: ListType" FROM Media"#
+            .map_err(|e| MediaError(format!("failed to retrieve all media: {e:#?}"))),
+            QueryMedia {
+                sort_key: Some(key), ..
+            } => match key {
+                MediaSortKey::Title => sqlx::query_as!(Media,
+                    r#"SELECT id, title, mediaimage, createdon, type AS "typ: ListType" FROM Media ORDER BY title OFFSET $1 LIMIT $2"#, page * limit, limit
+                )
+                .fetch_all(pool)
+                .await
+                .map_err(|e| MediaError(format!("failed to retrieve all media: {e:#?}"))),
+                MediaSortKey::Type => sqlx::query_as!(Media,
+                    r#"SELECT id, title, mediaimage, createdon, type AS "typ: ListType" FROM Media ORDER BY type OFFSET $1 LIMIT $2"#, page * limit, limit
+                )
+                .fetch_all(pool)
+                .await
+                .map_err(|e| MediaError(format!("failed to retrieve all media: {e:#?}")))
+            },
+            _ => sqlx::query_as!(Media,
+                r#"SELECT id, title, mediaimage, createdon, type AS "typ: ListType" FROM Media OFFSET $1 LIMIT $2"#, page * limit, limit
             )
             .fetch_all(pool)
             .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| Media {
-                        id: a.id.unwrap(),
-                        title: a.title.unwrap(),
-                        media_image: a.mediaimage.unwrap(),
-                        created_on: a.createdon.unwrap(),
-                        media_type: a.r#type.unwrap(),
-                    })
-                    .collect::<Vec<Media>>()
-            })
-            .map_err(|e| {
-                MediaError(format!(
-                    "failed to retrieve all media due to the following error: {e:#?}"
-                ))
-            }),
+            .map_err(|e| MediaError(format!("failed to retrieve all media: {e:#?}"))),
         }
     }
-
-    /*
-    pub async fn get_by_type(
-        pool: &sqlx::PgPool,
-        path: String,
-    ) -> Result<Vec<MediaWithLikes>, MediaError> {
-        sqlx::query_file!("sql/get_media_by_type.sql", ListType::from_str(path.as_str()).unwrap() as ListType)
-        .fetch_all(pool)
-        .await
-        .map(|a| {
-            a.into_iter()
-                .map(|a| MediaWithLikes {
-                    id: a.id.unwrap(),
-                    title: a.title.unwrap(),
-                    media_image: a.mediaimage.unwrap(),
-                    created_on: a.createdon.unwrap(),
-                    media_type: a.r#type.unwrap(),
-                    likes: a.totallikes.unwrap(),
-                })
-                .collect::<Vec<MediaWithLikes>>()
-        })
-        .map_err(|e| {
-            MediaError(format!(
-                "failed to retrieve all media due to the following error: {e:#?}"
-            ))
-        })
-    }
-    */
 }

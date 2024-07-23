@@ -1,42 +1,29 @@
+use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
-use sqlx::types::time::Date;
 
-use crate::utils::traits::{Error, IntoSerial};
-
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow, Clone)]
 pub struct Anime {
     pub id: i32,
     pub title: String,
-    pub media_image: String,
-    pub num_episodes: i32,
-    pub created_on: Date,
+    pub mediaimage: String,
+    pub numepisodes: i32,
+    pub createdon: Option<NaiveDate>,
 }
 
-impl IntoSerial for Anime {
-    type Serial = AnimeSerial;
-
-    fn to_serial(&self) -> Self::Serial {
-        Self::Serial {
-            id: self.id,
-            title: self.title.clone(),
-            media_image: self.media_image.clone(),
-            num_episodes: self.num_episodes,
-            created_on: self.created_on.to_string(),
-        }
-    }
+#[derive(Debug, Clone, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum AnimeSortKey {
+    NumEpisodes,
+    Title,
 }
 
-#[derive(Clone, Debug, Serialize)]
-pub struct AnimeSerial {
-    pub id: i32,
-    pub title: String,
-    pub media_image: String,
-    pub num_episodes: i32,
-    pub created_on: String,
-}
-
-#[derive(Debug, Clone, Deserialize, Default)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct AnimeQuery {
+    pub title: Option<String>,
     pub num_episodes: Option<i32>,
+    pub page: Option<i64>,
+    pub limit: Option<i64>,
+    pub sort_key: Option<AnimeSortKey>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -45,7 +32,7 @@ pub struct CreateAnime {
     pub title: String,
     pub media_image: String,
     pub num_episodes: i32,
-    pub created_on: String,
+    pub created_on: NaiveDate,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -53,22 +40,14 @@ pub struct UpdateAnime {
     pub title: Option<String>,
     pub media_image: Option<String>,
     pub num_episodes: Option<i32>,
-    pub created_on: Option<String>,
+    pub created_on: Option<NaiveDate>,
 }
 
 #[derive(Debug, Clone)]
 pub struct AnimeError(pub String);
-impl Error for AnimeError {
-    fn new(err: String) -> Self {
-        Self(err)
-    }
-}
+
 impl std::fmt::Display for AnimeError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "failed to retrieve anime due to the following error: {:#?}",
-            self.0
-        )
+        write!(f, "{}", self.0)
     }
 }

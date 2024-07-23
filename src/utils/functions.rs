@@ -1,12 +1,13 @@
-use super::traits::Error;
-use time::macros::format_description;
-use time::Date;
+pub fn page_limit(num_rows: i64, limit: Option<i64>, page: Option<i64>) -> (i64, i64) {
+    let limit = limit.unwrap_or_default();
+    let page = page.unwrap_or_default();
+    let limit = if limit == 0 || limit > 100 {
+        100
+    } else {
+        limit
+    };
+    let pages = num_rows / limit + if num_rows % limit > 0 { 1 } else { 0 };
+    let page = if page + 1 > pages { pages } else { page + 1 } - 1;
 
-pub fn convert_date<T: Error>(created_on: String) -> Result<Date, T> {
-    let format = format_description!("[year]-[month]-[day]");
-    Date::parse(created_on.as_str(), &format).map_err(|e| {
-        T::new(format!(
-            "failed to create anime due to an invalid date string provided: {e:#?}"
-        ))
-    })
+    (limit, page)
 }

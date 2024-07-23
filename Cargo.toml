@@ -15,7 +15,7 @@ jsonwebtoken = "9.3.0"
 rand_core = { version = "0.6.4", features = ["std"] }
 serde = { version = "1.0.203", features = ["derive"] }
 serde_json = "1.0.120"
-sqlx = { version = "0.7.4", features = ["bigdecimal", "json", "macros", "postgres", "runtime-tokio-native-tls", "time"] }
+sqlx = { version = "0.7.4", features = ["bigdecimal", "chrono", "json", "macros", "postgres", "runtime-tokio-native-tls", "time"] }
 thiserror = "1.0.61"
 time = "0.3.36"
 tokio = { version = "1.38.0", features = ["full"] }
