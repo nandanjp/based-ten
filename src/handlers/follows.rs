@@ -25,10 +25,10 @@ pub async fn get_all_follows(
 
 pub async fn get_follows_by_id(
     State(pool): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Path(username): Path<String>,
 ) -> impl IntoResponse {
     get_list_response(
-        FollowsService::get_by_id(&pool.db, user.username)
+        FollowsService::get_by_id(&pool.db, username)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,
@@ -51,11 +51,10 @@ pub async fn create_follow(
 
 pub async fn delete_follow(
     State(pool): State<Arc<AppState>>,
-    Path(following): Path<String>,
-    Extension(user): Extension<User>,
+    Path((username, following)): Path<(String, String)>,
 ) -> impl IntoResponse {
     get_one_response(
-        FollowsService::delete(&pool.db, user.username, following)
+        FollowsService::delete(&pool.db, username, following)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,

@@ -31,10 +31,10 @@ pub async fn get_all_lists(
 
 pub async fn get_user_lists(
     State(pool): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Path(username): Path<String>,
 ) -> impl IntoResponse {
     get_list_response(
-        ListService::get_by_email(&pool.db, user.username)
+        ListService::get_by_email(&pool.db, username)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,
@@ -44,11 +44,10 @@ pub async fn get_user_lists(
 
 pub async fn get_user_list(
     State(pool): State<Arc<AppState>>,
-    Path(list_name): Path<String>,
-    Extension(user): Extension<User>,
+    Path((username, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
     get_one_response(
-        ListService::get_by_user_and_listname(&pool.db, user.username, list_name)
+        ListService::get_by_user_and_listname(&pool.db, username, list_name)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,
@@ -58,10 +57,9 @@ pub async fn get_user_list(
 
 pub async fn get_user_list_items(
     State(pool): State<Arc<AppState>>,
-    Path(list_name): Path<String>,
-    Extension(user): Extension<User>,
+    Path((username, list_name)): Path<(String, String)>,
 ) -> impl IntoResponse {
-    match ListService::get_user_list_and_items(&pool.db, user.username, list_name)
+    match ListService::get_user_list_and_items(&pool.db, username, list_name)
         .await
         .map_err(|e| format!("{e}"))
     {
@@ -86,10 +84,10 @@ pub async fn get_user_list_items(
 
 pub async fn get_user_explore_lists(
     State(pool): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Path(username): Path<String>,
 ) -> impl IntoResponse {
     get_list_response(
-        ListService::get_explore_lists(&pool.db, user.username)
+        ListService::get_explore_lists(&pool.db, username)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,
@@ -112,7 +110,7 @@ pub async fn get_some_top_lists(
 
 pub async fn create_list(
     State(pool): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Path(user): Path<String>,
     Json(create): Json<CreateList>,
 ) -> impl IntoResponse {
     get_one_response(

@@ -25,10 +25,10 @@ pub async fn get_all_likes(
 
 pub async fn get_likes_by_id(
     State(pool): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Path(username): Path<String>,
 ) -> impl IntoResponse {
     get_list_response(
-        LikesService::get_by_id(&pool.db, user.username)
+        LikesService::get_by_id(&pool.db, username)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,

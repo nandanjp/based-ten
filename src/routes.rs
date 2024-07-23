@@ -89,15 +89,14 @@ pub fn create_lists_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/", get(get_all_lists))
         .route("/top", get(get_some_top_lists))
         .nest(
-            "/user",
+            "/:user_name",
             Router::new()
                 .route("/", get(get_user_lists))
                 .route("/", post(create_list))
                 .route("/:list_name", get(get_user_list))
                 .route("/:list_name/items", get(get_user_list_items))
                 .route("/:list_name", patch(update_list))
-                .route("/:list_name", delete(delete_list))
-                .route_layer(axum_middleware::from_fn_with_state(app_state, auth)),
+                .route("/:list_name", delete(delete_list)),
         )
 }
 
@@ -130,6 +129,14 @@ pub fn create_user_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
                 .route("/", delete(delete_user))
                 .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
         )
+        .nest(
+            "/:user_name",
+            Router::new()
+                .route("/", get(get_user_lists))
+                .route("/", post(create_list))
+                .route("/:list_name", get(get_user_list))
+                .route("/:list_name/items", get(get_user_list_items)),
+        )
 }
 
 pub fn create_likes_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
@@ -137,11 +144,10 @@ pub fn create_likes_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/", get(get_all_likes))
         .route("/", post(create_like))
         .nest(
-            "/user",
+            "/:user_name",
             Router::new()
                 .route("/", get(get_likes_by_id))
-                .route("/:liking/:list_name", delete(delete_user_likes))
-                .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
+                .route("/:liking/:list_name", delete(delete_user_likes)),
         )
         .route("/:liker/:liking/:list_name", delete(delete_like))
 }
@@ -151,12 +157,11 @@ pub fn create_follow_routes(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/", get(get_all_follows))
         .route("/", post(create_follow))
         .nest(
-            "/user",
+            "/:user_name",
             Router::new()
                 .route("/", get(get_follows_by_id))
                 .route("/:following", delete(delete_follow))
-                .route("/mutual", get(get_mutual_follows_by_id))
-                .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
+                .route("/mutual", get(get_mutual_follows_by_id)),
         )
         .route("/:follower/:following", delete(delete_follows))
 }
@@ -165,12 +170,11 @@ pub fn create_groups_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
     Router::new()
         .route("/", get(get_all_groups))
         .nest(
-            "/user",
+            "/:user_name",
             Router::new()
                 .route("/", get(get_user_groups))
                 .route("/", post(create_groups))
-                .route("/:group_name", delete(delete_user_group))
-                .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
+                .route("/:group_name", delete(delete_user_group)),
         )
         .route("/:gid", get(get_groups_by_id))
         .route("/:gid/members", get(get_group_members))

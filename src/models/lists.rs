@@ -11,6 +11,7 @@ pub struct List {
 pub struct ListWithLikes {
     pub username: String,
     pub listname: String,
+    #[serde(rename = "list_type")]
     pub listtype: ListType,
     pub likes: Option<i64>,
 }
