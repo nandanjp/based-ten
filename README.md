@@ -121,7 +121,44 @@ Now, you can make normal HTTP requests to our backend server, with the following
 
 - `GET /api/explore/:user_name`
 
+#### Protected Routes
+
+#### To Do with Lists
+
+- `GET /api/explore/user`
+- `GET /api/lists/user`
+- `POST /api/lists/user`
+- `GET /api/lists/user/:list_name`
+- `GET /api/lists/user/:list_name/items`
+- `PATCH /api/lists/user/:list_name`
+- `DELETE /api/lists/user/:list_name`
+
+#### To Do with Users
+
+- `GET /api/users/user`
+- `PATCH /api/users/user`
+- `DELETE /api/users/user`
+
+#### To Do with Likes
+
+- `GET /api/likes/user`
+- `GET /api/likes/user/:liking/:list_name`
+
+#### To Do With Follow
+
+- `GET /api/follow/user`
+- `POST /api/follow/user`
+- `DELETE /api/follow/user/:following`
+- `GET /api/follow/user/mutual`
+
+#### To Do With Groups
+
+- `GET /api/groups/user`
+- `POST /api/groups/user`
+- `POST /api/groups/user/:group_name`
+
 #### Website Pages
+
 - Search (Main Page)
 - Explore (Recommended Lists) Page
 - Create/View a list
