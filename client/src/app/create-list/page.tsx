@@ -10,7 +10,9 @@ import { useRouter } from 'next/navigation';
 import { useMediaByType, useMediaByTypeAndId } from '../../../services/queries';
 import { UserContext } from "@/app/context";
 import { useContext } from "react";
+import { createList } from '../../../services/api';
 import Link from "next/link";
+import axios from 'axios';
 
 
 const CreateListPage = ({
@@ -48,6 +50,20 @@ const CreateListPage = ({
       listItems[index] = newItem;
       setListItems([...listItems]);
     };
+  };
+
+  const handleClickCreateList = async () => {
+    const result = await createList(
+      user?.username || 'unknown',
+      listName,
+      mediaType, // right type?
+    );
+    if (result.success) {
+      console.log('list created', result.response);
+    }
+    else {
+      console.log('failed to create list', result.error);
+    }
   };
 
   return (
@@ -93,7 +109,7 @@ const CreateListPage = ({
               : 'bg-gray-400 hover:bg-gray-400 cursor-default'
               }`}
             disabled={!done}
-            onClick={() => console.log('CREATE LIST')}
+            onClick={handleClickCreateList}
           >
             <Upload />
             Confirm

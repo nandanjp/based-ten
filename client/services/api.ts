@@ -15,6 +15,7 @@ import {
   GroupsResponse,
   MediaResponse,
   LoginResponse,
+  ListType,
 } from "./api.types";
 
 const BASE_URL = `http://127.0.0.1:5000/api`;
@@ -23,7 +24,18 @@ const axiosInstance = axios.create({ baseURL: BASE_URL });
 export const getAllLists = async () =>
   (await axiosInstance.get<ListResponse>(`lists`)).data.response;
 
-export const createList = async () => { };
+export const createList = async (
+  user_name: string,
+  list_name: string,
+  list_type: ListType // right type?
+) =>
+  (
+    await axiosInstance.post<ListResponse>("lists", {
+      user_name,
+      list_name,
+      list_type
+    })
+  ).data;
 
 export const getUsersLists =
   ({ email }: { email: string }) =>
