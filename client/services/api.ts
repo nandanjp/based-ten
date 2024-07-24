@@ -158,7 +158,7 @@ export const getRecommendedLists = async () => {
 export const getList = (list_name: string, user_name: string) => async () => {
   const token = localStorage.getItem("token");
   return (
-    await axiosInstance.get<MediaResponse>(`lists/user/${list_name}/items`, {
+    await axiosInstance.get<MediaResponse>(`lists/${user_name}/${list_name}/items`, {
       headers: {
         Authorization: "Bearer " + token,
       },

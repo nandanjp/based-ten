@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import GradientHeader from "@/components/ui/gradient-header";
 import { UserContext } from "../context";
 import { useContext } from "react";
+import Link from "next/link";
 
 const ExplorePage = () => {
   const lists = useAllLists();
@@ -93,9 +94,11 @@ const ExplorePage = () => {
                     className="flex justify-between border-b-2 p-2 items-center"
                     key={index}
                   >
-                    <span>
-                      {list.listname} by {list.username}
-                    </span>
+                    <Link href={`/view-list/${list.username}/${list.listname}`}>
+                      <span>
+                        {list.listname} by {list.username}
+                      </span>
+                    </Link>
                     <div className="flex flex-col items-center">
                       <Heart
                         className="cursor-pointer"

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import {
   Anime,
+  ListType,
   MediaType,
   Movie,
   Song,
@@ -8,32 +9,32 @@ import {
 } from "../../../../services/api.types";
 
 type ViewListItemProps = {
-  type: MediaType;
+  type: ListType;
   listItem: VideoGame | Anime | Movie | Song;
 };
 
 const TypeSpecificFields = ({ type, listItem }: ViewListItemProps) => {
   switch (type) {
-    case MediaType.ANIME:
+    case "anime":
       return (
         <span className="text-sm text-blue-300 font-bold">
           number of episodes: {(listItem as Anime).num_episodes}
         </span>
       );
-    case MediaType.MOVIE:
+    case "movies":
       return (
         <span className="text-sm text-blue-300 font-bold">
           number of episodes: {(listItem as Movie).title}
         </span>
       );
-    case MediaType.SONG:
+    case "songs":
       return (
         <span className="text-sm text-blue-300 font-bold flex flex-col gap-1 items-start justify-start">
           <span>author: {(listItem as Song).author}</span>
           <span>album: {(listItem as Song).album}</span>
         </span>
       );
-    case MediaType.VIDEO_GAME:
+    case "videogames":
       return (
         <span className="text-sm text-blue-300 font-bold">
           consoles: {(listItem as VideoGame).console}
