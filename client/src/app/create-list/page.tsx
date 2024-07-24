@@ -8,12 +8,18 @@ import { useEffect, useMemo, useState } from 'react';
 import { MediaType } from '../../../services/api.types';
 import { useRouter } from 'next/navigation';
 import { useMediaByType, useMediaByTypeAndId } from '../../../services/queries';
+import { UserContext } from "@/app/context";
+import { useContext } from "react";
+import Link from "next/link";
+
 
 const CreateListPage = ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
+  const { user } = useContext(UserContext);
+
   const router = useRouter();
   const firstItemId = searchParams['itemId'] as string;
   const mediaType = searchParams['mediaType'] as MediaType;
@@ -56,7 +62,20 @@ const CreateListPage = ({
           }}
         />
         <div className="bg-black w-16 h-px" />
-        <h2 className="py-1 font-bold">by JustinLin905</h2>
+        <h2 className="py-1 font-bold">
+          {user ? (
+            <Link
+              href={`/user/${user.username}`}
+              className="hover:bg-secondary p-3"
+            >
+              by {user.username}
+            </Link>
+          ) : (
+            <>
+              Unknown User
+            </>
+          )}
+        </h2>
         <h3 className="font-bold italic text-sm pb-4">
           last updated {new Date().toISOString().slice(0, 10)}
         </h3>
@@ -69,11 +88,10 @@ const CreateListPage = ({
             Cancel
           </Button>
           <Button
-            className={`rounded-xl gap-2 py-5 w-fit ${
-              done
-                ? 'bg-primary hover:bg-gray-700'
-                : 'bg-gray-400 hover:bg-gray-400 cursor-default'
-            }`}
+            className={`rounded-xl gap-2 py-5 w-fit ${done
+              ? 'bg-primary hover:bg-gray-700'
+              : 'bg-gray-400 hover:bg-gray-400 cursor-default'
+              }`}
             disabled={!done}
             onClick={() => console.log('CREATE LIST')}
           >
@@ -88,9 +106,8 @@ const CreateListPage = ({
             key={`${index}=${item?.id}-${item?.type}`}
             className="flex gap-4 items-center justify-between"
           >
-            <div className="text-4xl font-semibold text-gray-800">{`${
-              index + 1
-            }.`}</div>
+            <div className="text-4xl font-semibold text-gray-800">{`${index + 1
+              }.`}</div>
             <AddListItem
               listItem={item}
               list={allItems.data}
