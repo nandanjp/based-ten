@@ -176,7 +176,7 @@ type BaseResponse = {
 };
 
 export type MediaResponse = BaseResponse & {
-  response: ((VideoGame | Anime | Movie | Song) & { likes: number })[];
+  response: ((VideoGame | Anime | Movie | Song) & { likes: number, listtype: ListType })[];
 };
 
 export type LoginResponse = {
