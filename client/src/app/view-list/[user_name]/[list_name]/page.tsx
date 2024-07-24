@@ -49,9 +49,8 @@ const ViewListPage = () => {
       <div className="flex flex-col gap-4">
         {list.data.response?.map((item, index) => (
           <div key={index} className="flex gap-4 items-center justify-between">
-            <div className="text-4xl font-semibold text-gray-800">{`${
-              index + 1
-            }.`}</div>
+            <div className="text-4xl font-semibold text-gray-800">{`${index + 1
+              }.`}</div>
 
             <ViewListItem
               type={list.data.response?.[0]?.listtype}

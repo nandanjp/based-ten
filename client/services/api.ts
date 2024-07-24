@@ -23,12 +23,12 @@ const axiosInstance = axios.create({ baseURL: BASE_URL });
 export const getAllLists = async () =>
   (await axiosInstance.get<ListResponse>(`lists`)).data.response;
 
-export const createList = async () => {};
+export const createList = async () => { };
 
 export const getUsersLists =
   ({ email }: { email: string }) =>
-  async () =>
-    (await axiosInstance.get<ListResponse>(`lists/${email}`)).data;
+    async () =>
+      (await axiosInstance.get<ListResponse>(`lists/${email}`)).data;
 
 export const getUserList = async () =>
   (await axiosInstance.get<UserResponse[]>("users")).data;
@@ -41,53 +41,53 @@ export const getAllUsers = async () =>
 
 export const getUserByEmail =
   ({ email }: { email: string }) =>
-  async () =>
-    (await axiosInstance.get<UserResponse>(`user/${email}`)).data;
+    async () =>
+      (await axiosInstance.get<UserResponse>(`user/${email}`)).data;
 
 export const deleteUser = async ({ email }: { email: string }) =>
   (await axiosInstance.delete<UserResponse>(`user/${email}`)).data;
 
-export const getAllLikes = async () => {};
+export const getAllLikes = async () => { };
 
 export const getUserLikes =
   ({ email }: { email: string }) =>
-  async () =>
-    (await axiosInstance.get<LikeResponse>(`likes/${email}`)).data;
+    async () =>
+      (await axiosInstance.get<LikeResponse>(`likes/${email}`)).data;
 
 export const getUserGroups =
   ({ email }: { email: string }) =>
-  async () =>
-    (await axiosInstance.get<GroupsResponse>(`groups/user/${email}`)).data;
+    async () =>
+      (await axiosInstance.get<GroupsResponse>(`groups/user/${email}`)).data;
 
 export const getUserFollowing =
   ({ email }: { email: string }) =>
-  async () =>
-    (await axiosInstance.get<FollowResponse>(`follow/${email}`)).data;
+    async () =>
+      (await axiosInstance.get<FollowResponse>(`follow/${email}`)).data;
 
 export const getUserFollowers =
   ({ email }: { email: string }) =>
-  async () =>
-    (await axiosInstance.get<FollowMutualResponse>(`follow/${email}/mutual`))
-      .data;
+    async () =>
+      (await axiosInstance.get<FollowMutualResponse>(`follow/${email}/mutual`))
+        .data;
 
 export const getGroupById =
   ({ group_id }: { group_id: string }) =>
-  async () =>
-    (await axiosInstance.get<GroupResponse>(`groups/${group_id}`)).data;
+    async () =>
+      (await axiosInstance.get<GroupResponse>(`groups/${group_id}`)).data;
 
 export const getGroupMemberLists =
   ({ group_id, orderByAuthor }: { group_id: string; orderByAuthor: boolean }) =>
-  async () =>
-    (
-      await axiosInstance.get<ListResponse>(
-        `groups/${group_id}/lists?order_by_author=${orderByAuthor}`
-      )
-    ).data;
+    async () =>
+      (
+        await axiosInstance.get<ListResponse>(
+          `groups/${group_id}/lists?order_by_author=${orderByAuthor}`
+        )
+      ).data;
 
 export const getRecommendedGroups =
   ({ group_id }: { group_id: string }) =>
-  async () =>
-    (await axiosInstance.get<GroupResponse>(`groups/${group_id}/circles`)).data;
+    async () =>
+      (await axiosInstance.get<GroupResponse>(`groups/${group_id}/circles`)).data;
 
 export const getAllMedia = async () => {
   const rawResult = await axiosInstance.get(`media`);
@@ -146,7 +146,7 @@ export const getRecommendedLists = async () => {
 export const getList = (list_name: string, user_name: string) => async () => {
   const token = localStorage.getItem("token");
   return (
-    await axiosInstance.get<MediaResponse>(`lists/user/${list_name}/items`, {
+    await axiosInstance.get<MediaResponse>(`lists/${user_name}/${list_name}/items`, {
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -192,5 +192,5 @@ export const getCurrentUser = async (): Promise<UserResponse> => {
   }
 };
 
-export const createLike = async(list_name: string, liker_name: string, liking_name: string) => 
-  ( await axiosInstance.post<LikeResponse>(`likes/${liker_name}/${liking_name}/${list_name}`) ).data;
+export const createLike = async (list_name: string, liker_name: string, liking_name: string) =>
+  (await axiosInstance.post<LikeResponse>(`likes/${liker_name}/${liking_name}/${list_name}`)).data;
