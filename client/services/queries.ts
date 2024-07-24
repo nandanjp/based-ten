@@ -1,142 +1,158 @@
-import { useQuery } from "@tanstack/react-query";
 import {
   getAllLists,
-  getAllMedia,
   getAllUsers,
-  getUserByEmail,
-  getUserList,
-  getUsersLists,
-  getUserFollowing,
-  getUserFollowers,
-  getUserLikes,
-  getMediaByTypeAndId,
-  getAllMediaByType,
+  getCurrentUser,
   getGroupById,
   getGroupMemberLists,
+  getMedia,
   getRecommendedGroups,
   getRecommendedLists,
-  getList,
+  getUserByUsername,
+  getUserFollowers,
+  getUserFollowing,
   getUserGroups,
-  getCurrentUser,
-} from "./api";
-import { MediaType } from "./api.types";
+  getUserLikes,
+  getUserList,
+  getUsersLists,
+} from "@/app/actions";
+import { useQuery } from "@tanstack/react-query";
 
 export const useAllLists = () =>
   useQuery({
     queryKey: ["lists"],
-    queryFn: getAllLists,
+    queryFn: async () => {
+      return await getAllLists();
+    },
   });
 
-export const useUsersLists = ({ email }: { email: string }) =>
+export const useUsersLists = (username: string) =>
   useQuery({
     queryKey: ["user-lists"],
-    queryFn: getUsersLists({ email }),
+    queryFn: async () => {
+      return await getUsersLists(username);
+    },
   });
 
-export const useUserList = async () =>
+export const useUserList = <T>({
+  username,
+  list_name,
+}: {
+  username: string;
+  list_name: string;
+}) =>
   useQuery({
     queryKey: ["user-list"],
-    queryFn: getUserList,
+    queryFn: async () => {
+      return await getUserList<T>(username, list_name);
+    },
   });
 
 export const useAllUsers = async () =>
   useQuery({
     queryKey: ["users"],
-    queryFn: getAllUsers,
+    queryFn: async () => {
+      return await getAllUsers();
+    },
   });
 
-export const useUser = ({ email }: { email: string }) =>
+export const useUser = (username: string) =>
   useQuery({
     queryKey: ["user"],
-    queryFn: getUserByEmail({ email }),
+    queryFn: async () => {
+      return await getUserByUsername(username);
+    },
   });
 
 export const useCurrentUser = () =>
   useQuery({
     queryKey: ["current-user"],
-    queryFn: getCurrentUser,
+    queryFn: async () => {
+      return await getCurrentUser();
+    },
   });
 
 export const useAllLikes = async () =>
   useQuery({
     queryKey: ["likes"],
-    queryFn: getAllLists,
+    queryFn: async () => {
+      return await getAllLists();
+    },
   });
 
-export const useUserLikes = ({ email }: { email: string }) =>
+export const useUserLikes = (username: string) =>
   useQuery({
     queryKey: ["user-likes"],
-    queryFn: getUserLikes({ email }),
+    queryFn: async () => {
+      return await getUserLikes(username);
+    },
   });
 
-export const useUserGroups = ({ email }: { email: string }) =>
+export const useUserGroups = (username: string) =>
   useQuery({
     queryKey: ["user-groups"],
-    queryFn: getUserGroups({ email }),
+    queryFn: async () => {
+      return await getUserGroups(username);
+    },
   });
 
-export const useUserFollowing = ({ email }: { email: string }) =>
+export const useUserFollowing = (username: string) =>
   useQuery({
     queryKey: ["user-following"],
-    queryFn: getUserFollowing({ email }),
+    queryFn: async () => {
+      return await getUserFollowing(username);
+    },
   });
 
-export const useGroupById = ({ group_id }: { group_id: string }) =>
+export const useGroupById = (gid: string) =>
   useQuery({
     queryKey: ["group-by-id"],
-    queryFn: getGroupById({ group_id }),
+    queryFn: async () => {
+      return await getGroupById(gid);
+    },
   });
 
 export const useGroupMemberLists = ({
-  group_id,
-  orderByAuthor,
+  gid,
+  order_by_author,
 }: {
-  group_id: string;
-  orderByAuthor: boolean;
+  gid: string;
+  order_by_author: boolean;
 }) =>
   useQuery({
     queryKey: ["group-member-lists"],
-    queryFn: getGroupMemberLists({ group_id, orderByAuthor }),
+    queryFn: async () => {
+      return await getGroupMemberLists(gid, { order_by_author });
+    },
   });
 
-export const useRecommendedGroups = ({ group_id }: { group_id: string }) =>
+export const useRecommendedGroups = (gid: string) =>
   useQuery({
     queryKey: ["recommended-groups"],
-    queryFn: getRecommendedGroups({ group_id }),
+    queryFn: async () => {
+      return await getRecommendedGroups(gid);
+    },
   });
 
-export const useUserFollowers = ({ email }: { email: string }) =>
+export const useUserFollowers = (username: string) =>
   useQuery({
     queryKey: ["user-followers"],
-    queryFn: getUserFollowers({ email }),
+    queryFn: async () => {
+      return await getUserFollowers(username);
+    },
   });
 
 export const useAllMedia = () =>
   useQuery({
     queryKey: ["get-all-media"],
-    queryFn: getAllMedia,
-  });
-
-export const useMediaByTypeAndId = (mediaType: MediaType, id: string) =>
-  useQuery({
-    queryKey: ["get-all-media-by-type-and-id"],
-    queryFn: getMediaByTypeAndId(mediaType, id),
-  });
-
-export const useMediaByType = (mediaType: MediaType) =>
-  useQuery({
-    queryKey: ["get-media-by-type"],
-    queryFn: getAllMediaByType(mediaType),
+    queryFn: async () => {
+      return await getMedia({ page: 0, limit: 100 });
+    },
   });
 
 export const useRecommendedLists = () =>
   useQuery({
     queryKey: ["get-recommended-lists"],
-    queryFn: getRecommendedLists,
-  });
-
-export const useListByName = (user_name: string, list_name: string) =>
-  useQuery({
-    queryKey: ["list"],
-    queryFn: getList(list_name, user_name),
+    queryFn: async () => {
+      return await getRecommendedLists();
+    },
   });

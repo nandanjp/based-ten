@@ -22,7 +22,7 @@ pub async fn get_all_users(
     )
 }
 
-pub async fn get_user_by_id(
+pub async fn get_user_by_username(
     State(pool): State<Arc<AppState>>,
     Extension(user): Extension<User>,
 ) -> impl IntoResponse {

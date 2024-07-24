@@ -17,13 +17,13 @@ import {
 import GradientHeader from "@/components/ui/gradient-header";
 
 const UserPage = () => {
-  const { user_id } = useParams<{ user_id: string }>();
+  const { user_name } = useParams<{ user_name: string }>();
   const user_info = useCurrentUser();
-  const user_lists = useUsersLists({ email: user_id });
-  const user_following = useUserFollowing({ email: user_id });
-  const user_followers = useUserFollowers({ email: user_id });
-  const user_likes = useUserLikes({ email: user_id });
-  const user_groups = useUserGroups({ email: user_id });
+  const user_lists = useUsersLists(user_name);
+  const user_following = useUserFollowing(user_name);
+  const user_followers = useUserFollowers(user_name);
+  const user_likes = useUserLikes(user_name);
+  const user_groups = useUserGroups(user_name);
 
   if (
     user_lists.isPending ||
@@ -87,7 +87,7 @@ const UserPage = () => {
                 key={l.username}
                 list_author={l.username!}
                 list_name={l.listname!}
-                list_type={l.list_type!}
+                list_type={l.listtype!}
               />
             ))}
           </div>
@@ -97,9 +97,9 @@ const UserPage = () => {
           <div className="grid grid-cols-3 gap-4">
             {user_likes.data.response?.map((l) => (
               <ListCard
-                key={l.liking_name.concat(l.list_name)}
-                list_author={l.liking_name}
-                list_name={l.list_name}
+                key={l.likingname.concat(l.listname)}
+                list_author={l.likingname}
+                list_name={l.listname}
                 list_type="anime" // TODO fix query
               />
             ))}
@@ -112,7 +112,7 @@ const UserPage = () => {
               <UserCardFollowBack
                 key={f.follower}
                 follower_email={f.follower}
-                follows_back={f.follows_back}
+                follows_back={!!f.followsback}
               />
             ))}
           </div>
@@ -130,10 +130,10 @@ const UserPage = () => {
           <div className="grid grid-cols-3 gap-4">
             {user_groups.data.response?.map((g) => (
               <GroupCard
-                key={g.group_name}
-                group_name={g.group_name}
+                key={g.groupname}
+                group_name={g.groupname}
                 group_id={g.gid}
-                owned_by={g.owned_by}
+                owned_by={g.ownedby}
               />
             ))}
           </div>

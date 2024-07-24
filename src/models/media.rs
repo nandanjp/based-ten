@@ -23,9 +23,11 @@ pub enum MediaSortKey {
 #[derive(Debug, Clone, Deserialize)]
 pub struct QueryMedia {
     pub title: Option<String>,
+    #[serde(rename = "type")]
     pub media_type: Option<ListType>,
     pub page: Option<i64>,
     pub limit: Option<i64>,
+    #[serde(rename = "sort_by")]
     pub sort_key: Option<MediaSortKey>,
 }
 

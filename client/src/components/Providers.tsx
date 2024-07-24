@@ -4,13 +4,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { getQueryClient } from "@/lib/get-query-client";
 import type * as React from "react";
 import { UserContext } from "@/app/context";
-import { getCurrentUser } from "../../services/api";
-import { User } from "../../services/api.types";
 import { useState, useEffect } from "react";
+import { getCurrentUser } from "@/app/actions";
+import { UserType } from "../../services/api.types";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [user, setUser] = useState<UserType | undefined>(undefined);
   useEffect(() => {
     getCurrentUser().then((response) => {
       if (response.success) {

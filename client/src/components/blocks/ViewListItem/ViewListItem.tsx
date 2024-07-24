@@ -1,60 +1,20 @@
 import Image from "next/image";
-import {
-  Anime,
-  ListType,
-  MediaType,
-  Movie,
-  Song,
-  VideoGame,
-} from "../../../../services/api.types";
+import { ListType } from "../../../../services/api.types";
 
 type ViewListItemProps = {
   type: ListType;
-  listItem: VideoGame | Anime | Movie | Song;
+  title: string;
+  image: string;
+  children: React.ReactNode;
 };
 
-const TypeSpecificFields = ({ type, listItem }: ViewListItemProps) => {
-  switch (type) {
-    case "anime":
-      return (
-        <span className="text-sm text-blue-300 font-bold">
-          number of episodes: {(listItem as Anime).num_episodes}
-        </span>
-      );
-    case "movies":
-      return (
-        <span className="text-sm text-blue-300 font-bold">
-          number of episodes: {(listItem as Movie).title}
-        </span>
-      );
-    case "songs":
-      return (
-        <span className="text-sm text-blue-300 font-bold flex flex-col gap-1 items-start justify-start">
-          <span>author: {(listItem as Song).author}</span>
-          <span>album: {(listItem as Song).album}</span>
-        </span>
-      );
-    case "videogames":
-      return (
-        <span className="text-sm text-blue-300 font-bold">
-          consoles: {(listItem as VideoGame).console}
-        </span>
-      );
-  }
-};
-
-const ViewListItem = ({ type, listItem }: ViewListItemProps) => {
+const ViewListItem = ({ type, title, image, children }: ViewListItemProps) => {
   return (
     <div className="flex gap-4 justify-normal rounded-2xl px-8 py-10 w-80 bg-primary text-white hover:bg-gray-700">
-      <Image
-        width={50}
-        height={50}
-        alt="Picture of the author"
-        src={listItem.media_image}
-      />
+      <Image width={50} height={50} alt="Picture of the author" src={image} />
       <div className="flex flex-col gap-2 items-center justify-center">
-        <h1 className="font-semibold italic text-base">{listItem.title}</h1>
-        <TypeSpecificFields type={type} listItem={listItem} />
+        <h1 className="font-semibold italic text-base">{title}</h1>
+        {children}
       </div>
     </div>
   );

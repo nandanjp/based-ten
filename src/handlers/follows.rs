@@ -1,11 +1,13 @@
 use std::sync::Arc;
 
 use crate::models::follows::{CreateFollow, QueryFollow};
+use crate::models::users::User;
 use crate::services::follows::FollowsService;
 use crate::utils::response::{get_list_response, get_one_response};
 use crate::AppState;
 use axum::extract::{Json, Path, Query, State};
 use axum::response::IntoResponse;
+use axum::Extension;
 use http::StatusCode;
 
 pub async fn get_all_follows(
@@ -21,7 +23,7 @@ pub async fn get_all_follows(
     )
 }
 
-pub async fn get_follows_by_id(
+pub async fn get_follows_by_username(
     State(pool): State<Arc<AppState>>,
     Path(username): Path<String>,
 ) -> impl IntoResponse {
@@ -36,10 +38,11 @@ pub async fn get_follows_by_id(
 
 pub async fn create_follow(
     State(pool): State<Arc<AppState>>,
+    Extension(user): Extension<User>,
     Json(create): Json<CreateFollow>,
 ) -> impl IntoResponse {
     get_one_response(
-        FollowsService::create(&pool.db, create)
+        FollowsService::create(&pool.db, user.username, create)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
@@ -47,12 +50,13 @@ pub async fn create_follow(
     )
 }
 
-pub async fn delete_follow(
+pub async fn delete_user_follow(
     State(pool): State<Arc<AppState>>,
-    Path((username, following)): Path<(String, String)>,
+    Path(following): Path<String>,
+    Extension(user): Extension<User>,
 ) -> impl IntoResponse {
     get_one_response(
-        FollowsService::delete(&pool.db, username, following)
+        FollowsService::delete(&pool.db, user.username, following)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,

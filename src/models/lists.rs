@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use super::listitems::ListItem;
+
 #[derive(Debug, Deserialize, sqlx::FromRow, Serialize, Clone)]
 pub struct List {
     pub username: String,
@@ -25,6 +27,7 @@ pub struct QueryList {
 pub struct CreateList {
     pub list_name: String,
     pub list_type: ListType,
+    pub list_items: Vec<ListItem>,
 }
 
 #[derive(Debug, Clone, Deserialize)]

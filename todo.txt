@@ -1,0 +1,31 @@
+list of routes to protect:
+
+auth:
+  /logout
+
+lists:
+  /:user_name/:list_name (patch)
+  /:user_name/:list_name (delete)
+ 
+explore:
+  /user
+
+listitems:
+  /:list_name/:item_id (patch) <- if we are allowing users to update list
+
+user:
+  /user (patch) <- if we are allowing users to perform these actions
+  /user (delete) <- if we are allowing users to perform these actions
+  /:user_name/ (post)
+
+likes:
+  / (post)
+  /:user_name/:liking/:list_name (delete)
+
+follows:
+  / (post)
+  /:user_name/:following (delete)
+
+groups:
+  /user/:user_name (post)
+  /user/:user_name/:group_name (delete)

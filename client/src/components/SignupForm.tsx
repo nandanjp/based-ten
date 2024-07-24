@@ -17,6 +17,7 @@ import CardWrapper from "./CardWrapper";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
+import { createUser } from "@/app/actions";
 
 const SignupFormSchema = z
   .object({
@@ -54,7 +55,19 @@ export default function SignupForm() {
   });
   const onSubmit = async (values: z.infer<typeof SignupFormSchema>) => {
     setLoading(true);
+    const result = await createUser(
+      values.username,
+      values.password,
+      values.email
+    );
+    console.log(result);
+    if (result.success) {
+      console.log("user created", result.response);
+    } else {
+      console.log("failed to create user", result.error);
+    }
     console.log(`user registered`);
+    router.push("/login");
   };
 
   const { pending } = useFormStatus();

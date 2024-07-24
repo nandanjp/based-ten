@@ -6,12 +6,7 @@ mod services;
 mod utils;
 
 use axum::{routing::get, Router};
-use routes::{
-    create_anime_router, create_auth_router, create_explore_router, create_follow_routes,
-    create_games_router, create_groups_router, create_likes_routes, create_listitems_router,
-    create_lists_router, create_media_router, create_movies_router, create_songs_router,
-    create_user_routes,
-};
+use routes::*;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use std::{sync::Arc, time::Duration};
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
@@ -70,16 +65,16 @@ async fn main() {
                 .nest("/songs", create_songs_router())
                 .nest("/videogames", create_games_router())
                 .nest("/media", create_media_router())
-                .nest("/lists", create_lists_router())
+                .nest("/lists", create_lists_router(app_state.clone()))
                 .nest("/explore", create_explore_router(app_state.clone()))
                 .nest(
                     "/listitems/user",
                     create_listitems_router(app_state.clone()),
                 )
-                .nest("/users", create_user_routes(app_state.clone()))
-                .nest("/likes", create_likes_routes())
-                .nest("/follow", create_follow_routes())
-                .nest("/groups", create_groups_router()),
+                .nest("/users", create_user_router(app_state.clone()))
+                .nest("/likes", create_likes_router(app_state.clone()))
+                .nest("/follow", create_follow_router(app_state.clone()))
+                .nest("/groups", create_groups_router(app_state.clone())),
         )
         .with_state(app_state)
         .layer(cors)

@@ -44,12 +44,13 @@ impl FollowsService {
 
     pub async fn create(
         pool: &sqlx::PgPool,
+        username: String,
         create_obj: CreateFollow,
     ) -> Result<Follow, FollowError> {
         sqlx::query_as!(
             Follow,
             r#"INSERT INTO Follows(follower, following) VALUES($1, $2) RETURNING *"#,
-            create_obj.follower,
+            username,
             create_obj.following
         )
         .fetch_one(pool)

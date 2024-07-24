@@ -1,14 +1,6 @@
 "use client";
 import Navbar from "@/components/blocks/Navbar/Navbar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@radix-ui/react-collapsible";
-import { ChevronsUpDown, Heart } from "lucide-react";
-import { useAllLists, useRecommendedLists } from "../../../services/queries";
-import { createLike } from "../../../services/api";
-import { listTypes } from "../../../services/api.types";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -16,28 +8,49 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import GradientHeader from "@/components/ui/gradient-header";
-import { UserContext } from "../context";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@radix-ui/react-collapsible";
+import { useQuery } from "@tanstack/react-query";
+import { Badge, ChevronsUpDown, Heart, Link } from "lucide-react";
 import { useContext } from "react";
-import Link from "next/link";
+import { listType } from "../../../services/api.types";
+import { useRecommendedLists } from "../../../services/queries";
+import { createLike, getAllLists } from "../actions";
+import { UserContext } from "../context";
 
 const ExplorePage = () => {
-  const lists = useAllLists();
+  const {
+    data: lists,
+    isError,
+    isFetching,
+  } = useQuery({
+    queryKey: ["get-all-lists"],
+    queryFn: async () => {
+      return await getAllLists();
+    },
+  });
   const { user } = useContext(UserContext);
-  //const recommendedLists = useRecommendedLists();
-  //console.log("recs")
-  //console.log(recommendedLists)
-  const onLikeClick = async (list_name: string, user_name: string, event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  const recommendedLists = useRecommendedLists();
+  const listTypes = Object.keys(listType.Enum);
+  const onLikeClick = async (
+    list_name: string,
+    user_name: string,
+    event: React.MouseEvent<SVGSVGElement, MouseEvent>
+  ) => {
     event.currentTarget.setAttribute(
       "fill",
-      event.currentTarget.getAttribute("fill") === "pink"
-        ? "none"
-        : "pink"
+      event.currentTarget.getAttribute("fill") === "pink" ? "none" : "pink"
     );
     if (user) {
-      const response = await createLike(list_name, user?.username, user_name);
+      const response = await createLike({
+        liker_name: user?.username,
+        list_name,
+        liking_name: user_name,
+      });
       if (response.error) {
         const message = `An error has occurred: ${response.error}`;
         throw new Error(message);
@@ -45,7 +58,7 @@ const ExplorePage = () => {
     } else {
     }
   };
-  console.log()
+  console.log();
   return (
     <div className="w-screen h-screen text-gray-600">
       <Navbar className="bg-transparent" />
@@ -55,7 +68,7 @@ const ExplorePage = () => {
           <h2 className="text-lg font-semibold">Recommended Lists for You</h2>
           <Carousel className="w-1/2">
             <CarouselContent className="-ml-1">
-              {/*recommendedLists.data?.map((list, index) => (
+              {recommendedLists.data?.map((list, index) => (
                 <CarouselItem
                   key={index}
                   className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2"
@@ -63,8 +76,8 @@ const ExplorePage = () => {
                   <Card>
                     <CardContent className="flex flex-col gap-2 justify-between aspect-square p-6">
                       <div className="flex flex-col">
-                        <span>{list.list_name}</span>
-                        <span className="italic text-xs">{list.user_name}</span>
+                        <span>{list.listname}</span>
+                        <span className="italic text-xs">{list.username}</span>
                       </div>
                       <div className="flex justify-between">
                         <Badge className="w-fit">
@@ -74,21 +87,21 @@ const ExplorePage = () => {
                     </CardContent>
                   </Card>
                 </CarouselItem>
-              ))*/}
+              ))}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
         </div>
-        {listTypes.map((listType, index) => (
+        {listTypes.map((lt, index) => (
           <Collapsible key={index}>
             <CollapsibleTrigger className="flex gap-2">
               <ChevronsUpDown />
-              <h2 className="text-2xl">{listType.toUpperCase()}</h2>
+              <h2 className="text-2xl">{lt.toUpperCase()}</h2>
             </CollapsibleTrigger>
             <CollapsibleContent className="m-4">
-              {lists.data
-                ?.filter((list) => list.list_type === listType)
+              {lists
+                ?.filter((list) => list.list_type === lt)
                 .map((list, index) => (
                   <div
                     className="flex justify-between border-b-2 p-2 items-center"

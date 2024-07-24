@@ -20,6 +20,7 @@ pub struct QueryMovie {
     pub title: Option<String>,
     pub page: Option<i64>,
     pub limit: Option<i64>,
+    #[serde(rename = "sort_by")]
     pub sort_key: Option<MovieSortKey>,
 }
 

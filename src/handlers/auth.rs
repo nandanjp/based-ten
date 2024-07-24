@@ -4,7 +4,7 @@ use argon2::{
     password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Argon2,
 };
-use axum::{extract::State, response::IntoResponse, Json};
+use axum::{extract::State, response::IntoResponse, Extension, Json};
 use axum_extra::extract::cookie::{Cookie, SameSite};
 use http::{header, Response, StatusCode};
 use jsonwebtoken::{encode, EncodingKey, Header};
@@ -12,9 +12,10 @@ use jsonwebtoken::{encode, EncodingKey, Header};
 use crate::{
     models::{
         auth::TokenClaims,
-        users::{CreateUser, LoginUserSchema},
+        users::{CreateUser, LoginUserSchema, User},
     },
     services::users::UsersService,
+    utils::response::get_one_response,
     AppState,
 };
 
@@ -29,7 +30,12 @@ pub async fn register_user_handler(
                 StatusCode::CONFLICT,
                 Json(serde_json::json!({
                     "success": false,
-                    "response": false,
+                    "response": serde_json::json!({
+                        "email": "",
+                        "user_name": "",
+                        "password": "",
+                        "created_at": chrono::Utc::now(),
+                    }),
                     "error": format!("{e}")
                 })),
             )
@@ -40,21 +46,32 @@ pub async fn register_user_handler(
             StatusCode::CONFLICT,
             Json(serde_json::json!({
                 "success": false,
-                "response": false,
+                "response": serde_json::json!({
+                    "email": "",
+                    "user_name": "",
+                    "password": "",
+                    "created_at": chrono::Utc::now(),
+                }),
                 "error": format!("User with the given user name already exists!")
             })),
         ));
     }
 
     let salt = SaltString::generate(&mut OsRng);
+    let password = body.password.clone();
     let hashed_password = Argon2::default()
-        .hash_password(body.password.as_bytes(), &salt)
+        .hash_password(password.as_bytes(), &salt)
         .map_err(|e| {
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(serde_json::json!({
                     "success": false,
-                    "response": false,
+                    "response": serde_json::json!({
+                        "email": "",
+                        "user_name": "",
+                        "password": "",
+                        "created_at": chrono::Utc::now(),
+                    }),
                     "error": format!("Error while hashing password {e}")
                 })),
             )
@@ -75,8 +92,13 @@ pub async fn register_user_handler(
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(serde_json::json!({
                 "success": false,
-                "response": false,
-                "error": format!("Failed to create user due to the following error: {}", e)
+                "response": serde_json::json!({
+                    "email": "",
+                    "user_name": "",
+                    "password": "",
+                    "created_at": chrono::Utc::now(),
+                }),
+                "error": Some(format!("Failed to create user due to the following error: {}", e))
             })),
         )
     })?;
@@ -86,10 +108,10 @@ pub async fn register_user_handler(
         "response": serde_json::json!({
             "email": user.email.to_owned(),
             "user_name": user.username.to_owned(),
-            "password": user.userpassword.to_owned(),
+            "password": password.to_owned(),
             "created_at": user.createdat,
         }),
-        "error": false
+        "error": None::<String>
     })))
 }
 
@@ -104,8 +126,10 @@ pub async fn login_user_handler(
                 StatusCode::BAD_REQUEST,
                 Json(serde_json::json!({
                     "success": false,
-                    "response": false,
-                    "error": format!("Invalid user_name or password: {}", e)
+                    "response": serde_json::json!({
+                        "token": ""
+                    }),
+                    "error": Some(format!("Invalid user_name or password: {}", e))
                 })),
             )
         })?;
@@ -120,8 +144,10 @@ pub async fn login_user_handler(
             StatusCode::BAD_REQUEST,
             Json(serde_json::json!({
                 "success": false,
-                "response": false,
-                "error": format!("Invalid user_name or password")
+                "response": serde_json::json!({
+                    "token": ""
+                }),
+                "error": Some(format!("Invalid user_name or password"))
             })),
         ));
     }
@@ -149,7 +175,10 @@ pub async fn login_user_handler(
     let mut response = Response::new(
         serde_json::json!({
             "success": true,
-            "token": token
+            "response": serde_json::json!({
+                "token": token
+            }),
+            "error": None::<String>
         })
         .to_string(),
     );
@@ -171,4 +200,13 @@ pub async fn logout_handler() -> Result<impl IntoResponse, (StatusCode, Json<ser
         .headers_mut()
         .insert(header::SET_COOKIE, cookie.to_string().parse().unwrap());
     Ok(response)
+}
+
+pub async fn get_logged_user(
+    Extension(user): Extension<User>,
+) -> Result<impl IntoResponse, (StatusCode, Json<User>)> {
+    Ok((
+        StatusCode::OK,
+        get_one_response(Ok(user), StatusCode::OK, StatusCode::BAD_REQUEST),
+    ))
 }

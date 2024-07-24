@@ -42,11 +42,15 @@ impl LikesService {
         })
     }
 
-    pub async fn create(pool: &sqlx::PgPool, create_obj: CreateLike) -> Result<Like, LikeError> {
+    pub async fn create(
+        pool: &sqlx::PgPool,
+        username: String,
+        create_obj: CreateLike,
+    ) -> Result<Like, LikeError> {
         sqlx::query_as!(
             Like,
             r#"INSERT INTO Likes(likerName, likingName, listName) VALUES($1, $2, $3) RETURNING *"#,
-            create_obj.liker_name,
+            username,
             create_obj.liking_name,
             create_obj.list_name
         )

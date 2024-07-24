@@ -14,7 +14,6 @@ pub struct QueryLike {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateLike {
-    pub liker_name: String,
     pub liking_name: String,
     pub list_name: String,
 }

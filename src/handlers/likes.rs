@@ -23,7 +23,7 @@ pub async fn get_all_likes(
     )
 }
 
-pub async fn get_likes_by_id(
+pub async fn get_likes_by_username(
     State(pool): State<Arc<AppState>>,
     Path(username): Path<String>,
 ) -> impl IntoResponse {
@@ -36,12 +36,13 @@ pub async fn get_likes_by_id(
     )
 }
 
-pub async fn create_like(
+pub async fn create_user_like(
     State(pool): State<Arc<AppState>>,
+    Extension(user): Extension<User>,
     Json(create): Json<CreateLike>,
 ) -> impl IntoResponse {
     get_one_response(
-        LikesService::create(&pool.db, create)
+        LikesService::create(&pool.db, user.username, create)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::CREATED,
@@ -63,7 +64,7 @@ pub async fn delete_user_likes(
     )
 }
 
-pub async fn delete_like(
+pub async fn delete_like_general(
     State(pool): State<Arc<AppState>>,
     Path((liker, liking, list_name)): Path<(String, String, String)>,
 ) -> impl IntoResponse {

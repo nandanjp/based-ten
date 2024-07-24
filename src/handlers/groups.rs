@@ -33,7 +33,7 @@ pub async fn get_user_groups(
     )
 }
 
-pub async fn get_groups_by_id(
+pub async fn get_group_by_id(
     State(pool): State<Arc<AppState>>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {
@@ -72,7 +72,7 @@ pub async fn get_circles_by_id(
     )
 }
 
-pub async fn create_groups(
+pub async fn create_user_group(
     State(pool): State<Arc<AppState>>,
     Extension(user): Extension<User>,
     Json(create): Json<CreateGroups>,
@@ -86,7 +86,7 @@ pub async fn create_groups(
     )
 }
 
-pub async fn delete_groups(
+pub async fn delete_group_by_id(
     State(pool): State<Arc<AppState>>,
     Path(id): Path<i32>,
 ) -> impl IntoResponse {

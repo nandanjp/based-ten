@@ -55,6 +55,19 @@ pub async fn get_user_list(
     )
 }
 
+pub async fn get_user_list_type(
+    State(pool): State<Arc<AppState>>,
+    Path((username, list_name)): Path<(String, String)>,
+) -> impl IntoResponse {
+    get_one_response(
+        ListService::get_user_list_type(&pool.db, username, list_name)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn get_user_list_items(
     State(pool): State<Arc<AppState>>,
     Path((username, list_name)): Path<(String, String)>,
@@ -110,11 +123,11 @@ pub async fn get_some_top_lists(
 
 pub async fn create_list(
     State(pool): State<Arc<AppState>>,
-    Path(username): Path<String>,
+    Extension(user): Extension<User>,
     Json(create): Json<CreateList>,
 ) -> impl IntoResponse {
     get_one_response(
-        ListService::create(&pool.db, username, create)
+        ListService::create(&pool.db, user.username, create)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::CREATED,

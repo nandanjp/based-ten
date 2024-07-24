@@ -13,7 +13,6 @@ pub struct QueryFollow {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateFollow {
-    pub follower: String,
     pub following: String,
 }
 

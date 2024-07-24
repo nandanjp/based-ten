@@ -1,9 +1,9 @@
 import { createContext, Dispatch } from "react";
-import { User } from "../../services/api.types";
+import { UserType } from "../../services/api.types";
 
 type UserState = {
-  user: User | undefined;
-  setUser: Dispatch<User>;
+  user: UserType | undefined;
+  setUser: Dispatch<UserType>;
 };
 
 export const UserContext = createContext<UserState>({

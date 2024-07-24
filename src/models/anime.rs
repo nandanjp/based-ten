@@ -23,6 +23,7 @@ pub struct AnimeQuery {
     pub num_episodes: Option<i32>,
     pub page: Option<i64>,
     pub limit: Option<i64>,
+    #[serde(rename = "sort_by")]
     pub sort_key: Option<AnimeSortKey>,
 }
 

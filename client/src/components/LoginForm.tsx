@@ -14,8 +14,11 @@ import {
   FormMessage,
 } from "./ui/form";
 import CardWrapper from "./CardWrapper";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { getCurrentUser, loginUser } from "@/app/actions";
+import { UserContext } from "@/app/context";
+import { useRouter } from "next/navigation";
 
 const loginFormSchema = z.object({
   username: z.string().min(2, {
@@ -27,6 +30,8 @@ const loginFormSchema = z.object({
 });
 
 export default function LoginForm() {
+  const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -37,6 +42,20 @@ export default function LoginForm() {
     },
   });
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
+    const loginResult = await loginUser(values.username, values.password);
+    console.log(loginResult);
+    if (loginResult.success) {
+      localStorage.setItem("token", loginResult.response.token);
+      const userResponse = await getCurrentUser();
+      if (userResponse.response) {
+        setUser(userResponse.response);
+      }
+      router.push("/");
+    } else {
+      form.setError("password", {
+        message: "Invalid username or password",
+      });
+    }
     setLoading(true);
     console.log("user logged in");
   };

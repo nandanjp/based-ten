@@ -79,6 +79,28 @@ impl ListService {
         .map_err(|e| ErrorList(format!("failed to retrieve list: {e:#?}")))
     }
 
+    pub async fn get_user_list_type(
+        pool: &sqlx::PgPool,
+        username: String,
+        list_name: String,
+    ) -> Result<serde_json::Value, ErrorList> {
+        sqlx::query!(
+            r#"
+            SELECT listtype AS "listtype: ListType" FROM Lists WHERE listname = $1 AND username = $2
+        "#,
+            list_name,
+            username
+        )
+        .fetch_one(pool)
+        .await
+        .map(|r| {
+            serde_json::json!({
+                "listtype": r.listtype
+            })
+        })
+        .map_err(|e| ErrorList(format!("failed to retrieve list of given type: {e:#?}")))
+    }
+
     pub async fn get_user_list_and_items(
         pool: &sqlx::PgPool,
         user_name: String,
@@ -256,7 +278,7 @@ impl ListService {
         user_name: String,
         create_obj: CreateList,
     ) -> Result<List, ErrorList> {
-        sqlx::query_as!(
+        let res = sqlx::query_as!(
             List,
             r#"INSERT INTO Lists(userName, listName, listType) VALUES($1, $2, $3) RETURNING username, listname, listtype AS "listtype: ListType""#,
             user_name,
@@ -265,7 +287,41 @@ impl ListService {
         )
         .fetch_one(pool)
         .await
-        .map_err(|e| ErrorList(format!("failed to create list: {e:#?}")))
+        .map_err(|e| ErrorList(format!("failed to create list: {e:#?}")))?;
+
+        let user_names = create_obj
+            .list_items
+            .iter()
+            .map(|i| i.username.clone())
+            .collect::<Vec<String>>();
+        let list_names = create_obj
+            .list_items
+            .iter()
+            .map(|i| i.listname.clone())
+            .collect::<Vec<String>>();
+        let rank_in_lists = create_obj
+            .list_items
+            .iter()
+            .map(|i| i.rankinginlist as i64)
+            .collect::<Vec<i64>>();
+        let item_ids = create_obj
+            .list_items
+            .into_iter()
+            .map(|i| i.itemid as i64)
+            .collect::<Vec<i64>>();
+
+        sqlx::query!(
+        r#"INSERT INTO ListItems(username, listname, rankinginlist, itemid) SELECT * FROM UNNEST($1::text[], $2::text[], $3::int8[], $4::int8[])"#,
+        &user_names[..],
+        &list_names[..],
+        &rank_in_lists[..],
+        &item_ids[..]
+    )
+    .execute(pool)
+    .await
+    .map_err(|e| ErrorList(format!("failed to add list item to list: {e:#?}")))?;
+
+        return Ok(res);
     }
 
     pub async fn update(
