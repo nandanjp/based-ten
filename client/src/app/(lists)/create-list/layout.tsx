@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <HeroHighlight className="w-full lg:grid min-h-screen">
+    <HeroHighlight className="w-full grid min-h-screen">
       {children}
     </HeroHighlight>
   );

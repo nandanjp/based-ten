@@ -91,7 +91,7 @@ const CreateListPage = ({
   };
 
   return (
-    <div className="p-8 h-full flex justify-between">
+    <div className="p-8 h-full flex justify-between w-full">
       <div className="flex flex-col">
         <Input
           className="p-0 border-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder-black text-lg font-bold placeholder-opacity-20"
@@ -142,21 +142,13 @@ const CreateListPage = ({
       {isSingleError || isSingleFetching || isAllError || isAllFetching ? (
         <LoadingSpinner className="text-blue-300" />
       ) : (
-        <div className="flex gap-4 p-4">
+        <div className="flex flex-col justify-center items-center gap-4 p-4 min-w-full">
           {listItems.map((item, index) => (
-            <div
-              key={`${index}=${item?.item_id}-game`}
-              className="flex gap-4 items-center justify-between"
-            >
-              <div className="text-4xl font-semibold text-gray-800">{`${
-                index + 1
-              }.`}</div>
-              <AddListItem
-                listItem={item}
-                list={all?.response}
-                onClick={onItemSelect(index)}
-              />
-            </div>
+            <AddListItem
+              listItem={item}
+              list={all?.response}
+              onClick={onItemSelect(index)}
+            />
           ))}
         </div>
       )}
