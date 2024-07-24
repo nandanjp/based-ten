@@ -183,3 +183,8 @@ export type LoginResponse = {
   success: boolean;
   token: string;
 };
+
+// export type CreateList = {
+//   list_name: string,
+//   list_type: ListType
+// };
