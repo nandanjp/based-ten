@@ -84,9 +84,9 @@ const UserPage = () => {
           <div className="grid grid-cols-3 gap-4">
             {user_lists.data.response?.map((l) => (
               <ListCard
-                key={l.user_name}
-                list_author={l.user_name!}
-                list_name={l.list_name!}
+                key={l.username}
+                list_author={l.username!}
+                list_name={l.listname!}
                 list_type={l.list_type!}
               />
             ))}

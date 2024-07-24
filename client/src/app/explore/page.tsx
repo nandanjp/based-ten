@@ -7,6 +7,7 @@ import {
 } from "@radix-ui/react-collapsible";
 import { ChevronsUpDown, Heart } from "lucide-react";
 import { useAllLists, useRecommendedLists } from "../../../services/queries";
+import { createLike } from "../../../services/api";
 import { listTypes } from "../../../services/api.types";
 import {
   Carousel,
@@ -18,10 +19,32 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import GradientHeader from "@/components/ui/gradient-header";
+import { UserContext } from "../context";
+import { useContext } from "react";
 
 const ExplorePage = () => {
   const lists = useAllLists();
-  const recommendedLists = useRecommendedLists();
+  const { user } = useContext(UserContext);
+  //const recommendedLists = useRecommendedLists();
+  //console.log("recs")
+  //console.log(recommendedLists)
+  const onLikeClick = async (list_name: string, user_name: string, event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    event.currentTarget.setAttribute(
+      "fill",
+      event.currentTarget.getAttribute("fill") === "pink"
+        ? "none"
+        : "pink"
+    );
+    if (user) {
+      const response = await createLike(list_name, user?.username, user_name);
+      if (response.error) {
+        const message = `An error has occurred: ${response.error}`;
+        throw new Error(message);
+      }
+    } else {
+    }
+  };
+  console.log()
   return (
     <div className="w-screen h-screen text-gray-600">
       <Navbar className="bg-transparent" />
@@ -31,7 +54,7 @@ const ExplorePage = () => {
           <h2 className="text-lg font-semibold">Recommended Lists for You</h2>
           <Carousel className="w-1/2">
             <CarouselContent className="-ml-1">
-              {recommendedLists.data?.map((list, index) => (
+              {/*recommendedLists.data?.map((list, index) => (
                 <CarouselItem
                   key={index}
                   className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2"
@@ -50,7 +73,7 @@ const ExplorePage = () => {
                     </CardContent>
                   </Card>
                 </CarouselItem>
-              ))}
+              ))*/}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
@@ -71,18 +94,13 @@ const ExplorePage = () => {
                     key={index}
                   >
                     <span>
-                      {list.list_name} by {list.user_name}
+                      {list.listname} by {list.username}
                     </span>
                     <div className="flex flex-col items-center">
                       <Heart
                         className="cursor-pointer"
-                        onClick={(event) =>
-                          event.currentTarget.setAttribute(
-                            "fill",
-                            event.currentTarget.getAttribute("fill") === "pink"
-                              ? "none"
-                              : "pink"
-                          )
+                        onClick={async (event) =>
+                          onLikeClick(list.listname, list.username, event)
                         }
                       />
                       {list.likes}

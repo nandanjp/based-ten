@@ -64,8 +64,8 @@ export interface UserResponse {
 export interface ListResponse {
   success: boolean;
   response?: {
-    user_name: string;
-    list_name: string;
+    username: string;
+    listname: string;
     list_type: ListType;
     likes: number;
   }[];

@@ -191,3 +191,6 @@ export const getCurrentUser = async (): Promise<UserResponse> => {
     };
   }
 };
+
+export const createLike = async(list_name: string, liker_name: string, liking_name: string) => 
+  ( await axiosInstance.post<LikeResponse>(`likes/${liker_name}/${liking_name}/${list_name}`) ).data;

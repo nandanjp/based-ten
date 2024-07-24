@@ -84,10 +84,10 @@ pub async fn get_user_list_items(
 
 pub async fn get_user_explore_lists(
     State(pool): State<Arc<AppState>>,
-    Path(username): Path<String>,
+    Extension(user): Extension<User>,
 ) -> impl IntoResponse {
     get_list_response(
-        ListService::get_explore_lists(&pool.db, username)
+        ListService::get_explore_lists(&pool.db, user.username)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,
