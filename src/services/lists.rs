@@ -117,6 +117,7 @@ impl ListService {
                     FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Anime ON ListItems.itemid = Anime.id
                     WHERE Lists.listname = $1 AND Lists.username = $2
                     GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, numepisodes, createdon, listtype
+                    ORDER BY rankinginlist
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
                     "username": a.username,
                     "listname": a.listname,
@@ -136,6 +137,7 @@ impl ListService {
                     FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Movies ON ListItems.itemid = Movies.id
                     WHERE Lists.listname = $1 AND Lists.username = $2
                     GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, createdon, listtype
+                    ORDER BY rankinginlist
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
                     "username": a.username,
                     "listname": a.listname,
@@ -154,6 +156,7 @@ impl ListService {
                     FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN VideoGames ON ListItems.itemid = VideoGames.id
                     WHERE Lists.listname = $1 AND Lists.username = $2
                     GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, console, createdon, listtype
+                    ORDER BY rankinginlist
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
                     "username": a.username,
                     "listname": a.listname,
@@ -173,6 +176,7 @@ impl ListService {
                     FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Songs ON ListItems.itemid = Songs.id
                     WHERE Lists.listname = $1 AND Lists.username = $2
                     GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, author, album, createdon, listtype
+                    ORDER BY rankinginlist
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
                     "username": a.username,
                     "listname": a.listname,
