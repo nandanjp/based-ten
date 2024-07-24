@@ -39,22 +39,22 @@ const BASE_URL = `http://127.0.0.1:5000/api`;
 const axiosInstance = axios.create({ baseURL: BASE_URL });
 
 // Auth Requests
-export const loginUser = async (user_name: string, password: string) =>
+export const loginUser = async (username: string, password: string) =>
   (
     await axiosInstance.post<LoginResponseType>(ROUTES.auth.login_user, {
-      user_name,
+      username,
       password,
     })
   ).data;
 
 export const createUser = async (
-  user_name: string,
+  username: string,
   password: string,
   email: string
 ) =>
   (
     await axiosInstance.post<RegisterResponseType>(ROUTES.auth.register_user, {
-      user_name,
+      username,
       password,
       email,
     })
