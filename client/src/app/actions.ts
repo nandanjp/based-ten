@@ -5,6 +5,7 @@ import {
   AnimeQueryType,
   AnimeResponseType,
   CreateLikeType,
+  CreateListItemType,
   CreateListType,
   FollowListResponseType,
   FollowMutualListResponseType,
@@ -13,6 +14,7 @@ import {
   GroupResponseType,
   LikeListResponseType,
   LikeResponseType,
+  ListItemResponseType,
   ListListResponseType,
   ListResponseType,
   ListType,
@@ -169,13 +171,21 @@ export const getTopLists = async () =>
 export const createList = async (create: CreateListType) =>
   (
     await axiosInstance.post<ListResponseType>(
-      ROUTES.lists.protected.create_list(create.list_items[0].user_name),
+      ROUTES.lists.protected.create_list(create.list_items[0].username),
       create,
       {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       }
+    )
+  ).data;
+
+export const createListItem = async (create: CreateListItemType) =>
+  (
+    await axiosInstance.post<ListItemResponseType>(
+      ROUTES.listitems.protected.create_list_item(create.list_name, String(create.item_id)),
+      create,
     )
   ).data;
 

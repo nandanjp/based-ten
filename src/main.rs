@@ -67,10 +67,7 @@ async fn main() {
                 .nest("/media", create_media_router())
                 .nest("/lists", create_lists_router(app_state.clone()))
                 .nest("/explore", create_explore_router(app_state.clone()))
-                .nest(
-                    "/listitems/user",
-                    create_listitems_router(app_state.clone()),
-                )
+                .nest("/listitems", create_listitems_router(app_state.clone()))
                 .nest("/users", create_user_router(app_state.clone()))
                 .nest("/likes", create_likes_router(app_state.clone()))
                 .nest("/follow", create_follow_router(app_state.clone()))

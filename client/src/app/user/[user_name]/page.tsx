@@ -77,7 +77,7 @@ const UserPage = () => {
   return (
     <div className="w-screen">
       <GradientHeader
-        title={user_info.data.response?.username}
+        title={user_name}
         subtitle={user_info.data.response?.email}
       />
       <Tabs defaultValue="lists" className="border-b">
@@ -97,7 +97,7 @@ const UserPage = () => {
                 key={l.username}
                 list_author={l.username!}
                 list_name={l.listname!}
-                list_type={l.listtype!}
+                list_type={l.list_type!}
               />
             ))}
           </div>

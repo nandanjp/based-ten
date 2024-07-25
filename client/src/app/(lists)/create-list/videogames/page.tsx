@@ -50,10 +50,10 @@ const CreateListPage = ({
   useEffect(() => {
     if (single) {
       listItems[0] = {
-        list_name: listName,
-        user_name: user?.username ?? "",
-        ranking_in_list: 1,
-        item_id: single.response.id,
+        listname: listName,
+        username: user?.username ?? "",
+        rankinginlist: 1,
+        itemid: single.response.id,
       };
       setListItems([...listItems]);
     }
@@ -66,7 +66,7 @@ const CreateListPage = ({
   const onItemSelect = (index: number) => {
     return (newItem: ListItemType) => {
       const exisiting = listItems.find(
-        (item) => item?.item_id == newItem.item_id
+        (item) => item?.itemid == newItem.itemid
       );
       if (exisiting) {
         listItems[listItems.indexOf(exisiting)] = undefined;
@@ -84,7 +84,8 @@ const CreateListPage = ({
       list_items: listItems,
     });
     if (result.success) {
-      console.log("list created", result.response);
+      console.log("created list", result.response);
+      router.push(`/view-list/${result.response.username}/${result.response.listname}`);
     } else {
       console.log("failed to create list", result.error);
     }
@@ -126,11 +127,10 @@ const CreateListPage = ({
             Cancel
           </Button>
           <Button
-            className={`rounded-xl gap-2 py-5 w-fit ${
-              done
-                ? "bg-primary hover:bg-gray-700"
-                : "bg-gray-400 hover:bg-gray-400 cursor-default"
-            }`}
+            className={`rounded-xl gap-2 py-5 w-fit ${done
+              ? "bg-primary hover:bg-gray-700"
+              : "bg-gray-400 hover:bg-gray-400 cursor-default"
+              }`}
             disabled={!done}
             onClick={handleClickCreateList}
           >
