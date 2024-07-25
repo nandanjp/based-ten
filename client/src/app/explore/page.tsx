@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { listType } from "../../../services/api.types";
-import { useAllLists } from "../../../services/queries";
+import { useAllLists, useCurrentUsersLikes } from "../../../services/queries";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { use, useContext } from "react";
 import { UserContext } from "../context";
 
 const ExplorePage = () => {

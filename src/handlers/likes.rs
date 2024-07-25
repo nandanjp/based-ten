@@ -40,7 +40,7 @@ pub async fn get_users_likes(
     State(pool): State<Arc<AppState>>,
     Path(user): Path<String>,
 ) -> impl IntoResponse {
-    get_one_response(
+    get_list_response(
         LikesService::get_by_id(&pool.db, user)
             .await
             .map_err(|e| format!("{e}")),
