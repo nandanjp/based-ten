@@ -57,9 +57,10 @@ function List({ type, user_name, list_name }: ListViewProps) {
                   i === 3 || i === 6
                     ? "md:col-span-2"
                     : i === 10
-                    ? "md:col-span-3"
-                    : ""
+                      ? "md:col-span-3"
+                      : ""
                 }
+                style={{ width: `${100 - (i < 3 ? i : 3) * 5}%` }}
               />
             ))
           )}
@@ -92,6 +93,7 @@ function List({ type, user_name, list_name }: ListViewProps) {
                 header={item.rankinginlist}
                 icon={<IconTableColumn className="h-4 w-4 text-neutral-500" />}
                 className={i === 3 || i === 6 || i == 9 ? "md:col-span-2" : ""}
+                style={{ width: `${100 - (i < 3 ? i : 3) * 5}%` }}
               />
             ))
           )}
@@ -124,6 +126,7 @@ function List({ type, user_name, list_name }: ListViewProps) {
                 header={item.rankinginlist}
                 icon={<IconTableColumn className="h-4 w-4 text-neutral-500" />}
                 className={i === 3 || i === 6 || i == 9 ? "md:col-span-2" : ""}
+                style={{ width: `${100 - (i < 3 ? i : 3) * 5}%` }}
               />
             ))
           )}
@@ -154,6 +157,7 @@ function List({ type, user_name, list_name }: ListViewProps) {
                 header={item.rankinginlist}
                 icon={<IconTableColumn className="h-4 w-4 text-neutral-500" />}
                 className={i === 3 || i === 6 || i == 9 ? "md:col-span-2" : ""}
+                style={{ width: `${100 - (i < 3 ? i : 3) * 5}%` }}
               />
             ))
           )}
