@@ -14,6 +14,7 @@ import {
   useUserFollowers,
   useUserLikes,
   useUserGroups,
+  useUserListType,
 } from "../../../../services/queries";
 import GradientHeader from "@/components/ui/gradient-header";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -81,7 +82,6 @@ const UserPage = () => {
                     key={l.likingname.concat(l.listname)}
                     list_author={l.likingname}
                     list_name={l.listname}
-                    list_type="anime" // TODO fix query
                   />
                 ))}
           </div>

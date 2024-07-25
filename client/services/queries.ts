@@ -15,6 +15,7 @@ import {
   getUserList,
   getUsersLikes,
   getUsersLists,
+  getUserListType,
 } from "@/app/actions";
 import { useQuery } from "@tanstack/react-query";
 
@@ -163,5 +164,13 @@ export const useRecommendedLists = () =>
     queryKey: ["get-recommended-lists"],
     queryFn: async () => {
       return await getRecommendedLists();
+    },
+  });
+
+export const useUserListType = (username: string, list_name: string) =>
+  useQuery({
+    queryKey: ["user-list-type"],
+    queryFn: async () => {
+      return await getUserListType(username, list_name);
     },
   });
