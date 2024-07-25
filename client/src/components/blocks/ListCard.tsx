@@ -21,7 +21,7 @@ interface ListCardProps {
 export function ListCard({ list_name, list_author, list_type }: ListCardProps) {
   return (
     <CardSample
-      title={`${list_name}: Another ${list_type} List`}
+      title={`${list_name}${list_type ? `: Another ${list_type} List` : ''}`}
       description={`Created by ${list_author}`}
     >
       <Link href={`/view-list/${list_author}/${list_name}`}>
