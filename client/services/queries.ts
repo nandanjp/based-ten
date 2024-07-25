@@ -13,6 +13,7 @@ import {
   getUserGroups,
   getUserLikes,
   getUserList,
+  getUsersLikes,
   getUsersLists,
 } from "@/app/actions";
 import { useQuery } from "@tanstack/react-query";
@@ -84,6 +85,14 @@ export const useUserLikes = (username: string) =>
     queryKey: ["user-likes"],
     queryFn: async () => {
       return await getUserLikes(username);
+    },
+  });
+
+export const useCurrentUsersLikes = (username: string) =>
+  useQuery({
+    queryKey: [`users-likes-${username}`],
+    queryFn: async () => {
+      return await getUsersLikes(username);
     },
   });
 

@@ -36,6 +36,19 @@ pub async fn get_likes_by_username(
     )
 }
 
+pub async fn get_users_likes(
+    State(pool): State<Arc<AppState>>,
+    Extension(user): Extension<User>,
+) -> impl IntoResponse {
+    get_one_response(
+        LikesService::get_by_id(&pool.db, user.username)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn create_user_like(
     State(pool): State<Arc<AppState>>,
     Extension(user): Extension<User>,

@@ -92,6 +92,7 @@ export const ROUTES = {
       `/users/${user_name}/${list_name}/type`,
     protected: {
       get_user: (user_name: string) => `/users/${user_name}/me`,
+      get_likes: (user_name: string) => `/users/${user_name}/me/likes`,
       update_user: (user_name: string) => `/users/${user_name}/me`,
       delete_user: (user_name: string) => `/users/${user_name}/me`,
     },

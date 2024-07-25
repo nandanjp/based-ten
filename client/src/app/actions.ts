@@ -74,13 +74,28 @@ export const getCurrentUser = async () => {
       error: "token does not exist",
     } as UserResponseType;
 
-  return (
-    await axiosInstance.get<UserResponseType>(ROUTES.auth.protected.get_user, {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
+  try {
+    const user = await axiosInstance.get<UserResponseType>(
+      ROUTES.auth.protected.get_user,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    );
+    return user.data;
+  } catch (err) {
+    return {
+      success: false,
+      response: {
+        email: "",
+        username: "",
+        userpassword: "",
+        createdat: undefined,
       },
-    })
-  ).data;
+      error: "token does not exist",
+    } as UserResponseType;
+  }
 };
 
 // Anime Requests
@@ -180,6 +195,13 @@ export const getUserListType = async (user_name: string, list_name: string) =>
   (
     await axiosInstance.get<ListTypeResponseType>(
       ROUTES.users.get_user_list_type(user_name, list_name)
+    )
+  ).data;
+
+export const getUsersLikes = async (user_name: string) =>
+  (
+    await axiosInstance.get<LikeListResponseType>(
+      ROUTES.users.protected.get_likes(user_name)
     )
   ).data;
 
@@ -324,5 +346,5 @@ export const createLike = async (create: CreateLikeType) => {
         },
       }
     )
-  ).data
+  ).data;
 };

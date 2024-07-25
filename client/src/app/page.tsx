@@ -1,28 +1,21 @@
 "use client";
-import {
-  Command,
-  CommandEmpty,
-  CommandList,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import { useRouter } from "next/navigation";
-import { ReactElement, useState } from "react";
-import Navbar from "@/components/blocks/Navbar/Navbar";
-import { useQuery } from "@tanstack/react-query";
-import { getMedia } from "./actions";
 import { LoadingSpinner } from "@/components/animated/Spinner";
-import { MediaType } from "../../services/api.types";
-import { useDebounce } from "@/hooks/useDebounce";
 import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
 import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
 import {
-  AudioLines,
-  Clapperboard,
-  LucideGamepad,
-  Tv,
-  User,
-} from "lucide-react";
+  Command,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useQuery } from "@tanstack/react-query";
+import { AudioLines, Clapperboard, LucideGamepad, Tv } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ReactElement, useState } from "react";
+import { MediaType } from "../../services/api.types";
+import { getMedia } from "./actions";
 
 const SearchPage = () => {
   const router = useRouter();
@@ -109,7 +102,7 @@ const SearchPage = () => {
         <div className="flex flex-col text-center p-10">
           <h1
             style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)" }}
-            className="mb-5 text-white text-5xl"
+            className="mb-5 text-5xl"
           >
             Let's Rank It.
           </h1>

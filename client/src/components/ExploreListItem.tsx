@@ -17,6 +17,7 @@ import { useContext, useState } from "react";
 import { ListType } from "../../services/api.types";
 
 type CardProps = React.ComponentProps<typeof Card> & {
+  alreadyLiked: boolean;
   type: ListType;
   title: string;
   author: string;
@@ -24,6 +25,7 @@ type CardProps = React.ComponentProps<typeof Card> & {
 };
 
 export function ExploreListItem({
+  alreadyLiked,
   type,
   className,
   title,
@@ -84,7 +86,7 @@ export function ExploreListItem({
             <HeartIcon
               className={cn(
                 "w-4 h-4 cursor-pointer",
-                isLiked ? "fill-pink-300" : "fill-none"
+                isLiked || alreadyLiked ? "fill-pink-300" : "fill-none"
               )}
             />
           </Button>
