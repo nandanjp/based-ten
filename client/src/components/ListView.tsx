@@ -45,21 +45,15 @@ function List({ type, user_name, list_name }: ListViewProps) {
             data?.response.map((item, i) => (
               <BentoGridItem
                 key={i}
-                title={item.listname}
+                title={item.title}
                 description={
                   <Skeleton
-                    message={`The list ${item.listname} has ${item.likes} and has ${item.numepisodes} episodes`}
+                    message={`Episode Count: ${item.numepisodes}`}
                   />
                 }
                 header={item.rankinginlist}
                 icon={<IconTableColumn className="h-4 w-4 text-neutral-500" />}
-                className={
-                  i === 3 || i === 6
-                    ? "md:col-span-2"
-                    : i === 10
-                      ? "md:col-span-3"
-                      : ""
-                }
+                className={i === 3 || i === 6 || i == 9 ? "md:col-span-2" : ""}
                 style={{ width: `${100 - (i < 3 ? i : 3) * 5}%` }}
               />
             ))
@@ -84,12 +78,12 @@ function List({ type, user_name, list_name }: ListViewProps) {
             data?.response.map((item, i) => (
               <BentoGridItem
                 key={i}
-                title={item.listname}
-                description={
-                  <Skeleton
-                    message={`The list ${item.listname} has ${item.likes}`}
-                  />
-                }
+                title={item.title}
+                // description={
+                //   <Skeleton
+                //     message={`The list ${item.listname} has ${item.likes}`}
+                //   />
+                // }
                 header={item.rankinginlist}
                 icon={<IconTableColumn className="h-4 w-4 text-neutral-500" />}
                 className={i === 3 || i === 6 || i == 9 ? "md:col-span-2" : ""}
@@ -117,7 +111,7 @@ function List({ type, user_name, list_name }: ListViewProps) {
             data?.response.map((item, i) => (
               <BentoGridItem
                 key={i}
-                title={item.listname}
+                title={item.title}
                 description={
                   <Skeleton
                     message={`Album: ${item.album}, Author: ${item.author}`}
@@ -150,7 +144,7 @@ function List({ type, user_name, list_name }: ListViewProps) {
             data?.response.map((item, i) => (
               <BentoGridItem
                 key={i}
-                title={item.listname}
+                title={item.title}
                 description={
                   <Skeleton message={`Playable on: ${item.console}`} />
                 }
