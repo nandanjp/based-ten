@@ -314,6 +314,11 @@ impl ListService {
             .map(|i| i.itemid as i64)
             .collect::<Vec<i64>>();
 
+        println!("User names: {:#?}", user_names);
+        println!("List names: {:#?}", list_names);
+        println!("Rank in lists: {:#?}", rank_in_lists);
+        println!("Item ids: {:#?}", item_ids);
+
         sqlx::query!(
         r#"INSERT INTO ListItems(username, listname, rankinginlist, itemid) SELECT * FROM UNNEST($1::text[], $2::text[], $3::int8[], $4::int8[])"#,
         &user_names[..],
@@ -323,8 +328,11 @@ impl ListService {
     )
     .execute(pool)
     .await
-    .map_err(|e| ErrorList(format!("failed to add list item to list: {e:#?}")))?;
-
+    .map_err(|e| {
+        println!("SQL Error: {:#?}", e);
+        ErrorList(format!("failed to add list item to list: {e:#?}"))
+    })?;
+        println!("List items added successfully");
         return Ok(res);
     }
 

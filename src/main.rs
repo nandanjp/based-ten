@@ -79,7 +79,7 @@ async fn main() {
         .layer(tower_http::timeout::TimeoutLayer::new(Duration::from_secs(
             10,
         )))
-        .layer(tower_http::limit::RequestBodyLimitLayer::new(1024));
+        .layer(tower_http::limit::RequestBodyLimitLayer::new(4096));
 
     tracing::debug!("Now listening on port {port}");
     axum::serve(listener, app.into_make_service())

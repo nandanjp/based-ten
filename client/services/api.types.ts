@@ -1,3 +1,4 @@
+import { createList } from "@/app/actions";
 import { z } from "zod";
 
 export const listType = z.enum(["anime", "songs", "movies", "videogames"]);
@@ -158,7 +159,7 @@ export type UserListResponseType = ListApiResponseType<UserType>;
 const listWithLikesSchema = z.object({
   username: z.string(),
   listname: z.string(),
-  list_type: listType,
+  listtype: listType,
   likes: z.number().optional(),
 });
 const listWithItemsSchema = z.object({
@@ -198,17 +199,18 @@ const listItemSchema = z.object({
   rankinginlist: z.number(),
   itemid: z.number(),
 });
-const createListSchema = z.object({
-  list_name: z.string(),
-  list_type: listType,
-  list_items: z.array(listItemSchema),
-});
 const createListItemSchema = z.object({
   user_name: z.string(),
   list_name: z.string(),
   ranking_in_list: z.number(),
   item_id: z.number(),
 });
+const createListSchema = z.object({
+  list_name: z.string(),
+  list_type: listType,
+  list_items: z.array(listItemSchema),
+});
+
 
 export type ListResponseType = ApiResponseType<
   z.infer<typeof listWithLikesSchema>

@@ -170,10 +170,10 @@ export const getTopLists = async () =>
   (await axiosInstance.get<ListListResponseType>(ROUTES.lists.get_top_lists))
     .data.response;
 
-export const createList = async (create: CreateListType) =>
+export const createList = async (user_name: string, create: CreateListType) =>
   (
     await axiosInstance.post<ListResponseType>(
-      ROUTES.lists.protected.create_list(create.list_items[0].username),
+      ROUTES.lists.protected.create_list(user_name),
       create,
       {
         headers: {
