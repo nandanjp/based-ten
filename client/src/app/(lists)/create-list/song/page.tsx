@@ -78,7 +78,8 @@ const CreateListPage = ({
 
   const handleClickCreateList = async () => {
     if (!listItems.every((l) => l !== undefined)) return;
-    const result = await createList({
+    const myUsername = "balls";
+    const result = await createList(myUsername, {
       list_name: listName,
       list_type: "songs",
       list_items: listItems,

@@ -31,13 +31,28 @@ const ExplorePage = () => {
 
   const recommendedLists = useRecommendedLists();
   const listTypes = Object.keys(listType.Enum);
-  const { data: usersLikes } = useCurrentUsersLikes(user!.username);
+  const { data: usersLikes, error, isLoading } = useCurrentUsersLikes(user!.username);
+
+  if (isLoading) {
+    console.log("Loading user likes...");
+  }
+  
+  if (error) {
+    console.error("Error fetching user likes:", error);
+  }
+  
+  if (!isLoading && !error && !usersLikes) {
+    console.warn("User likes data is undefined");
+  }
+  
+  console.log("User likes data:", usersLikes);
   console.log(usersLikes);
 
   const words = "Explore Page".split(" ").map((word) => ({
     text: word,
     className: "text-blue-500 dark:text-blue-500",
   }));
+  
   return (
     <div className="flex flex-1 flex-col justify-between items-center min-h-full min-w-full">
       <div className="self-start flex justify-center w-full flex-0 py-12 px-8 text-5xl">

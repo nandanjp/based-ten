@@ -23,8 +23,6 @@ export function UserCardFollowBack({ follower_email, follow_back}: UserCardFollo
   const { user } = useContext(UserContext);
   const [followBack, setFollowBack] = useState(follow_back);
   const onFollowerButtonClick = async () => {
-    setFollowBack(!followBack);
-
     if (followBack) {
       const response = await deleteFollow(follower_email);
       if (response?.error) {
@@ -42,6 +40,7 @@ export function UserCardFollowBack({ follower_email, follow_back}: UserCardFollo
       console.log("follow response");
       console.log(response);
     }
+    setFollowBack(!followBack);
   };
   const buttonVariant = followBack ? "secondary" : "default"
   const buttonText = followBack ? "Following" : "Follow back"

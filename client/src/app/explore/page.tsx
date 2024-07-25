@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { listType } from "../../../services/api.types";
-import { useAllLists } from "../../../services/queries";
+import { useAllLists, useCurrentUsersLikes } from "../../../services/queries";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { use, useContext } from "react";
 import { UserContext } from "../context";
 
 const ExplorePage = () => {
@@ -64,7 +64,7 @@ const ExplorePage = () => {
                   className="w-full grid md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-5 justify-center"
                 >
                   {lists
-                    ?.filter((list) => list.list_type === lt)
+                    ?.filter((list) => list.listtype === lt)
                     .map((list, index) => (
                       <div
                         className="flex justify-center items-center"
@@ -72,7 +72,7 @@ const ExplorePage = () => {
                       >
                         <ExploreListItem
                           alreadyLiked={false}
-                          type={list.list_type}
+                          type={list.listtype}
                           author={list.username}
                           title={list.listname}
                           numLikes={list.likes ?? 0}

@@ -10,7 +10,7 @@ import { Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { ListItemType } from "../../../../../services/api.types";
+import { ListItemType, MediaType } from "../../../../../services/api.types";
 
 const CreateListPage = ({
   searchParams,
@@ -43,45 +43,46 @@ const CreateListPage = ({
   });
 
   const [listName, setListName] = useState<string>("");
-  const [listItems, setListItems] = useState<Array<ListItemType | undefined>>(
+  const [selectedItems, setSelectedItems] = useState<Array<MediaType | undefined>>(
     Array(10)
   );
 
   useEffect(() => {
     if (single) {
-      listItems[0] = {
-        listname: listName,
-        username: user?.username ?? "",
-        rankinginlist: 1,
-        itemid: single.response.id,
-      };
-      setListItems([...listItems]);
+      selectedItems[0] = single.response;
+      setSelectedItems([...selectedItems]);
     }
   }, [single]);
 
   const done = useMemo(() => {
-    return listItems.every((item) => !!item) && listName.trim().length > 0;
-  }, [listName, listItems]);
+    return selectedItems.every((item) => !!item) && listName.trim().length > 0;
+  }, [listName, selectedItems]);
 
   const onItemSelect = (index: number) => {
-    return (newItem: ListItemType) => {
-      const exisiting = listItems.find(
-        (item) => item?.itemid == newItem.itemid
+    return (newItem: MediaType) => {
+      const exisiting = selectedItems.find(
+        (item) => item?.id == newItem.id
       );
       if (exisiting) {
-        listItems[listItems.indexOf(exisiting)] = undefined;
+        selectedItems[selectedItems.indexOf(exisiting)] = undefined;
       }
-      listItems[index] = newItem;
-      setListItems([...listItems]);
+      selectedItems[index] = newItem;
+      setSelectedItems([...selectedItems]);
     };
   };
 
   const handleClickCreateList = async () => {
-    if (!listItems.every((l) => l !== undefined)) return;
-    const result = await createList({
+    if (!selectedItems.every((l) => l !== undefined)) return;
+    const myUsername = "ballGuy"
+    const result = await createList(myUsername, {
       list_name: listName,
       list_type: "videogames",
-      list_items: listItems,
+      list_items: selectedItems.map((item, i) => ({
+        username: user?.username || "ballGuy",
+        listname: listName,
+        rankinginlist: i + 1,
+        itemid: item.id || 1
+      }))
     });
     if (result.success) {
       console.log("created list", result.response);
@@ -143,7 +144,7 @@ const CreateListPage = ({
         <LoadingSpinner className="text-blue-300" />
       ) : (
         <div className="flex flex-col justify-center items-center gap-4 p-4 min-w-full">
-          {listItems.map((item, index) => (
+          {selectedItems.map((item, index) => (
             <AddListItem
               listItem={item}
               list={all?.response}
