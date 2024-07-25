@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { nav } from "react"
 import Link from "next/link"
 import { useSelectedLayoutSegment } from "next/navigation"
 
@@ -21,7 +20,8 @@ interface MainNavProps {
 export function MainNav({ isVisible, items, children, classname }: MainNavProps) {
   const segment = useSelectedLayoutSegment()
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
-  const { user } = useContext(UserContext)
+  const userContext = useContext(UserContext);
+  const user = userContext?.user;
 
   return (
     <div className={cn("flex gap-6 md:gap-10", classname)}>
@@ -32,7 +32,7 @@ export function MainNav({ isVisible, items, children, classname }: MainNavProps)
           </span>
         </Link>
       )}
-      {!user || isVisible && (
+      {!user || isVisible ? (
         items?.length ? (
           <nav className="hidden gap-6 md:flex">
             {items?.map((item, index) => (
@@ -52,8 +52,8 @@ export function MainNav({ isVisible, items, children, classname }: MainNavProps)
             ))}
           </nav>
         ) : null
-      )}
-      {user && !isVisible && (
+      ) : null}
+      {user && !isVisible ? (
               <Link
                 href="/user/${user.username}"
                 className={cn(
@@ -63,7 +63,7 @@ export function MainNav({ isVisible, items, children, classname }: MainNavProps)
               >
                 {user.username}
               </Link>
-      )}
+      ) : null}
       <button
         className="flex items-center space-x-2 md:hidden"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
