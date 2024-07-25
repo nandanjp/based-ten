@@ -193,19 +193,29 @@ const songListSchema = listWithItemsSchema.and(
   })
 );
 const listItemSchema = z.object({
-  user_name: z.string(),
-  list_name: z.string(),
-  ranking_in_list: z.number(),
-  item_id: z.number(),
+  username: z.string(),
+  listname: z.string(),
+  rankinginlist: z.number(),
+  itemid: z.number(),
 });
 const createListSchema = z.object({
   list_name: z.string(),
   list_type: listType,
   list_items: z.array(listItemSchema),
 });
+const createListItemSchema = z.object({
+  user_name: z.string(),
+  list_name: z.string(),
+  ranking_in_list: z.number(),
+  item_id: z.number(),
+});
+
 
 export type ListResponseType = ApiResponseType<
   z.infer<typeof listWithLikesSchema>
+>;
+export type ListItemResponseType = ApiResponseType<
+  z.infer<typeof listItemSchema>
 >;
 export type ListTypeResponseType = ApiResponseType<
   z.infer<typeof listTypeSchema>
@@ -229,6 +239,7 @@ export type ListSongResponseType = ListApiResponseType<
   z.infer<typeof songListSchema>
 >;
 export type CreateListType = z.infer<typeof createListSchema>;
+export type CreateListItemType = z.infer<typeof createListItemSchema>;
 export type ListItemType = z.infer<typeof listItemSchema>;
 
 // Follow Request/Response Objects
