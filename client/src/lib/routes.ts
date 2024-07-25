@@ -84,7 +84,7 @@ export const ROUTES = {
   users: {
     get_users: "/users",
     create_user: "/users",
-    get_user_by_username: (user_name: string) => `/users/${user_name}`,
+    get_user_by_username: (user_name: string) => `/users/${user_name}/info`,
     get_user_lists: (user_name: string) => `/users/${user_name}`,
     get_user_list: (user_name: string, list_name: string) =>
       `/users/${user_name}/${list_name}`,

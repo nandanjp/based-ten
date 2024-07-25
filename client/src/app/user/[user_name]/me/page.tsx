@@ -9,17 +9,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParams } from "next/navigation";
 import {
   useUsersLists,
-  useUser,
+  useCurrentUser,
   useUserFollowing,
   useUserFollowers,
   useUserLikes,
   useUserGroups,
-} from "../../../../services/queries";
+} from "../../../../../services/queries";
 import GradientHeader from "@/components/ui/gradient-header";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
-  //const user_info = useUser(user_name);
+  const user_info = useCurrentUser();
   const user_lists = useUsersLists(user_name);
   const user_following = useUserFollowing(user_name);
   const user_followers = useUserFollowers(user_name);
@@ -27,7 +27,7 @@ const UserPage = () => {
   const user_groups = useUserGroups(user_name);
 
   useEffect(() => {
-    //user_info.refetch();
+    user_info.refetch();
     user_lists.refetch();
     user_following.refetch();
     user_followers.refetch();
@@ -37,7 +37,7 @@ const UserPage = () => {
 
   if (
     user_lists.isPending ||
-    //user_info.isPending ||
+    user_info.isPending ||
     user_following.isPending ||
     user_followers.isPending ||
     user_likes.isPending ||
@@ -48,7 +48,7 @@ const UserPage = () => {
 
   if (
     user_lists.isError ||
-    //user_info.isError ||
+    user_info.isError ||
     user_following.isError ||
     user_followers.isError ||
     user_likes.isError ||
@@ -59,7 +59,7 @@ const UserPage = () => {
 
   if (
     user_lists.isFetching ||
-    //user_info.isFetching ||
+    user_info.isFetching ||
     user_likes.isFetching ||
     user_followers.isFetching ||
     user_following.isFetching ||
@@ -72,12 +72,13 @@ const UserPage = () => {
     return <span>data not fetched</span>;
   }
 
-  //console.log(user_info.data);
+  console.log(user_info.data);
 
   return (
     <div className="w-screen">
       <GradientHeader
-        title={user_name}
+        title={user_info.data.response?.username}
+        subtitle={user_info.data.response?.email}
       />
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
@@ -118,7 +119,11 @@ const UserPage = () => {
           <div className="grid gap-4">
             <div className="text-3xl font-semibold">Followers</div>
             {user_followers.data.response?.map((f) => (
-              <UserCard key={f.follower} user_email={f.follower} />
+              <UserCardFollowBack
+                key={f.follower}
+                follower_email={f.follower}
+                follow_back={!!f.followsback}
+              />
             ))}
           </div>
         </TabsContent>
