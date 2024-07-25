@@ -17,6 +17,9 @@ import { LoadingSpinner } from "@/components/animated/Spinner";
 import { MediaType } from "../../services/api.types";
 import { useDebounce } from "@/hooks/useDebounce";
 import { User } from "lucide-react";
+import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
+import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
+
 
 const SearchPage = () => {
   const router = useRouter();
@@ -62,7 +65,12 @@ const SearchPage = () => {
       }}
       className="h-screen w-screen flex items-center flex-col"
     >
-      <Navbar className="bg-opacity-25 bg-gray-900" />
+      <div className="w-screen flex flex-col items-center">
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <MainNav isVisible items={dashboardConfig.mainNav}/>
+          <MainNav items={dashboardConfig.sidebarNav}/>
+        </div>
+      </div>
       <div className="flex flex-col flex-auto justify-center items-center">
         <div className="flex flex-col text-center p-10">
           <h1

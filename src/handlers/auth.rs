@@ -119,7 +119,7 @@ pub async fn login_user_handler(
     State(pool): State<Arc<AppState>>,
     Json(body): Json<LoginUserSchema>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
-    let user = UsersService::get_by_id(&pool.db, body.user_name.clone())
+    let user: User = UsersService::get_by_id(&pool.db, body.user_name.clone())
         .await
         .map_err(|e| {
             (

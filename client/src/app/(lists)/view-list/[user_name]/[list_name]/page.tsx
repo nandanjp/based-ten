@@ -12,6 +12,8 @@ import {
   ListMovieResponseType,
   ListSongResponseType,
 } from "../../../../../../services/api.types";
+import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
+import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
 
 const ViewListPage = () => {
   const { list_name, user_name } = useParams<{
@@ -70,6 +72,12 @@ const ViewListPage = () => {
     <div className="p-8 h-full min-w-full flex flex-col gap-12">
       <div className="flex flex-col gap-4 w-full items-center justify-center p-8">
         <div className="w-full absolute inset-0 h-full">
+          <div className="flex flex-col items-center">
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+              <MainNav isVisible items={dashboardConfig.mainNav}/>
+              <MainNav items={dashboardConfig.sidebarNav}/>
+            </div>
+          </div>
           <SparklesCore
             id="tsparticlesfullpage"
             background="transparent"

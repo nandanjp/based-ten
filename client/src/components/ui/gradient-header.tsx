@@ -1,4 +1,6 @@
 import * as React from "react";
+import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
+import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
 
 type HeaderProps = {
   title?: string;
@@ -16,6 +18,10 @@ const GradientHeader = (props: HeaderProps) => {
       }}
       className="flex items-center justify-center flex-col"
     >
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+        <MainNav isVisible items={dashboardConfig.mainNav}/>
+        <MainNav items={dashboardConfig.sidebarNav}/>
+      </div>
       <div className="flex items-center  pt-12 pl-6 pb-6">
         <div className="grid gap-1 text-center">
           <div
