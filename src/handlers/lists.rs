@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use crate::{
     models::{
-        lists::{CreateList, QueryList, UpdateList},
+        lists::{CreateList, ListType, QueryList, UpdateList},
         users::User,
     },
     services::lists::ListService,
@@ -101,6 +101,19 @@ pub async fn get_user_explore_lists(
 ) -> impl IntoResponse {
     get_list_response(
         ListService::get_explore_lists(&pool.db, user.username)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
+pub async fn get_lists_ordered_by_likes(
+    State(pool): State<Arc<AppState>>,
+    Path(list_type): Path<ListType>,
+) -> impl IntoResponse {
+    get_list_response(
+        ListService::get_lists_ordered_likes(&pool.db, list_type)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,

@@ -21,11 +21,12 @@ pub struct ListWithLikes {
 
 #[derive(Debug, Clone, Serialize, Deserialize, sqlx::FromRow)]
 pub struct ListOrderedByLikes {
-    pub id: Option<i64>,
+    pub id: Option<i32>,
     pub title: Option<String>,
     pub mediaimage: Option<String>,
     pub createdon: Option<NaiveDate>,
     pub listtype: Option<ListType>,
+    pub totallikes: Option<i32>,
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]

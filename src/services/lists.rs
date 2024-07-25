@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 use crate::models::lists::{
-    CreateList, ErrorList, List, ListType, ListWithLikes, QueryList, UpdateList,
+    CreateList, ErrorList, List, ListOrderedByLikes, ListType, ListWithLikes, QueryList, UpdateList,
 };
 
 #[derive(Debug, Clone, Serialize)]
@@ -216,8 +216,8 @@ impl ListService {
     pub async fn get_lists_ordered_likes(
         pool: &sqlx::PgPool,
         list_type: ListType,
-    ) -> Result<Vec<List>, ErrorList> {
-        match list_type{
+    ) -> Result<Vec<ListOrderedByLikes>, ErrorList> {
+        match list_type {
             ListType::Anime => sqlx::query_as!(
                 ListOrderedByLikes,
                 r#"WITH ListsWithItemIDs AS (
@@ -256,7 +256,7 @@ impl ListService {
                     title,
                     mediaimage,
                     createdon,
-                    type AS "type: ListType",
+                    type AS "listtype: ListType",
                     totalLikes
                 FROM Media m
                     JOIN TotalLikesByItem l ON m.id = l.itemID
@@ -265,20 +265,9 @@ impl ListService {
                 ORDER BY l.totalLikes DESC
             "#
             )
-             
             .fetch_all(pool)
             .await
-            .map(|a| {
-                a.into_iter()
-                    .map(|a| List {
-                        username: a.username,
-                        listname: a.listname,
-                        listtype: a.listtype,
-                    })
-                    .collect::<Vec<List>>()
-            })
-            .map_err(|e| ErrorList(format!("failed to retrieve explore lists: {e:#?}")))
-            },
+            .map_err(|e| ErrorList(format!("failed to retrieve explore lists: {e:#?}"))),
             ListType::Movies => sqlx::query_as!(
                 ListOrderedByLikes,
                 r#"WITH ListsWithItemIDs AS (
@@ -317,7 +306,7 @@ impl ListService {
                     title,
                     mediaimage,
                     createdon,
-                    type AS "type: ListType",
+                    type AS "listtype: ListType",
                     totalLikes
                 FROM Media m
                     JOIN TotalLikesByItem l ON m.id = l.itemID
@@ -325,7 +314,10 @@ impl ListService {
                 WHERE m.type = 'movies'
                 ORDER BY l.totalLikes DESC
             "#
-            ),
+            )
+            .fetch_all(pool)
+            .await
+            .map_err(|e| ErrorList(format!("failed to retrieve explore lists: {e:#?}"))),
             ListType::Songs => sqlx::query_as!(
                 ListOrderedByLikes,
                 r#"WITH ListsWithItemIDs AS (
@@ -364,7 +356,7 @@ impl ListService {
                     title,
                     mediaimage,
                     createdon,
-                    type AS "type: ListType",
+                    type AS "listtype: ListType",
                     totalLikes
                 FROM Media m
                     JOIN TotalLikesByItem l ON m.id = l.itemID
@@ -372,7 +364,10 @@ impl ListService {
                 WHERE m.type = 'songs'
                 ORDER BY l.totalLikes DESC
             "#
-            ),
+            )
+            .fetch_all(pool)
+            .await
+            .map_err(|e| ErrorList(format!("failed to retrieve explore lists: {e:#?}"))),
             ListType::VideoGames => sqlx::query_as!(
                 ListOrderedByLikes,
                 r#"WITH ListsWithItemIDs AS (
@@ -411,16 +406,20 @@ impl ListService {
                     title,
                     mediaimage,
                     createdon,
-                    type AS "type: ListType",
-                    totalLikes
+                    type AS "listtype: ListType",
+                    totallikes
                 FROM Media m
                     JOIN TotalLikesByItem l ON m.id = l.itemID
                     AND m.type = l.itemType
                 WHERE m.type = 'videogames'
                 ORDER BY l.totalLikes DESC
             "#
-            ),
+            )
+            .fetch_all(pool)
+            .await
+            .map_err(|e| ErrorList(format!("failed to retrieve explore lists: {e:#?}"))),
         }
+    }
 
     pub async fn get_top_lists(
         pool: &sqlx::PgPool,
@@ -529,18 +528,18 @@ impl ListService {
         println!("Item ids: {:#?}", item_ids);
 
         sqlx::query!(
-        r#"INSERT INTO ListItems(username, listname, rankinginlist, itemid) SELECT * FROM UNNEST($1::text[], $2::text[], $3::int8[], $4::int8[])"#,
-        &user_names[..],
-        &list_names[..],
-        &rank_in_lists[..],
-        &item_ids[..]
-    )
-    .execute(pool)
-    .await
-    .map_err(|e| {
-        println!("SQL Error: {:#?}", e);
-        ErrorList(format!("failed to add list item to list: {e:#?}"))
-    })?;
+            r#"INSERT INTO ListItems(username, listname, rankinginlist, itemid) SELECT * FROM UNNEST($1::text[], $2::text[], $3::int8[], $4::int8[])"#,
+            &user_names[..],
+            &list_names[..],
+            &rank_in_lists[..],
+            &item_ids[..]
+        )
+        .execute(pool)
+        .await
+        .map_err(|e| {
+            println!("SQL Error: {:#?}", e);
+            ErrorList(format!("failed to add list item to list: {e:#?}"))
+        })?;
         println!("List items added successfully");
         return Ok(res);
     }

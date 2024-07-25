@@ -75,6 +75,7 @@ pub fn create_lists_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
     Router::new()
         .route("/", get(get_all_lists))
         .route("/top", get(get_some_top_lists))
+        .route("/likes/:list_type", get(get_lists_ordered_by_likes))
         .nest(
             "/:user_name",
             Router::new()
