@@ -1,5 +1,3 @@
-import { HeroHighlight } from "@/components/animated/HeroHighlight";
-import Image from "next/image";
 import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
 import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
 

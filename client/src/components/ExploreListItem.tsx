@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { createLike } from "@/app/actions";
+import { createLike, deleteLike } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { useContext, useState } from "react";
 import { ListType } from "../../services/api.types";
@@ -34,23 +34,28 @@ export function ExploreListItem({
   ...props
 }: CardProps) {
   const { user } = useContext(UserContext);
-  const [isLiked, setIsLike] = useState(false);
+  const [isLiked, setIsLike] = useState(alreadyLiked);
+  const [currentNumLikes, setCurrentNumLikes] = useState(numLikes);
   const onLikeClick = async () => {
-    setIsLike(!isLiked);
-
     if (user) {
-      const response = await createLike({
-        list_name: title,
-        liking_name: author,
-      });
+      const response = !isLiked
+        ? await createLike({
+            list_name: title,
+            liking_name: author,
+          })
+        : await deleteLike({
+            list_name: title,
+            liking_name: author,
+          });
       if (response?.error) {
         const message = `An error has occurred: ${response.error}`;
         throw new Error(message);
       }
-      console.log("like response");
-      console.log(response);
+      setCurrentNumLikes(currentNumLikes + (isLiked ? -1 : 1));
+      setIsLike(!isLiked);
     } else {
-      console.log("no user!");
+      const message = "Trying to (un)like a list without an active user.";
+      throw new Error(message);
     }
   };
 
@@ -86,12 +91,14 @@ export function ExploreListItem({
             <HeartIcon
               className={cn(
                 "w-4 h-4 cursor-pointer",
-                isLiked || alreadyLiked ? "fill-pink-300" : "fill-none"
+                isLiked ? "fill-pink-300" : "fill-none"
               )}
             />
           </Button>
           <div className="flex-1 space-y-1">
-            <p className="text-sm font-medium leading-none">{numLikes} Likes</p>
+            <p className="text-sm font-medium leading-none">
+              {currentNumLikes} Likes
+            </p>
           </div>
         </div>
       </CardContent>
@@ -106,3 +113,38 @@ export function ExploreListItem({
     </Card>
   );
 }
+
+const error = `
+"failed to create like: Database(
+    PgDatabaseError {
+        severity: Error,
+        code: "23505",
+        message: "duplicate key value violates unique constraint \"likes_pkey\"",
+        detail: Some(
+            "Key (likername, likingname, listname)=(candy, ethan.ramirez, Best Anime) already exists.",
+        ),
+        hint: None,
+        position: None,
+        where: None,
+        schema: Some(
+            "public",
+        ),
+        table: Some(
+            "likes",
+        ),
+        column: None,
+        data_type: None,
+        constraint: Some(
+            "likes_pkey",
+        ),
+        file: Some(
+            "nbtinsert.c",
+        ),
+        line: Some(
+            666,
+        ),
+        routine: Some(
+            "_bt_check_unique",
+        ),
+    },
+)"`;

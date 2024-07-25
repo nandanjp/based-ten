@@ -9,9 +9,8 @@ import {
 } from "@/components/ui/card";
 import { Carousel, Card as AppleCard } from "@/components/animated/AppleCards";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { Badge } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { listType } from "../../../../services/api.types";
 import {
   useAllLists,
@@ -24,7 +23,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 const ExplorePage = () => {
   const router = useRouter();
-  const { data: lists, isError, isFetching } = useAllLists();
+  const { data: lists } = useAllLists();
   const { user } = useContext(UserContext);
   if (!user) {
     router.push("/login");
@@ -33,6 +32,7 @@ const ExplorePage = () => {
   const recommendedLists = useRecommendedLists();
   const listTypes = Object.keys(listType.Enum);
   const { data: usersLikes } = useCurrentUsersLikes(user!.username);
+  console.log(usersLikes);
 
   const words = "Explore Page".split(" ").map((word) => ({
     text: word,
@@ -108,7 +108,7 @@ const ExplorePage = () => {
                       <ExploreListItem
                         alreadyLiked={
                           usersLikes?.response
-                            .map((l) => l.likername)
+                            .map((l) => l.likingname)
                             .includes(list.username) ?? false
                         }
                         type={list.list_type}

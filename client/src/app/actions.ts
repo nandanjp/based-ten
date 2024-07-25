@@ -34,6 +34,7 @@ import {
   VideoGameListResponseType,
   VideoGameQueryType,
   VideoGameResponseType,
+  DeleteLikeType,
 } from "../../services/api.types";
 
 const BASE_URL = `http://127.0.0.1:5000/api`;
@@ -184,8 +185,11 @@ export const createList = async (create: CreateListType) =>
 export const createListItem = async (create: CreateListItemType) =>
   (
     await axiosInstance.post<ListItemResponseType>(
-      ROUTES.listitems.protected.create_list_item(create.list_name, String(create.item_id)),
-      create,
+      ROUTES.listitems.protected.create_list_item(
+        create.list_name,
+        String(create.item_id)
+      ),
+      create
     )
   ).data;
 
@@ -211,7 +215,7 @@ export const getUserListType = async (user_name: string, list_name: string) =>
 export const getUsersLikes = async (user_name: string) =>
   (
     await axiosInstance.get<LikeListResponseType>(
-      ROUTES.users.protected.get_likes(user_name)
+      ROUTES.users.get_likes(user_name)
     )
   ).data;
 
@@ -350,6 +354,23 @@ export const createLike = async (create: CreateLikeType) => {
     await axiosInstance.post<LikeResponseType>(
       ROUTES.likes.protected.create_like,
       create,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+  ).data;
+};
+
+export const deleteLike = async (d: DeleteLikeType) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return undefined;
+  }
+  return (
+    await axiosInstance.delete<LikeResponseType>(
+      ROUTES.likes.protected.delete_like(d.liking_name, d.list_name),
       {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
