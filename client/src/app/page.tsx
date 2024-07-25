@@ -14,7 +14,6 @@ import { getMedia } from "./actions";
 import { LoadingSpinner } from "@/components/animated/Spinner";
 import { MediaType } from "../../services/api.types";
 import { useDebounce } from "@/hooks/useDebounce";
-import { User } from "lucide-react";
 import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
 import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
 import {

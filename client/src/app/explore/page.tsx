@@ -75,7 +75,7 @@ const ExplorePage = () => {
                         </div>
                         <div className="flex justify-between">
                           <Badge className="w-fit">
-                            {list.list_type.toUpperCase()}
+                            {list && list.list_type ? list.list_type.toUpperCase() : ''}
                           </Badge>
                         </div>
                       </CardContent>
