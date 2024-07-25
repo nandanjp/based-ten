@@ -113,9 +113,9 @@ impl ListService {
         match list.listtype {
             ListType::Anime => {
                 sqlx::query!(r#"
-                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, numepisodes, createdon, COUNT(*) as likes, listtype AS "listtype: ListType"
-                    FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Anime ON ListItems.itemid = Anime.id
-                    WHERE Lists.listname = $1 AND Lists.username = $2 AND ListItems.listname = $1 AND ListItems.username = $2 AND Likes.listname = $1 AND Likes.likingname = $2
+                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, numepisodes, createdon, COUNT(Likes.likername) as likes, listtype AS "listtype: ListType"
+                    FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname LEFT OUTER JOIN Likes ON Lists.listname = Likes.listname JOIN Anime ON ListItems.itemid = Anime.id
+                    WHERE Lists.listname = $1 AND Lists.username = $2 AND ListItems.listname = $1 AND ListItems.username = $2
                     GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, numepisodes, createdon, listtype
                     ORDER BY rankinginlist
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
@@ -133,9 +133,9 @@ impl ListService {
             },
             ListType::Movies => {
                 sqlx::query!(r#"
-                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, createdon, COUNT(*) as likes, listtype AS "listtype: ListType"
-                    FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Movies ON ListItems.itemid = Movies.id
-                    WHERE Lists.listname = $1 AND Lists.username = $2 AND ListItems.listname = $1 AND ListItems.username = $2 AND Likes.listname = $1 AND Likes.likingname = $2
+                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, createdon, COUNT(Likes.likername) as likes, listtype AS "listtype: ListType"
+                    FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname LEFT OUTER JOIN Likes ON Lists.listname = Likes.listname JOIN Movies ON ListItems.itemid = Movies.id
+                    WHERE Lists.listname = $1 AND Lists.username = $2 AND ListItems.listname = $1 AND ListItems.username = $2
                     GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, createdon, listtype
                     ORDER BY rankinginlist
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
@@ -152,9 +152,9 @@ impl ListService {
             },
             ListType::VideoGames => {
                 sqlx::query!(r#"
-                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, console, createdon, COUNT(*) as likes, listtype AS "listtype: ListType"
-                    FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN VideoGames ON ListItems.itemid = VideoGames.id
-                    WHERE Lists.listname = $1 AND Lists.username = $2 AND ListItems.listname = $1 AND ListItems.username = $2 AND Likes.listname = $1 AND Likes.likingname = $2
+                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, console, createdon, COUNT(Likes.likername) as likes, listtype AS "listtype: ListType"
+                    FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname LEFT OUTER JOIN Likes ON Lists.listname = Likes.listname AND Lists.username = Likes.likingname JOIN VideoGames ON ListItems.itemid = VideoGames.id
+                    WHERE Lists.listname = $1 AND Lists.username = $2 AND ListItems.listname = $1 AND ListItems.username = $2
                     GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, console, createdon, listtype
                     ORDER BY rankinginlist
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
@@ -172,9 +172,9 @@ impl ListService {
             },
             ListType::Songs => {
                 sqlx::query!(r#"
-                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, author, album, createdon, COUNT(*) as likes, listtype AS "listtype: ListType"
-                    FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname JOIN Likes ON Lists.listname = Likes.listname JOIN Songs ON ListItems.itemid = Songs.id
-                    WHERE Lists.listname = $1 AND Lists.username = $2 AND ListItems.listname = $1 AND ListItems.username = $2 AND Likes.listname = $1 AND Likes.likingname = $2
+                    SELECT Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, author, album, createdon, COUNT(Likes.likername) as likes, listtype AS "listtype: ListType"
+                    FROM Lists JOIN ListItems ON Lists.listname = ListItems.listname LEFT OUTER JOIN Likes ON Lists.listname = Likes.listname JOIN Songs ON ListItems.itemid = Songs.id
+                    WHERE Lists.listname = $1 AND Lists.username = $2 AND ListItems.listname = $1 AND ListItems.username = $2
                     GROUP BY Lists.username, Lists.listname, rankinginlist, itemid, title, mediaimage, author, album, createdon, listtype
                     ORDER BY rankinginlist
                 "#, list_name, user_name).fetch_all(pool).await.map(|a| a.into_iter().map(|a| serde_json::json!({
