@@ -15,7 +15,7 @@ import { CardSample } from "../animated/GoodCard";
 interface ListCardProps {
   list_name: string;
   list_author: string;
-  list_type: "anime" | "movies" | "songs" | "videogames";
+  list_type?: "anime" | "movies" | "songs" | "videogames";
 }
 
 export function ListCard({ list_name, list_author, list_type }: ListCardProps) {

@@ -14,8 +14,10 @@ import {
   useUserFollowers,
   useUserLikes,
   useUserGroups,
+  useUserListType,
 } from "../../../../services/queries";
 import GradientHeader from "@/components/ui/gradient-header";
+import { getUserListType } from "@/app/actions";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -72,6 +74,7 @@ const UserPage = () => {
     return <span>data not fetched</span>;
   }
 
+
   console.log(user_info.data);
 
   return (
@@ -106,13 +109,13 @@ const UserPage = () => {
           <div className="text-3xl font-semibold mb-6">Liked Lists</div>
           <div className="grid grid-cols-3 gap-4">
             {user_likes.data.response?.map((l) => (
-              <ListCard
-                key={l.likingname.concat(l.listname)}
-                list_author={l.likingname}
-                list_name={l.listname}
-                list_type="anime" // TODO fix query
-              />
-            ))}
+                <ListCard
+                  key={l.likingname.concat(l.listname)}
+                  list_author={l.likingname}
+                  list_name={l.listname}
+                />
+              )
+            )}
           </div>
         </TabsContent>
         <TabsContent value="followers" className="p-6">
