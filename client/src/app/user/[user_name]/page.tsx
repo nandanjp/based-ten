@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ListCard } from "@/components/blocks/ListCard";
 import { UserCard } from "@/components/blocks/UserCard";
 import { GroupCard } from "@/components/blocks/GroupCard";
@@ -16,6 +16,9 @@ import {
   useUserGroups,
 } from "../../../../services/queries";
 import GradientHeader from "@/components/ui/gradient-header";
+import { Button } from "@/components/ui/button";
+import { UserContext } from "@/app/context";
+import { createFollow, deleteFollow } from "@/app/actions";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -25,6 +28,8 @@ const UserPage = () => {
   const user_followers = useUserFollowers(user_name);
   const user_likes = useUserLikes(user_name);
   const user_groups = useUserGroups(user_name);
+  const logged_in_user = useContext(UserContext);
+  const [currentUserFollows, setCurrentUserFollows] = useState(false);
 
   useEffect(() => {
     //user_info.refetch();
@@ -34,6 +39,13 @@ const UserPage = () => {
     user_likes.refetch();
     user_groups.refetch();
   }, [user_name]);
+
+  useEffect(() => {
+    if (user_followers.data && logged_in_user) {
+      const isUserFollowing = user_followers.data.response.some(follower => follower.follower == logged_in_user.user?.username);
+      setCurrentUserFollows(isUserFollowing);
+    }
+  }, [user_following, logged_in_user]);
 
   if (
     user_lists.isPending ||
@@ -71,14 +83,40 @@ const UserPage = () => {
   if (!user_lists.data) {
     return <span>data not fetched</span>;
   }
+  const onFollowButtonClick = async () => {
+    if (currentUserFollows) {
+      const response = await deleteFollow(user_name);
+      if (response?.error) {
+        const message = `An error has occurred: ${response.error}`;
+        throw new Error(message);
+      }
+      console.log("unfollow response");
+      console.log(response);
+    } else {
+      const response = await createFollow(user_name);
+      if (response?.error) {
+        const message = `An error has occurred: ${response.error}`;
+        throw new Error(message);
+      }
+      console.log("follow response");
+      console.log(response);
+    }
+    setCurrentUserFollows(!currentUserFollows);
+    location.reload();
+  };
 
-  //console.log(user_info.data);
+  const followButtonVariant = currentUserFollows ? "secondary" : "default"
+  const followButtonText = currentUserFollows ? "Following" : "Follow"
 
   return (
     <div className="w-screen">
       <GradientHeader
         title={user_name}
       />
+      <div className="flex justify-center pb-4">
+        <Button variant={followButtonVariant} onClick={onFollowButtonClick}>{followButtonText}</Button>
+      </div>
+      
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
           <TabsTrigger value="lists">Lists</TabsTrigger>
