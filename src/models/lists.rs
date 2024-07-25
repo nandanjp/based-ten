@@ -1,3 +1,4 @@
+use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 
 use super::listitems::ListItem;
@@ -16,6 +17,15 @@ pub struct ListWithLikes {
     #[serde(rename = "list_type")]
     pub listtype: ListType,
     pub likes: Option<i64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, sqlx::FromRow)]
+pub struct ListOrderedByLikes {
+    pub id: Option<i64>,
+    pub title: Option<String>,
+    pub mediaimage: Option<String>,
+    pub createdon: Option<NaiveDate>,
+    pub listtype: Option<ListType>,
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]

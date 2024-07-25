@@ -213,6 +213,73 @@ impl ListService {
             .map_err(|e| ErrorList(format!("failed to retrieve explore lists: {e:#?}")))
     }
 
+    pub async fn get_lists_ordered_likes(
+        pool: &sqlx::PgPool,
+        list_type: ListType,
+    ) -> Result<Vec<List>, ErrorList> {
+        sqlx::query_as!(
+            ListOrderedByLikes,
+            r#"
+        WITH ListsWithItemIDs AS (
+            SELECT l.userName,
+                l.listName,
+                li.itemID,
+                l.listType as itemType
+            FROM ListItems li
+                JOIN Lists l ON li.userName = l.userName
+                AND li.listName = l.listName
+        ),
+        ListsWithLikes AS (
+            SELECT l.*
+            FROM Lists l
+                JOIN Likes lk on l.listName = lk.listName
+        ),
+        ListLikeCounts AS (
+            SELECT lwl.userName,
+                lwl.listName,
+                COUNT(*) as likeCount
+            FROM ListsWithLikes lwl
+            GROUP BY lwl.userName,
+                lwl.listName
+        ),
+        TotalLikesByItem AS (
+            SELECT lwi.itemID,
+                lwi.itemType,
+                CAST(SUM(llc.likeCount) AS INTEGER) as totalLikes
+            FROM ListsWithItemIDs lwi
+                JOIN ListLikeCounts llc ON lwi.userName = llc.userName
+                AND lwi.listName = llc.listName
+            GROUP BY lwi.itemID,
+                lwi.itemType
+        )
+        SELECT id,
+            title,
+            mediaimage,
+            createdon,
+            type AS "type: ListType",
+            totalLikes
+        FROM Media m
+            JOIN TotalLikesByItem l ON m.id = l.itemID
+            AND m.type = l.itemType
+        WHERE m.type = $1
+        ORDER BY l.totalLikes DESC
+        "#,
+            list_type
+        )
+        .fetch_all(pool)
+        .await
+        .map(|a| {
+            a.into_iter()
+                .map(|a| List {
+                    username: a.username,
+                    listname: a.listname,
+                    listtype: a.listtype,
+                })
+                .collect::<Vec<List>>()
+        })
+        .map_err(|e| ErrorList(format!("failed to retrieve explore lists: {e:#?}")))
+    }
+
     pub async fn get_top_lists(
         pool: &sqlx::PgPool,
         query_obj: QueryList,

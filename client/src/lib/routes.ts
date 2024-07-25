@@ -78,7 +78,7 @@ export const ROUTES = {
       type,
     }: MediaQueryType) =>
       `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${
-        title ? "&title=" + title : ""
+        title && title !== "" ? "&title=" + title : ""
       }${type ? "&type=" + type : ""}`,
   },
   users: {

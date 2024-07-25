@@ -7,11 +7,17 @@ interface CardSampleProps {
   children: React.ReactNode;
   title: string;
   description: string;
+  classname?: string;
 }
 
-export function CardSample({ children, title, description }: CardSampleProps) {
+export function CardSample({
+  children,
+  title,
+  description,
+  classname,
+}: CardSampleProps) {
   return (
-    <Card>
+    <Card className={cn(classname)}>
       <CardSkeletonContainer>
         <div className="p-8 overflow-hidden h-full relative flex items-center justify-center">
           <div className="flex flex-row flex-shrink-0 justify-center items-center gap-2">

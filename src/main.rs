@@ -48,7 +48,6 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{port}"))
         .await
         .expect("failed to retrieve a tcp listener: could not start up a server on the given port");
-    let cors = CorsLayer::permissive();
     let app_state = Arc::new(AppState { db: pool.clone() });
 
     let app = Router::new()
@@ -74,7 +73,7 @@ async fn main() {
                 .nest("/groups", create_groups_router(app_state.clone())),
         )
         .with_state(app_state)
-        .layer(cors)
+        .layer(CorsLayer::permissive())
         .layer(TraceLayer::new_for_http())
         .layer(tower_http::timeout::TimeoutLayer::new(Duration::from_secs(
             10,

@@ -1,19 +1,30 @@
 "use client";
+import { Card, CardTitle } from "@/components/animated/GoodCard";
 import { LoadingSpinner } from "@/components/animated/Spinner";
 import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
 import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
+import { CardContent, CardHeader } from "@/components/ui/card";
+import { CommandItem } from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
 import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { AudioLines, Clapperboard, LucideGamepad, Tv } from "lucide-react";
+import {
+  AudioLines,
+  Clapperboard,
+  LucideGamepad,
+  SearchIcon,
+  Tv,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ReactElement, useState } from "react";
+import { ChangeEvent, ReactElement, useState } from "react";
 import { MediaType } from "../../services/api.types";
 import { getMedia } from "./actions";
 
@@ -29,9 +40,10 @@ const SearchPage = () => {
     },
   });
 
-  const handleValueChange = (value: string) => {
-    setTitle(value);
-    setOpen(!!value);
+  const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setTitle(e.target.value);
+    setOpen(!!e.target.value);
   };
   const onItemSelect = (item: MediaType) => {
     return () => {
@@ -41,16 +53,6 @@ const SearchPage = () => {
 
   const mediaItems = (
     <>
-      <CommandEmpty>
-        {isFetching ? (
-          <span>
-            Getting results...
-            <LoadingSpinner className="text-blue-300" />
-          </span>
-        ) : (
-          "No results"
-        )}
-      </CommandEmpty>
       {data?.response.map((item) => {
         let icon: ReactElement;
         switch (item.type) {
@@ -98,25 +100,89 @@ const SearchPage = () => {
           <MainNav items={dashboardConfig.sidebarNav} />
         </div>
       </div>
-      <div className="flex flex-col flex-auto justify-center items-center">
-        <div className="flex flex-col text-center p-10">
+      <div className="w-full flex flex-col flex-auto justify-center items-center">
+        <div className="min-w-full flex flex-col justify-center items-center text-center p-10 gap-3">
           <h1
             style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)" }}
             className="mb-5 text-5xl"
           >
             Let's Rank It.
           </h1>
-          {isError ? (
-            <LoadingSpinner className="text-blue-300" />
+          <span className="w-1/2 max-w-3xl flex justify-center items-center gap-3">
+            <Input
+              placeholder="Pokemon"
+              value={title}
+              onChange={handleValueChange}
+              className="w-full"
+            />
+            <SearchIcon className="h-8 w-8" />
+          </span>
+          {isError || isFetching ? (
+            <LoadingSpinner className="h-4 w-4 text-blue-300" />
           ) : (
-            <Command className="w-96 drop-shadow">
-              <CommandInput
-                placeholder="Search..."
-                onValueChange={handleValueChange}
-                value={title}
-              />
-              <CommandList>{open && mediaItems}</CommandList>
-            </Command>
+            <Card
+              x-chunk="dashboard-06-chunk-0"
+              className="max-w-5xl md:max-w-5xl lg:max-w-9xl"
+            >
+              <CardHeader>
+                <CardTitle>Media</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="hidden sm:table-cell text-xl">
+                        <span className="sr-only">Media Image</span>
+                      </TableHead>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Created On</TableHead>
+                      <TableHead>Type</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {data?.response.map((item) => {
+                      let icon: ReactElement;
+                      switch (item.type) {
+                        case "anime":
+                          icon = <Tv />;
+                          break;
+                        case "movies":
+                          icon = <Clapperboard />;
+                          break;
+                        case "songs":
+                          icon = <AudioLines />;
+                          break;
+                        case "videogames":
+                          icon = <LucideGamepad />;
+                      }
+                      return (
+                        <TableRow
+                          className="cursor-pointer"
+                          onClick={onItemSelect(item)}
+                        >
+                          <TableCell className="hidden sm:table-cell">
+                            <img
+                              alt="Media Image"
+                              className="aspect-square rounded-md object-cover"
+                              height="64"
+                              src={item.mediaimage}
+                              width="64"
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {item.title}
+                          </TableCell>
+                          <TableCell className="md:table-cell">
+                            {icon}
+                          </TableCell>
+                          <TableCell>{item.createdon?.toString()}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
           )}
         </div>
       </div>

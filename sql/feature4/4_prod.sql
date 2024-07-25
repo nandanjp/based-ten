@@ -31,9 +31,14 @@ TotalLikesByItem AS (
     GROUP BY lwi.itemID,
         lwi.itemType
 )
-SELECT id, title, mediaimage, createdon, type AS "type: ListType", totalLikes
+SELECT id,
+    title,
+    mediaimage,
+    createdon,
+    type AS "type: ListType",
+    totalLikes
 FROM Media m
     JOIN TotalLikesByItem l ON m.id = l.itemID
     AND m.type = l.itemType
-WHERE m.type = 'movies'::ListType
+WHERE m.type = $1
 ORDER BY l.totalLikes DESC;
