@@ -294,6 +294,9 @@ export const getMediaByTypeAndId = async (list_type: ListType, id: string) => {
 // Explore Routes
 export const getRecommendedLists = async () => {
   const token = localStorage.getItem("token");
+  if (!token) {
+    return undefined;
+  }
   const user = await getCurrentUser();
   return (
     await axiosInstance.get<ListListResponseType>(

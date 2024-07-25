@@ -14,25 +14,16 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@radix-ui/react-collapsible";
-import { useQuery } from "@tanstack/react-query";
-import { Badge, ChevronsUpDown, Heart, Link } from "lucide-react";
+import { Badge, ChevronsUpDown, Heart } from "lucide-react";
 import { useContext } from "react";
 import { listType } from "../../../services/api.types";
-import { useRecommendedLists } from "../../../services/queries";
-import { createLike, getAllLists } from "../actions";
+import { useAllLists, useRecommendedLists } from "../../../services/queries";
+import { createLike } from "../actions";
 import { UserContext } from "../context";
+import Link from "next/link";
 
 const ExplorePage = () => {
-  const {
-    data: lists,
-    isError,
-    isFetching,
-  } = useQuery({
-    queryKey: ["get-all-lists"],
-    queryFn: async () => {
-      return await getAllLists();
-    },
-  });
+  const { data: lists, isError, isFetching } = useAllLists();
   const { user } = useContext(UserContext);
   const recommendedLists = useRecommendedLists();
   const listTypes = Object.keys(listType.Enum);
@@ -83,7 +74,7 @@ const ExplorePage = () => {
                         </div>
                         <div className="flex justify-between">
                           <Badge className="w-fit">
-                            {list.listtype.toUpperCase()}
+                            {list.list_type.toUpperCase()}
                           </Badge>
                         </div>
                       </CardContent>
@@ -104,7 +95,7 @@ const ExplorePage = () => {
             </CollapsibleTrigger>
             <CollapsibleContent className="m-4">
               {lists
-                ?.filter((list) => list.listtype === lt)
+                ?.filter((list) => list.list_type === lt)
                 .map((list, index) => (
                   <div
                     className="flex justify-between border-b-2 p-2 items-center"

@@ -158,7 +158,7 @@ export type UserListResponseType = ListApiResponseType<UserType>;
 const listWithLikesSchema = z.object({
   username: z.string(),
   listname: z.string(),
-  listtype: listType,
+  list_type: listType,
   likes: z.number().optional(),
 });
 const listWithItemsSchema = z.object({
