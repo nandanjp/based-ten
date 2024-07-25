@@ -50,7 +50,6 @@ const UserPage = () => {
     <div className="w-screen p-4">
       <GradientHeader
         title={user_info.data?.response?.username ?? "..."}
-        subtitle={user_info.data?.response?.email ?? "..."}
       />
       <Tabs
         defaultValue="lists"
@@ -127,6 +126,13 @@ const UserPage = () => {
         <TabsContent value="account" className="p-6">
           <div className="grid gap-4">
             <div className="text-3xl font-semibold">Account</div>
+            <div>User email: {user_info.data?.response?.email ?? "..."}</div>
+            <div>
+              Created on: {user_info.data?.response?.createdat 
+                ? new Date(user_info.data.response.createdat).toLocaleString() 
+                : "..."}
+            </div>
+
           </div>
         </TabsContent>
       </Tabs>

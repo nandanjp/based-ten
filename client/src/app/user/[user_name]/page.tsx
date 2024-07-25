@@ -101,7 +101,6 @@ const UserPage = () => {
           <TabsTrigger value="followers">Followers</TabsTrigger>
           <TabsTrigger value="following">Following</TabsTrigger>
           <TabsTrigger value="groups">Groups</TabsTrigger>
-          <TabsTrigger value="account">Account</TabsTrigger>
         </TabsList>
         <TabsContent value="lists" className="p-6">
           <div className="text-3xl font-semibold mb-6">Lists</div>
@@ -165,11 +164,6 @@ const UserPage = () => {
                     owned_by={g.ownedby}
                   />
                 ))}
-          </div>
-        </TabsContent>
-        <TabsContent value="account" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Account</div>
           </div>
         </TabsContent>
       </Tabs>
