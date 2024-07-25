@@ -112,7 +112,7 @@ const UserPage = () => {
                     key={l.username}
                     list_author={l.username!}
                     list_name={l.listname!}
-                    list_type={l.list_type!}
+                    list_type={l.listtype!}
                   />
                 ))}
           </div>

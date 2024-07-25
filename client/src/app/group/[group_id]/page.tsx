@@ -24,7 +24,7 @@ import {
 } from "@radix-ui/react-collapsible";
 import { ChevronsUpDown } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useGroupById,
   useGroupMemberLists,
@@ -40,8 +40,12 @@ const GroupPage = () => {
     order_by_author: orderByAuthor,
   });
   const recommended_groups = useRecommendedGroups(group_id);
+  useEffect(() => {
+    group_member_lists.refetch()
+  }, [orderByAuthor]);
 
   const handleChangeListOrdering = (value: string) => {
+    console.log("handled")
     setOrdering(value == "usernames");
   };
 
@@ -83,7 +87,7 @@ const GroupPage = () => {
         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
           {group_member_lists.data.response?.map((l) => (
             <ListCard
-              key={l.username}
+              key={l.username.concat(l.listname)}
               list_author={l.username!}
               list_name={l.listname!}
               list_type={l.listtype!}
