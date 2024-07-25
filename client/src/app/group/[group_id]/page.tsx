@@ -56,7 +56,7 @@ const GroupPage = () => {
   console.log(group_member_lists.data);
 
   return (
-    <div className="min-w-full min-h-full">
+    <div className="min-w-full min-h-full p-4">
       <GradientHeader
         title={group_info.data.response?.groupname}
         subtitle={group_info.data.response?.ownedby}

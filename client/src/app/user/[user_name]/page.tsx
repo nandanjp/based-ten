@@ -45,7 +45,7 @@ const UserPage = () => {
   );
 
   return (
-    <div className="w-screen">
+    <div className="w-screen p-4">
       <GradientHeader title={user_name} />
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
