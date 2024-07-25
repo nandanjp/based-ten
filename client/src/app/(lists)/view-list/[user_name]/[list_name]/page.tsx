@@ -12,6 +12,7 @@ import {
   ListMovieResponseType,
   ListSongResponseType,
 } from "../../../../../../services/api.types";
+import Link from "next/link";
 
 const ViewListPage = () => {
   const { list_name, user_name } = useParams<{
@@ -81,7 +82,9 @@ const ViewListPage = () => {
           />
         </div>
         <TypewriterEffect className="text-xl" words={words}></TypewriterEffect>
-        <h2 className="py-4 font-bold text-md">created by {user_name}</h2>
+        <Link href={`/user/${user_name}`}>
+          <h2 className="py-4 font-bold text-md">created by {user_name}</h2>
+        </Link>
         <h3 className="font-bold italic text-sm pb-4">type: {type}</h3>
         <h3 className="font-bold italic text-sm pb-4">{likes} likes</h3>
         <div className="flex gap-2"></div>
