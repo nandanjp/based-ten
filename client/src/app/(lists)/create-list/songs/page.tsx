@@ -1,5 +1,5 @@
 "use client";
-import { createList, getVideoGameById, getVideoGames } from "@/app/actions";
+import { createList, getSongById, getVideoGameById, getSongs } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { LoadingSpinner } from "@/components/animated/Spinner";
 import { AddListItem } from "@/components/blocks/AddListItem/AddListItem";
@@ -26,9 +26,9 @@ const CreateListPage = ({
     isError: isSingleError,
     isFetching: isSingleFetching,
   } = useQuery({
-    queryKey: ["get-games-by-id"],
+    queryKey: ["get-song-by-id"],
     queryFn: async () => {
-      return await getVideoGameById(firstItemId);
+      return await getSongById(firstItemId);
     },
   });
   const {
@@ -36,9 +36,9 @@ const CreateListPage = ({
     isError: isAllError,
     isFetching: isAllFetching,
   } = useQuery({
-    queryKey: ["get-anime"],
+    queryKey: ["get-songs"],
     queryFn: async () => {
-      return await getVideoGames({ page: 0, limit: 100 });
+      return await getSongs({ page: 0, limit: 100 });
     },
   });
 
@@ -53,7 +53,7 @@ const CreateListPage = ({
         id: single.response.id,
         title: single.response.title,
         mediaimage: single.response.mediaimage,
-        type: "videogames",
+        type: "songs",
       };
       setSelectedItems([...selectedItems]);
     }
@@ -80,7 +80,7 @@ const CreateListPage = ({
     if (!selectedItems.every((l) => l !== undefined)) return;
     const result = await createList(user?.username || "Unknown", {
       list_name: listName,
-      list_type: "videogames",
+      list_type: "songs",
       list_items: selectedItems.map((item, i) => ({
         username: user?.username || "Unknown",
         listname: listName,
@@ -151,7 +151,7 @@ const CreateListPage = ({
           {selectedItems.map((item, index) => (
             <AddListItem
               listItem={item}
-              list={all?.response.map((item) => ({ createdon: item.createdon, id: item.id, mediaimage: item.mediaimage, title: item.title, type: "videogames" }))}
+              list={all?.response.map((item) => ({ createdon: item.createdon, id: item.id, mediaimage: item.mediaimage, title: item.title, type: "songs" }))}
               onClick={onItemSelect(index)}
             />
           ))}
