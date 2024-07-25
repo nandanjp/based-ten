@@ -92,16 +92,17 @@ const SearchPage = () => {
   return (
     <div
       style={{
-        background: "linear-gradient(to right, #d4e1f5, #ffcbb9, #ffe29e)",
+        background:
+          "linear-gradient(to right, #d4e1f5, #ffcbb9, #ffe29e) dark:linear-gradient(to left bottom, #051937, #00476e, #007b9f, #00b2c3, #12ebd6)",
         backgroundSize: "200% 200%",
         animation: "gradientFlow 10s ease infinite",
       }}
       className="h-screen w-screen flex items-center flex-col"
     >
       <div className="w-screen flex flex-col items-center">
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }} className="p-4">
-          <MainNav isVisible items={dashboardConfig.mainNav}/>
-          <MainNav items={dashboardConfig.sidebarNav}/>
+        <div className="flex min-w-full justify-between p-4">
+          <MainNav isVisible items={dashboardConfig.mainNav} />
+          <MainNav items={dashboardConfig.sidebarNav} />
         </div>
       </div>
       <div className="flex flex-col flex-auto justify-center items-center">
