@@ -10,7 +10,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className="w-screen flex flex-col items-center">
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }} className="p-4">
         <MainNav isVisible items={dashboardConfig.mainNav}/>
         <MainNav items={dashboardConfig.sidebarNav}/>
       </div>

@@ -74,10 +74,10 @@ const ViewListPage = () => {
       <div className="flex flex-col gap-4 w-full items-center justify-center p-8">
         <div className="w-full absolute inset-0 h-full">
           <div className="flex flex-col items-center">
-            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-              <MainNav isVisible items={dashboardConfig.mainNav}/>
-              <MainNav items={dashboardConfig.sidebarNav}/>
-            </div>
+              <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }} className="p-4">
+                <MainNav isVisible items={dashboardConfig.mainNav}/>
+                <MainNav items={dashboardConfig.sidebarNav}/>
+              </div>
           </div>
           <SparklesCore
             id="tsparticlesfullpage"
