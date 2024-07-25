@@ -38,15 +38,17 @@ const ExplorePage = () => {
     );
     if (user) {
       const response = await createLike({
-        liker_name: user?.username,
         list_name,
         liking_name: user_name,
       });
-      if (response.error) {
+      if (response?.error) {
         const message = `An error has occurred: ${response.error}`;
         throw new Error(message);
       }
+      console.log("like response")
+      console.log(response);
     } else {
+      console.log("no user??")
     }
   };
   return (

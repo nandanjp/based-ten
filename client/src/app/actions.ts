@@ -1,5 +1,3 @@
-"use server";
-
 import { ROUTES } from "@/lib/routes";
 import axios from "axios";
 import {
@@ -311,10 +309,20 @@ export const getRecommendedLists = async () => {
   ).data.response;
 };
 
-export const createLike = async (create: CreateLikeType) =>
-  (
+export const createLike = async (create: CreateLikeType) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return undefined;
+  }
+  return (
     await axiosInstance.post<LikeResponseType>(
       ROUTES.likes.protected.create_like,
-      {}
+      create,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
     )
-  ).data;
+  ).data
+};
