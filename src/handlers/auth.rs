@@ -36,7 +36,7 @@ pub async fn register_user_handler(
                         "password": "",
                         "created_at": chrono::Utc::now(),
                     }),
-                    "error": format!("{e}")
+                    "error": Some(format!("{e}"))
                 })),
             )
         })?;
@@ -52,7 +52,7 @@ pub async fn register_user_handler(
                     "password": "",
                     "created_at": chrono::Utc::now(),
                 }),
-                "error": format!("User with the given user name already exists!")
+                "error": Some(format!("User with the given user name already exists!"))
             })),
         ));
     }
@@ -72,7 +72,7 @@ pub async fn register_user_handler(
                         "password": "",
                         "created_at": chrono::Utc::now(),
                     }),
-                    "error": format!("Error while hashing password {e}")
+                    "error": Some(format!("Error while hashing password {e}"))
                 })),
             )
         })
