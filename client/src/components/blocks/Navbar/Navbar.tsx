@@ -25,7 +25,7 @@ const Navbar = ({ className }: NavbarProps) => {
       <div className="flex gap-2 items-center">
         {user ? (
           <Link
-            href={`/user/${user.username}`}
+            href={`/user/${user.username}/me`}
             className="hover:bg-secondary p-3"
           >
             {user.username}

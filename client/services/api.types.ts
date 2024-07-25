@@ -210,7 +210,6 @@ const createListItemSchema = z.object({
   item_id: z.number(),
 });
 
-
 export type ListResponseType = ApiResponseType<
   z.infer<typeof listWithLikesSchema>
 >;
@@ -312,6 +311,10 @@ const createLikeSchema = z.object({
   liking_name: z.string(),
   list_name: z.string(),
 });
+const deleteLikeSchema = z.object({
+  liking_name: z.string(),
+  list_name: z.string(),
+});
 
 export type LikeResponseType = ApiResponseType<z.infer<typeof likeSchema>>;
 export type LikeListResponseType = ListApiResponseType<
@@ -319,3 +322,4 @@ export type LikeListResponseType = ListApiResponseType<
 >;
 export type LikeQueryType = z.infer<typeof likeQuerySchema>;
 export type CreateLikeType = z.infer<typeof createLikeSchema>;
+export type DeleteLikeType = z.infer<typeof deleteLikeSchema>;

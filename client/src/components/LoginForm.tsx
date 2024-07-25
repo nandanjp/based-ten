@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import CardWrapper from "./CardWrapper";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { getCurrentUser, loginUser } from "@/app/actions";
 import { UserContext } from "@/app/context";

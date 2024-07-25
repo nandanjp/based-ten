@@ -26,15 +26,18 @@ export const ROUTES = {
       sort_by,
       title,
     }: AnimeQueryType) =>
-      `page=${page}&limit=${limit}${num_episodes ? "&num_episodes=" + num_episodes : ""
-      }${sort_by ? "&sort_by=" + sort_by : ""}${title ? "&title=" + title : ""
+      `page=${page}&limit=${limit}${
+        num_episodes ? "&num_episodes=" + num_episodes : ""
+      }${sort_by ? "&sort_by=" + sort_by : ""}${
+        title ? "&title=" + title : ""
       }`,
   },
   movies: {
     get_movies: "/movies",
     get_movie_by_id: (id: string) => `/movies/${id}`,
     create_query_string: ({ page, limit, sort_by, title }: MovieQueryType) =>
-      `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${title ? "&title=" + title : ""
+      `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${
+        title ? "&title=" + title : ""
       }`,
   },
   songs: {
@@ -47,7 +50,8 @@ export const ROUTES = {
       title,
       author,
     }: SongQueryType) =>
-      `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${title ? "&title=" + title : ""
+      `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${
+        title ? "&title=" + title : ""
       }${author ? "&author=" + author : ""}`,
   },
   games: {
@@ -60,7 +64,8 @@ export const ROUTES = {
       sort_by,
       title,
     }: VideoGameQueryType) =>
-      `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${title ? "&title=" + title : ""
+      `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${
+        title ? "&title=" + title : ""
       }${console ? "&console=" + console : ""}`,
   },
   media: {
@@ -72,21 +77,22 @@ export const ROUTES = {
       title,
       type,
     }: MediaQueryType) =>
-      `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${title ? "&title=" + title : ""
+      `page=${page}&limit=${limit}${sort_by ? "&sort_by=" + sort_by : ""}${
+        title ? "&title=" + title : ""
       }${type ? "&type=" + type : ""}`,
   },
   users: {
     get_users: "/users",
     create_user: "/users",
-    get_user_by_username: (user_name: string) => `/users/${user_name}`,
+    get_user_by_username: (user_name: string) => `/users/${user_name}/info`,
     get_user_lists: (user_name: string) => `/users/${user_name}`,
     get_user_list: (user_name: string, list_name: string) =>
       `/users/${user_name}/${list_name}`,
     get_user_list_type: (user_name: string, list_name: string) =>
       `/users/${user_name}/${list_name}/type`,
+    get_likes: (user_name: string) => `/users/${user_name}/likes`,
     protected: {
       get_user: (user_name: string) => `/users/${user_name}/me`,
-      get_likes: (user_name: string) => `/users/${user_name}/me/likes`,
       update_user: (user_name: string) => `/users/${user_name}/me`,
       delete_user: (user_name: string) => `/users/${user_name}/me`,
     },
@@ -104,8 +110,9 @@ export const ROUTES = {
   },
   listitems: {
     protected: {
-      create_list_item: (list_name: string, item_id: string) => `/listitems/${list_name}/${item_id}`
-    }
+      create_list_item: (list_name: string, item_id: string) =>
+        `/listitems/${list_name}/${item_id}`,
+    },
   },
   likes: {
     get_likes: "/likes",

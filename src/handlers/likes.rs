@@ -38,10 +38,10 @@ pub async fn get_likes_by_username(
 
 pub async fn get_users_likes(
     State(pool): State<Arc<AppState>>,
-    Extension(user): Extension<User>,
+    Path(user): Path<String>,
 ) -> impl IntoResponse {
     get_one_response(
-        LikesService::get_by_id(&pool.db, user.username)
+        LikesService::get_by_id(&pool.db, user)
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,

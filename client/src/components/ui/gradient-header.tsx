@@ -19,14 +19,7 @@ const GradientHeader = (props: HeaderProps) => {
       }}
       className="flex items-center justify-center flex-col"
     >
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-        className="p-4"
-      >
+      <div className="w-full flex justify-between">
         <MainNav isVisible items={dashboardConfig.mainNav} />
         <MainNav items={dashboardConfig.sidebarNav} />
       </div>
@@ -39,7 +32,7 @@ const GradientHeader = (props: HeaderProps) => {
             {props.title}
           </div>
           <div
-            className="text-sm text-primary-foreground/80"
+            className="text-sm"
             style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)" }}
           >
             {props.subtitle}

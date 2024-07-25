@@ -122,8 +122,10 @@ pub fn create_user_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
             "/:user_name",
             Router::new()
                 .route("/", get(get_user_lists))
+                .route("/info", get(get_user_by_username))
                 .route("/:list_name", get(get_user_list_items))
                 .route("/:list_name/type", get(get_user_list_type))
+                .route("/likes", get(get_users_likes))
                 .nest(
                     "/me",
                     Router::new()
@@ -180,7 +182,6 @@ pub fn create_groups_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
             Router::new().route("/groups", get(get_user_groups)).nest(
                 "/me",
                 Router::new()
-                    .route("/likes", get(get_users_likes))
                     .route("/", post(create_user_group))
                     .route("/:group_name", delete(delete_user_group))
                     .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
