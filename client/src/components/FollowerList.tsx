@@ -16,25 +16,24 @@ interface FollowerListProps {
 
 export function FollowerList({username, activeTab}: FollowerListProps) {
     const user_followers = useUserFollowers(username);
-    const refetchFollowers = () => {
-        user_followers.refetch();
-    }
     useEffect(() => {
         if (activeTab !== 'followers') {
-          // Replace this with your actual refetch function
-          refetchFollowers();
+            user_followers.refetch();
         }
-      }, [activeTab]);
+    }, [activeTab]);
+    useEffect(() => {
+        user_followers.refetch();
+    }, [username]);
 
     if (user_followers.isPending) {
         return <span>Loading....</span>;
     }
 
     if (user_followers.isError) {
-        return <span>there was an error!</span>;
+        return <span>There was an error!</span>;
     }
     if (user_followers.isFetching) {
-        return <span>data being fetched</span>;
+        return <span></span>;
     }
     return (
         <div className="grid gap-4">
