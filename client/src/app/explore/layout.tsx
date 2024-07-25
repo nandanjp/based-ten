@@ -8,7 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className="w-full flex flex-col justify-between items-center gap-4 min-h-screen">
-      <div className="min-w-full justify-between p-6 flex sticky inset-0 top-0 z-50">
+      <div className="min-w-full justify-between p-4 flex sticky inset-0 top-0 z-50">
         <MainNav isVisible items={dashboardConfig.mainNav} />
         <MainNav items={dashboardConfig.sidebarNav} />
       </div>
