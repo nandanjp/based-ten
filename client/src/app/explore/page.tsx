@@ -58,41 +58,44 @@ const ExplorePage = () => {
     } else {
     }
   };
-  console.log();
   return (
     <div className="w-screen h-screen text-gray-600">
       <Navbar className="bg-transparent" />
       <GradientHeader title="Explore" />
       <div className="flex flex-col p-4 gap-8">
-        <div className="flex flex-col w-full items-center gap-4">
-          <h2 className="text-lg font-semibold">Recommended Lists for You</h2>
-          <Carousel className="w-1/2">
-            <CarouselContent className="-ml-1">
-              {recommendedLists.data?.map((list, index) => (
-                <CarouselItem
-                  key={index}
-                  className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2"
-                >
-                  <Card>
-                    <CardContent className="flex flex-col gap-2 justify-between aspect-square p-6">
-                      <div className="flex flex-col">
-                        <span>{list.listname}</span>
-                        <span className="italic text-xs">{list.username}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <Badge className="w-fit">
-                          {list.list_type.toUpperCase()}
-                        </Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
+        {user && (
+          <div className="flex flex-col w-full items-center gap-4">
+            <h2 className="text-lg font-semibold">Recommended Lists for You</h2>
+            <Carousel className="w-1/2">
+              <CarouselContent className="-ml-1">
+                {recommendedLists.data?.map((list, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="lg:basis-1/4 md:basis-1/3 sm:basis-1/2"
+                  >
+                    <Card>
+                      <CardContent className="flex flex-col gap-2 justify-between aspect-square p-6">
+                        <div className="flex flex-col">
+                          <span>{list.listname}</span>
+                          <span className="italic text-xs">
+                            {list.username}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <Badge className="w-fit">
+                            {list.listtype.toUpperCase()}
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+        )}
         {listTypes.map((lt, index) => (
           <Collapsible key={index}>
             <CollapsibleTrigger className="flex gap-2">
@@ -101,7 +104,7 @@ const ExplorePage = () => {
             </CollapsibleTrigger>
             <CollapsibleContent className="m-4">
               {lists
-                ?.filter((list) => list.list_type === lt)
+                ?.filter((list) => list.listtype === lt)
                 .map((list, index) => (
                   <div
                     className="flex justify-between border-b-2 p-2 items-center"
