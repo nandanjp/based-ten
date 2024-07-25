@@ -35,6 +35,7 @@ import {
   VideoGameQueryType,
   VideoGameResponseType,
   DeleteLikeType,
+  FollowResponseType,
 } from "../../services/api.types";
 
 const BASE_URL = `http://127.0.0.1:5000/api`;
@@ -371,6 +372,41 @@ export const deleteLike = async (d: DeleteLikeType) => {
   return (
     await axiosInstance.delete<LikeResponseType>(
       ROUTES.likes.protected.delete_like(d.liking_name, d.list_name),
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+  ).data;
+};
+
+export const createFollow = async (newFollowing: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return undefined;
+  }
+  return (
+    await axiosInstance.post<FollowResponseType>(
+      ROUTES.follow.protected.create_follow,
+      { following: newFollowing },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+  ).data;
+};
+
+export const deleteFollow = async (toDelete: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return undefined;
+  }
+  return (
+    await axiosInstance.delete<FollowResponseType>(
+      ROUTES.follow.protected.delete_follow(toDelete),
       {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),

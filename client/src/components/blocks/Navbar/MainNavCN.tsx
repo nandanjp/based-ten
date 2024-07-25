@@ -55,7 +55,7 @@ export function MainNav({ isVisible, items, children, classname }: MainNavProps)
       ) : null}
       {user && !isVisible ? (
               <Link
-                href="/user/${user.username}"
+                href={`/user/${user.username}/me`}
                 className={cn(
                   "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
                   "text-foreground",

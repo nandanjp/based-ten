@@ -122,6 +122,7 @@ pub fn create_user_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
             "/:user_name",
             Router::new()
                 .route("/", get(get_user_lists))
+                .route("/info", get(get_user_by_username))
                 .route("/:list_name", get(get_user_list_items))
                 .route("/:list_name/type", get(get_user_list_type))
                 .route("/likes", get(get_users_likes))
