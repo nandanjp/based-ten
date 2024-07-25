@@ -24,8 +24,8 @@ impl ListService {
         match query_obj {
             _ => sqlx::query_as!(ListWithLikes,
                 r#"
-                SELECT Lists.username, Lists.listname, listtype AS "listtype: ListType", COUNT(*) as likes
-                FROM Lists JOIN Likes ON Lists.listname = Likes.listname
+                SELECT Lists.username, Lists.listname, listtype AS "listtype: ListType", COUNT(Likes.likername) as likes
+                FROM Lists LEFT OUTER JOIN Likes ON Lists.listname = Likes.listname AND Lists.username = Likes.likingname
                 GROUP BY Lists.username, Lists.listname, listtype
                 "#
             )
@@ -44,8 +44,8 @@ impl ListService {
         user_name: String,
     ) -> Result<Vec<ListWithLikes>, ErrorList> {
         sqlx::query_as!(ListWithLikes, r#"
-            SELECT Lists.username, Lists.listname, listtype AS "listtype: ListType", COUNT(*) as likes
-            FROM Lists JOIN Likes ON Lists.listname = Likes.listname
+            SELECT Lists.username, Lists.listname, listtype AS "listtype: ListType", COUNT(Likes.likername) as likes
+            FROM Lists LEFT OUTER JOIN Likes ON Lists.listname = Likes.listname AND Lists.username = Likes.likingname
             WHERE username = $1
             GROUP BY Lists.username, Lists.listname, listtype
         "#, user_name)
@@ -66,8 +66,8 @@ impl ListService {
         sqlx::query_as!(
             ListWithLikes,
             r#"
-            SELECT username, Lists.listname, listtype AS "listtype: ListType", COUNT(*) as likes
-            FROM Lists JOIN Likes ON Lists.listname = Likes.listname
+            SELECT username, Lists.listname, listtype AS "listtype: ListType", COUNT(Likes.likername) as likes
+            FROM Lists LEFT OUTER JOIN Likes ON Lists.listname = Likes.listname AND Lists.username = Likes.likingname
             WHERE username = $1 AND Lists.listname = $2
             GROUP BY username, Lists.listname, listtype
         "#,
