@@ -84,8 +84,14 @@ const UserPage = () => {
 
   return (
     <div className="w-screen p-4">
-      <GradientHeader title={user_name} />
-      <div className="flex justify-center pb-4">
+      <GradientHeader/>
+      <div className="flex justify-center pb-4 space-x-6">
+          <div
+            className="text-4xl font-bold"
+            style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)" }}
+          >
+            {user_name}
+          </div>
         <Button variant={followButtonVariant} onClick={onFollowButtonClick}>{followButtonText}</Button>
       </div>
       <Tabs defaultValue="lists" className="border-b">
