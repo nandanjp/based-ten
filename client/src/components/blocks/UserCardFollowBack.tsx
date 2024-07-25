@@ -19,7 +19,7 @@ interface UserCardFollowBackProps {
   follow_back: boolean;
 }
 
-export function UserCardFollowBack({ follower_email, follow_back }: UserCardFollowBackProps) {
+export function UserCardFollowBack({ follower_email, follow_back}: UserCardFollowBackProps) {
   const { user } = useContext(UserContext);
   const [followBack, setFollowBack] = useState(follow_back);
   const onFollowerButtonClick = async () => {

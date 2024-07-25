@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { act, useEffect, useState } from "react";
 import { ListCard } from "@/components/blocks/ListCard";
 import { UserCard } from "@/components/blocks/UserCard";
 import { GroupCard } from "@/components/blocks/GroupCard";
@@ -16,21 +16,21 @@ import {
   useUserGroups,
 } from "../../../../../services/queries";
 import GradientHeader from "@/components/ui/gradient-header";
+import { FollowerList } from "@/components/FollowerList";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
   const user_info = useCurrentUser();
   const user_lists = useUsersLists(user_name);
   const user_following = useUserFollowing(user_name);
-  const user_followers = useUserFollowers(user_name);
   const user_likes = useUserLikes(user_name);
   const user_groups = useUserGroups(user_name);
+  const [activeTab, setActiveTab] = useState('lists');
 
   useEffect(() => {
     user_info.refetch();
     user_lists.refetch();
     user_following.refetch();
-    user_followers.refetch();
     user_likes.refetch();
     user_groups.refetch();
   }, [user_name]);
@@ -39,7 +39,6 @@ const UserPage = () => {
     user_lists.isPending ||
     user_info.isPending ||
     user_following.isPending ||
-    user_followers.isPending ||
     user_likes.isPending ||
     user_groups.isPending
   ) {
@@ -50,7 +49,6 @@ const UserPage = () => {
     user_lists.isError ||
     user_info.isError ||
     user_following.isError ||
-    user_followers.isError ||
     user_likes.isError ||
     user_groups.isError
   ) {
@@ -61,7 +59,6 @@ const UserPage = () => {
     user_lists.isFetching ||
     user_info.isFetching ||
     user_likes.isFetching ||
-    user_followers.isFetching ||
     user_following.isFetching ||
     user_groups.isFetching
   ) {
@@ -80,7 +77,7 @@ const UserPage = () => {
         title={user_info.data.response?.username}
         subtitle={user_info.data.response?.email}
       />
-      <Tabs defaultValue="lists" className="border-b">
+      <Tabs defaultValue="lists" value={activeTab} onValueChange={setActiveTab} className="border-b">
         <TabsList className="flex">
           <TabsTrigger value="lists">Lists</TabsTrigger>
           <TabsTrigger value="likes">Liked Lists</TabsTrigger>
@@ -94,7 +91,7 @@ const UserPage = () => {
           <div className="grid grid-cols-3 gap-4">
             {user_lists.data.response?.map((l) => (
               <ListCard
-                key={l.username}
+                key={l.listname}
                 list_author={l.username!}
                 list_name={l.listname!}
                 list_type={l.list_type!}
@@ -110,22 +107,13 @@ const UserPage = () => {
                 key={l.likingname.concat(l.listname)}
                 list_author={l.likingname}
                 list_name={l.listname}
-                list_type="anime" // TODO fix query
+                list_type="anime" // TODO fix query}
               />
             ))}
           </div>
         </TabsContent>
         <TabsContent value="followers" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Followers</div>
-            {user_followers.data.response?.map((f) => (
-              <UserCardFollowBack
-                key={f.follower}
-                follower_email={f.follower}
-                follow_back={!!f.followsback}
-              />
-            ))}
-          </div>
+          <FollowerList username={user_name} activeTab={activeTab}/>
         </TabsContent>
         <TabsContent value="following" className="p-6">
           <div className="grid gap-4">
