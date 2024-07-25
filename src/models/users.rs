@@ -15,6 +15,7 @@ pub struct QueryUser {}
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateUser {
     pub email: String,
+    #[serde(rename = "username")]
     pub user_name: String,
     pub password: String,
 }
@@ -28,6 +29,7 @@ pub struct UpdateUser {
 
 #[derive(Debug, Deserialize)]
 pub struct LoginUserSchema {
+    #[serde(rename = "username")]
     pub user_name: String,
     pub password: String,
 }

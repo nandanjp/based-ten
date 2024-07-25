@@ -4,14 +4,12 @@ import {
   CommandEmpty,
   CommandList,
   CommandInput,
-  CommandDialog,
-  CommandGroup,
   CommandItem,
 } from "@/components/ui/command";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import Navbar from "@/components/blocks/Navbar/Navbar";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getMedia } from "./actions";
 import { LoadingSpinner } from "@/components/animated/Spinner";
 import { MediaType } from "../../services/api.types";
@@ -19,12 +17,18 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { User } from "lucide-react";
 import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
 import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
-
+import {
+  AudioLines,
+  Clapperboard,
+  LucideGamepad,
+  Tv,
+  User,
+} from "lucide-react";
 
 const SearchPage = () => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>("mario");
+  const [title, setTitle] = useState<string>("");
   const debouncedSearch = useDebounce(title);
   const { data, isError, isFetching } = useQuery({
     queryKey: [`media?title=${debouncedSearch}`],
@@ -33,20 +37,9 @@ const SearchPage = () => {
     },
   });
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen(!open);
-      }
-    };
-
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
-
   const handleValueChange = (value: string) => {
     setTitle(value);
+    setOpen(!!value);
   };
   const onItemSelect = (item: MediaType) => {
     return () => {
@@ -54,7 +47,48 @@ const SearchPage = () => {
     };
   };
 
-  console.log(debouncedSearch);
+  const mediaItems = (
+    <>
+      <CommandEmpty>
+        {isFetching ? (
+          <span>
+            Getting results...
+            <LoadingSpinner className="text-blue-300" />
+          </span>
+        ) : (
+          "No results"
+        )}
+      </CommandEmpty>
+      {data?.response.map((item) => {
+        let icon: ReactElement;
+        switch (item.type) {
+          case "anime":
+            icon = <Tv />;
+            break;
+          case "movies":
+            icon = <Clapperboard />;
+            break;
+          case "songs":
+            icon = <AudioLines />;
+            break;
+          case "videogames":
+            icon = <LucideGamepad />;
+        }
+        return (
+          <CommandItem
+            className="flex gap-4 p-4 hover:bg-gray-200 cursor-pointer"
+            onSelect={onItemSelect(item)}
+            key={`${item.id}-${item.type}`}
+          >
+            {icon}
+            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+              {item.title}
+            </span>
+          </CommandItem>
+        );
+      })}
+    </>
+  );
 
   return (
     <div
@@ -82,47 +116,14 @@ const SearchPage = () => {
           {isError ? (
             <LoadingSpinner className="text-blue-300" />
           ) : (
-            <>
-              <p className="text-sm drop-shadow bg-black rounded-lg py-4 px-6">
-                Search for Media{" "}
-                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-                  <span className="text-xs">⌘</span>K
-                </kbd>
-              </p>
-              <CommandDialog open={open} onOpenChange={setOpen}>
-                <CommandInput
-                  placeholder="Type a command or search..."
-                  onValueChange={handleValueChange}
-                  value={title}
-                />
-                <CommandList>
-                  <CommandEmpty>
-                    {isFetching ? (
-                      <span>
-                        Getting results...
-                        <LoadingSpinner className="text-blue-300" />
-                      </span>
-                    ) : (
-                      "No results"
-                    )}
-                  </CommandEmpty>
-                  <CommandGroup heading="Settings">
-                    {data?.response.map((item) => {
-                      return (
-                        <CommandItem
-                          className="flex p-4 hover:bg-gray-200 cursor-pointer"
-                          onSelect={onItemSelect(item)}
-                          key={`${item.id}-${item.type}`}
-                        >
-                          <User className="mr-2 h-4 w-4" />
-                          <span>{item.title}</span>
-                        </CommandItem>
-                      );
-                    })}
-                  </CommandGroup>
-                </CommandList>
-              </CommandDialog>
-            </>
+            <Command className="w-96 drop-shadow">
+              <CommandInput
+                placeholder="Search..."
+                onValueChange={handleValueChange}
+                value={title}
+              />
+              <CommandList>{open && mediaItems}</CommandList>
+            </Command>
           )}
         </div>
       </div>

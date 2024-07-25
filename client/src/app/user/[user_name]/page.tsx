@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { ListCard } from "@/components/blocks/ListCard";
 import { UserCard } from "@/components/blocks/UserCard";
 import { GroupCard } from "@/components/blocks/GroupCard";
@@ -24,6 +25,15 @@ const UserPage = () => {
   const user_followers = useUserFollowers(user_name);
   const user_likes = useUserLikes(user_name);
   const user_groups = useUserGroups(user_name);
+
+  useEffect(() => {
+    user_info.refetch();
+    user_lists.refetch();
+    user_following.refetch();
+    user_followers.refetch();
+    user_likes.refetch();
+    user_groups.refetch();
+  }, [user_name]);
 
   if (
     user_lists.isPending ||
