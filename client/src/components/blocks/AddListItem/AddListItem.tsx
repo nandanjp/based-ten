@@ -29,11 +29,12 @@ export const AddListItem = (props: AddListItemProps) => {
           <CardTitle>{listItem?.title ?? "Select an item..."}</CardTitle>
         </CardHeader>
         <CardContent>
-          <Image
-            src={listItem?.mediaimage ?? '/eepy.png'}
+          <img
+            src={listItem?.mediaimage ?? "/eepy.png"}
             alt="media image"
             height={96}
             width={96}
+            onError={(event) => (event.currentTarget.src = "/eepy.png")}
           />
         </CardContent>
       </Card>
