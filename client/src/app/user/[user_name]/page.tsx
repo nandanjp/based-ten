@@ -189,7 +189,7 @@ const UserPage = () => {
                   })
                   .map((g) => (
                     <GroupCard
-                      key={g.groupname}
+                      key={`g.groupname-${g.ownedby}-${user_name}-${g.gid}`}
                       group_name={g.groupname}
                       group_id={g.gid}
                       owned_by={g.ownedby}
