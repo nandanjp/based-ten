@@ -40,6 +40,8 @@ const UserPage = () => {
   const [currentUserFollows, setCurrentUserFollows] = useState(false);
   const [groupsShown, setGroupsShown] = useState('all');
 
+  console.log(user_groups);
+
   useEffect(() => {
     user_lists.refetch();
     user_following.refetch();
