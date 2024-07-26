@@ -8,10 +8,10 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { listType } from "../../../services/api.types";
-import { useAllLists, useCurrentUsersLikes } from "../../../services/queries";
 import { useRouter } from "next/navigation";
-import { use, useContext } from "react";
+import { useContext, useEffect } from "react";
+import { listType } from "../../../services/api.types";
+import { useAllLists } from "../../../services/queries";
 import { UserContext } from "../context";
 
 const ExplorePage = () => {
@@ -19,9 +19,10 @@ const ExplorePage = () => {
   const listTypes = Object.keys(listType.Enum);
   const router = useRouter();
   const { user } = useContext(UserContext);
-  if (user) {
-    router.push("/explore/me");
-  }
+
+  useEffect(() => {
+    if (user) router.push("/explore/me");
+  }, []);
 
   const words = "Explore Lists Page".split(" ").map((word) => ({
     text: word,
