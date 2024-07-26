@@ -55,6 +55,7 @@ export function ExploreGroupItem({
     }
     setNumberOfMembers(numberOfMembers + (isFollowing ? -1 : 1));
     setIsFollowing(!isFollowing);
+    router.refresh();
   };
 
   return (

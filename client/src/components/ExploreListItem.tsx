@@ -63,6 +63,7 @@ export function ExploreListItem({
     }
     setCurrentNumLikes(currentNumLikes + (isLiked ? -1 : 1));
     setIsLike(!isLiked);
+    router.refresh();
   };
 
   return (
