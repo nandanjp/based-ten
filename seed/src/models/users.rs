@@ -34,7 +34,7 @@ impl Commit for User {
                 let password = u.password.clone();
                 Argon2::default()
                     .hash_password(password.as_bytes(), &salt)
-                    .map(|_| password.to_string())
+                    .map(|p| p.to_string())
                     .map_err(|_| {
                         <&str as Into<Box<dyn std::error::Error>>>::into("failed to hash password")
                     })
