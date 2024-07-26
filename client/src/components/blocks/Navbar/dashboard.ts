@@ -1,4 +1,4 @@
-import { DashboardConfig } from "@/components/blocks/Navbar/types/index"
+import { DashboardConfig } from "@/components/blocks/Navbar/types/index";
 
 export const dashboardConfig: DashboardConfig = {
   mainNav: [
@@ -9,6 +9,10 @@ export const dashboardConfig: DashboardConfig = {
     {
       title: "Explore",
       href: "/explore",
+    },
+    {
+      title: "Popular",
+      href: "/popular",
     },
   ],
   sidebarNav: [
@@ -21,4 +25,4 @@ export const dashboardConfig: DashboardConfig = {
       href: "/signup",
     },
   ],
-}
+};

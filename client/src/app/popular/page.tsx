@@ -11,16 +11,21 @@ import {
 } from "@/components/ui/table";
 import { usePopularItemsByType } from "../../../services/queries";
 import { LoadingSpinner } from "@/components/animated/Spinner";
-import { Button } from "@/components/ui/button";
+import { ListType, listType } from "../../../services/api.types";
+import { useEffect, useState } from "react";
 
 export default function PopularPage() {
+  const [mediaType, setMediaType] = useState<ListType>("anime");
   const {
     data: popularMovies,
     isError,
     isFetching,
-  } = usePopularItemsByType("movies");
+    refetch,
+  } = usePopularItemsByType(mediaType);
 
-  console.log(popularMovies);
+  useEffect(() => {
+    refetch();
+  }, [mediaType]);
 
   return (
     <div className="w-full flex flex-col items-center justify-center text-center p-10 gap-3">
@@ -35,7 +40,17 @@ export default function PopularPage() {
         className="max-w-5xl md:max-w-5xl lg:max-w-9xl"
       >
         <CardHeader>
-          <CardTitle>Movies</CardTitle>
+          <CardTitle>{mediaType.toUpperCase()}</CardTitle>
+          <div className="flex gap-4 justify-center">
+            {Object.keys(listType.Enum).map((lt) => (
+              <button
+                className={`border-b-2 ${mediaType == lt && "border-black"} `}
+                onClick={() => setMediaType(lt as ListType)}
+              >
+                {lt}
+              </button>
+            ))}
+          </div>
         </CardHeader>
         <CardContent>
           {isError || isFetching ? (
