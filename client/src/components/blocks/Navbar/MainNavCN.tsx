@@ -31,7 +31,7 @@ export function MainNav({
   const user = userContext?.user;
 
   return (
-    <div className={cn("flex gap-6 md:gap-10", classname)}>
+    <div className={cn("flex items-center gap-6 md:gap-10", classname)}>
       {isVisible && ( // Use isVisible for conditional rendering
         <Link href="/" className="hidden items-center space-x-2 md:flex">
           <span className="hidden font-bold sm:inline-block">
