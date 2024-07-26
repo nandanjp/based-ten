@@ -65,8 +65,8 @@ const ExplorePage = () => {
                     <ExploreGroupItem
                       alreadyFollows={
                         userGroups?.response
-                          .map((g) => g.ownedby)
-                          .includes(group.ownedby) ?? false
+                          .map((g) => g.gid)
+                          .includes(group.gid) ?? false
                       }
                       gid={group.gid}
                       groupname={group.groupname}

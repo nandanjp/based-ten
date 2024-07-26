@@ -359,36 +359,39 @@ export const getRecommendedLists = async () => {
   ).data.response;
 };
 
-export const joinGroup = async (gid: string) => {
+export const joinGroup = async (gid: number) => {
   const token = localStorage.getItem("token");
   if (!token) {
     return undefined;
   }
-  return await axiosInstance.post<GroupMembersResponseType>(
-    ROUTES.groups.protected.join_group(gid),
-    {},
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    }
-  );
+  return (
+    await axiosInstance.post<GroupMembersResponseType>(
+      ROUTES.groups.protected.join_group(gid),
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+  ).data;
 };
 
-export const unjoinGroup = async (gid: string) => {
+export const unjoinGroup = async (gid: number) => {
   const token = localStorage.getItem("token");
   if (!token) {
     return undefined;
   }
-  return await axiosInstance.post<GroupMembersResponseType>(
-    ROUTES.groups.protected.unjoin_group(gid),
-    {},
-    {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    }
-  );
+  return (
+    await axiosInstance.delete<GroupMembersResponseType>(
+      ROUTES.groups.protected.unjoin_group(gid),
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      }
+    )
+  ).data;
 };
 
 export const createLike = async (create: CreateLikeType) => {

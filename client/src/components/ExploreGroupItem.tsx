@@ -1,11 +1,6 @@
-import { DiameterIcon, HeartIcon, View } from "lucide-react";
+import { DiameterIcon, View } from "lucide-react";
 
-import {
-  createFollow,
-  deleteFollow,
-  joinGroup,
-  unjoinGroup,
-} from "@/app/actions";
+import { joinGroup, unjoinGroup } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -19,7 +14,6 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { type } from "os";
 import { title } from "process";
 import { useContext, useState } from "react";
 
@@ -35,7 +29,6 @@ type CardProps = React.ComponentProps<typeof Card> & {
 export function ExploreGroupItem({
   alreadyFollows,
   className,
-  groupname,
   owner,
   numMembers,
   gid,
@@ -49,12 +42,12 @@ export function ExploreGroupItem({
     if (!user) router.push("/login");
     if (user) {
       const response = !isFollowing
-        ? await joinGroup(owner)
-        : await unjoinGroup(owner);
-      // if (response?.error) {`
-      //   const message = `An error has occurred: ${response.error}`;
-      //   throw new Error(message);
-      // }`
+        ? await joinGroup(gid)
+        : await unjoinGroup(gid);
+      if (response?.error) {
+        const message = `An error has occurred: ${response.error}`;
+        throw new Error(message);
+      }
       setNumberOfMembers(numberOfMembers + (isFollowing ? -1 : 1));
       setIsFollowing(!isFollowing);
     } else {

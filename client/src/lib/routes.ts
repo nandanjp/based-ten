@@ -141,8 +141,8 @@ export const ROUTES = {
     get_group_lists: (gid: string) => `/groups/${gid}/lists`,
     get_group_circles: (gid: string) => `/groups/${gid}/circles`,
     protected: {
-      join_group: (gid: string) => `/groups/${gid}/join`,
-      unjoin_group: (gid: string) => `/groups/${gid}/join`,
+      join_group: (gid: number) => `/groups/${gid}/join`,
+      unjoin_group: (gid: number) => `/groups/${gid}/unjoin`,
       create_group: (user_name: string) => `/groups/${user_name}/me`,
       delete_group: (user_name: string, group_name: string) =>
         `/groups/${user_name}/me/${group_name}`,
