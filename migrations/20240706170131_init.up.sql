@@ -2,29 +2,29 @@
 CREATE TABLE Movies (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    mediaImage TEXT,
+    mediaImage TEXT NOT NULL,
     createdOn DATE
 );
 CREATE TABLE Songs (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    author VARCHAR(255),
-    album VARCHAR(255),
-    mediaImage TEXT,
+    author VARCHAR(255) NOT NULL,
+    album VARCHAR(255) NOT NULL,
+    mediaImage TEXT NOT NULL,
     createdOn DATE
 );
 CREATE TABLE VideoGames (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    mediaImage TEXT,
-    console VARCHAR(255),
+    mediaImage TEXT NOT NULL,
+    console VARCHAR(255) NOT NULL,
     createdOn DATE
 );
 CREATE TABLE Anime (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    mediaImage TEXT,
-    numEpisodes INT,
+    mediaImage TEXT NOT NULL,
+    numEpisodes INT NOT NULL,
     createdOn DATE
 );
 CREATE TABLE Users (
