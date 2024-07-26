@@ -178,6 +178,17 @@ pub fn create_follow_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
 pub fn create_groups_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
     Router::new()
         .route("/", get(get_all_groups))
+        .route("/all", get(get_all_groups_and_members))
+        .route(
+            "/:gid/join",
+            post(join_group)
+                .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
+        )
+        .route(
+            "/:gid/unjoin",
+            delete(unjoin_group)
+                .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
+        )
         .nest(
             "/:user_name",
             Router::new().route("/groups", get(get_user_groups)).nest(

@@ -20,6 +20,16 @@ pub async fn get_all_groups(State(pool): State<Arc<AppState>>) -> impl IntoRespo
     )
 }
 
+pub async fn get_all_groups_and_members(State(pool): State<Arc<AppState>>) -> impl IntoResponse {
+    get_list_response(
+        GroupsService::get_groups_and_members(&pool.db)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn get_user_groups(
     State(pool): State<Arc<AppState>>,
     Path(user_name): Path<String>,
@@ -123,6 +133,34 @@ pub async fn get_group_member_lists(
             .await
             .map_err(|e| format!("{e}")),
         StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
+pub async fn join_group(
+    State(pool): State<Arc<AppState>>,
+    Path(gid): Path<i32>,
+    Extension(user): Extension<User>,
+) -> impl IntoResponse {
+    get_one_response(
+        GroupsService::join_group(&pool.db, user.username, gid)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::CREATED,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
+pub async fn unjoin_group(
+    State(pool): State<Arc<AppState>>,
+    Path(gid): Path<i32>,
+    Extension(user): Extension<User>,
+) -> impl IntoResponse {
+    get_one_response(
+        GroupsService::unjoin_group(&pool.db, user.username, gid)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::CREATED,
         StatusCode::BAD_REQUEST,
     )
 }

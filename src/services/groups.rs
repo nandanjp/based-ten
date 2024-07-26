@@ -1,5 +1,8 @@
 use crate::models::{
-    groups::{CreateGroups, Group, GroupMember, GroupRecursive, GroupsError, QueryGroups},
+    groups::{
+        CreateGroups, Group, GroupMember, GroupRecursive, GroupWithMembers, GroupsError,
+        QueryGroups,
+    },
     lists::{List, ListType},
 };
 
@@ -10,6 +13,27 @@ impl GroupsService {
             .fetch_all(pool)
             .await
             .map_err(|e| GroupsError(format!("failed to retrieve all groups: {e:#?}")))
+    }
+
+    pub async fn get_groups_and_members(
+        pool: &sqlx::PgPool,
+    ) -> Result<Vec<GroupWithMembers>, GroupsError> {
+        sqlx::query_as!(
+            GroupWithMembers,
+            r#"
+            SELECT Groups.gid, Groups.groupname, Groups.ownedby, COUNT(*) AS nummembers
+            FROM Groups JOIN Groupmembers ON Groups.gid = Groupmembers.gid
+            GROUP BY Groups.gid, Groups.groupname, Groups.ownedby
+            ORDER BY nummembers
+        "#
+        )
+        .fetch_all(pool)
+        .await
+        .map_err(|e| {
+            GroupsError(format!(
+                "failed to retrieve groups and member count: {e:#?}"
+            ))
+        })
     }
 
     pub async fn get_by_id(pool: &sqlx::PgPool, gid: i32) -> Result<Group, GroupsError> {
@@ -156,5 +180,37 @@ impl GroupsService {
         .fetch_all(pool)
         .await
         .map_err(|e| GroupsError(format!("failed to get group members of {gid}: {e:#?}")))
+    }
+
+    pub async fn join_group(
+        pool: &sqlx::PgPool,
+        user_name: String,
+        gid: i32,
+    ) -> Result<GroupMember, GroupsError> {
+        sqlx::query_as!(
+            GroupMember,
+            r#"INSERT INTO GroupMembers(gid, username) VALUES($1, $2) RETURNING username"#,
+            gid,
+            user_name
+        )
+        .fetch_one(pool)
+        .await
+        .map_err(|e| GroupsError(format!("failed to join group: {e:#?}")))
+    }
+
+    pub async fn unjoin_group(
+        pool: &sqlx::PgPool,
+        user_name: String,
+        gid: i32,
+    ) -> Result<GroupMember, GroupsError> {
+        sqlx::query_as!(
+            GroupMember,
+            r#"DELETE FROM GroupMembers WHERE gid=$1 AND username=$2 RETURNING username"#,
+            gid,
+            user_name
+        )
+        .fetch_one(pool)
+        .await
+        .map_err(|e| GroupsError(format!("failed to join group: {e:#?}")))
     }
 }

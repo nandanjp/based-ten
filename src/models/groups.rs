@@ -8,6 +8,14 @@ pub struct Group {
 }
 
 #[derive(Debug, Deserialize, sqlx::FromRow, Serialize, Clone)]
+pub struct GroupWithMembers {
+    pub gid: i32,
+    pub groupname: String,
+    pub ownedby: String,
+    pub nummembers: Option<i64>,
+}
+
+#[derive(Debug, Deserialize, sqlx::FromRow, Serialize, Clone)]
 pub struct GroupRecursive {
     pub gid: Option<i32>,
     pub groupname: Option<String>,
