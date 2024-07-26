@@ -1,4 +1,6 @@
 "use client";
+import { getAllGroupsAndMembers, getUserGroups } from "@/app/actions";
+import { UserContext } from "@/app/context";
 import { TypewriterEffect } from "@/components/animated/TypeWriter";
 import { ExploreGroupItem } from "@/components/ExploreGroupItem";
 import {
@@ -8,39 +10,45 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { useAllGroupsMembers } from "../../../../../services/queries";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { UserContext } from "@/app/context";
-import { useContext } from "react";
-import { useUserGroups } from "../../../../../services/queries";
-import { Button } from "@/components/ui/button";
+import { useContext, useEffect } from "react";
 
 const ExplorePage = () => {
   const router = useRouter();
-  const { data: groups, isError, isFetching } = useAllGroupsMembers();
   const { user } = useContext(UserContext);
-  if (!user) {
-    router.push("/login");
-  }
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      router.push("/login");
+    }
+  }, []);
 
   const {
     data: userGroups,
     isError: err,
     isFetching: fetching,
-  } = useUserGroups(user!.username);  
+  } = useQuery({
+    queryKey: [`user-groups-${user?.username}`],
+    queryFn: async () => {
+      return await getUserGroups(user?.username ?? "");
+    },
+  });
 
   const words = "Explore Groups Page".split(" ").map((word) => ({
     text: word,
     className: "text-blue-500 dark:text-blue-500",
   }));
 
-  // Log the values before the return statement
-  groups?.response.forEach((group, index) => {
-    const alreadyFollows = userGroups?.response
-      .map((g) => g.gid)
-      .includes(group.gid) ?? false;
-    console.log(`Group ${index}:`, group);
-    console.log(`alreadyFollows for group ${index}:`, alreadyFollows);
+  const {
+    data: groups,
+    isError,
+    isFetching,
+  } = useQuery({
+    queryKey: [`all-groups-members-${userGroups?.response.length}`],
+    queryFn: async () => {
+      return await getAllGroupsAndMembers();
+    },
   });
 
   return (
@@ -71,8 +79,7 @@ const ExplorePage = () => {
                 value={"Groups"}
                 className="w-full grid md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-5 justify-center"
               >
-                <div className="flex justify-center items-center">
-                </div>
+                <div className="flex justify-center items-center"></div>
                 {groups?.response.map((group, index) => (
                   <div className="flex justify-center items-center" key={index}>
                     <ExploreGroupItem

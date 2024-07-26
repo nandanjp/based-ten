@@ -1,34 +1,37 @@
 "use client";
+import ViewListPage from "@/app/(lists)/view-list/[user_name]/[list_name]/page";
+import { getAllLists, getUsersLikes } from "@/app/actions";
+import { Card as AppleCard, Carousel } from "@/components/animated/AppleCards";
 import { TypewriterEffect } from "@/components/animated/TypeWriter";
 import { ExploreListItem } from "@/components/ExploreListItem";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Carousel, Card as AppleCard } from "@/components/animated/AppleCards";
+import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { listType } from "../../../../services/api.types";
 import {
-  useAllLists,
   useCurrentUsersLikes,
   useRecommendedLists,
 } from "../../../../services/queries";
 import { UserContext } from "../../context";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import ViewListPage from "@/app/(lists)/view-list/[user_name]/[list_name]/page";
 
 const ExplorePage = () => {
   const router = useRouter();
-  const { data: lists } = useAllLists();
   const { user } = useContext(UserContext);
-  if (!user) {
-    router.push("/login");
-  }
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      router.push("/login");
+    }
+  }, []);
 
   const recommendedLists = useRecommendedLists();
   const listTypes = Object.keys(listType.Enum);
@@ -36,7 +39,12 @@ const ExplorePage = () => {
     data: usersLikes,
     error,
     isLoading,
-  } = useCurrentUsersLikes(user!.username);
+  } = useQuery({
+    queryKey: [`users-likes-${user?.username}`],
+    queryFn: async () => {
+      return await getUsersLikes(user?.username ?? "");
+    },
+  });
 
   if (error) {
     console.error("Error fetching user likes:", error);
@@ -46,10 +54,17 @@ const ExplorePage = () => {
     console.warn("User likes data is undefined");
   }
 
-  const words = "Explore Page".split(" ").map((word) => ({
+  const words = "Explore Lists Page".split(" ").map((word) => ({
     text: word,
     className: "text-blue-500 dark:text-blue-500",
   }));
+
+  const { data: lists } = useQuery({
+    queryKey: [`lists-${usersLikes?.response.length}`],
+    queryFn: async () => {
+      return await getAllLists();
+    },
+  });
 
   return (
     <div className="flex flex-1 flex-col justify-between items-center min-h-full min-w-full">
