@@ -1,16 +1,6 @@
-import * as React from "react";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { CardSample } from "../animated/GoodCard";
+import { Button } from "../ui/button";
 
 interface ListCardProps {
   list_name: string;
@@ -21,7 +11,7 @@ interface ListCardProps {
 export function ListCard({ list_name, list_author, list_type }: ListCardProps) {
   return (
     <CardSample
-      title={`${list_name}${list_type ? `: Another ${list_type} List` : ''}`}
+      title={`${list_name}${list_type ? `: Another ${list_type} List` : ""}`}
       description={`Created by ${list_author}`}
     >
       <Link href={`/view-list/${list_author}/${list_name}`}>

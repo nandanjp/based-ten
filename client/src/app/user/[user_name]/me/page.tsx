@@ -1,23 +1,11 @@
 "use client";
 
-import { act, useEffect, useState } from "react";
+import { GroupCard } from "@/components/blocks/GroupCard";
 import { ListCard } from "@/components/blocks/ListCard";
 import { UserCard } from "@/components/blocks/UserCard";
-import { GroupCard } from "@/components/blocks/GroupCard";
-import { UserCardFollowBack } from "@/components/blocks/UserCardFollowBack";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useParams } from "next/navigation";
-import {
-  useUsersLists,
-  useCurrentUser,
-  useUserFollowing,
-  useUserFollowers,
-  useUserLikes,
-  useUserOwnerGroups,
-} from "../../../../../services/queries";
-import GradientHeader from "@/components/ui/gradient-header";
 import { FollowerList } from "@/components/FollowerList";
-import { Skeleton } from "@/components/ui/skeleton";
+import { buttonVariants } from "@/components/ui/button";
+import GradientHeader from "@/components/ui/gradient-header";
 import {
   Select,
   SelectContent,
@@ -25,10 +13,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button, buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { BadgePlus } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  useAllGroups,
+  useCurrentUser,
+  useUserFollowing,
+  useUserLikes,
+  useUsersLists,
+} from "../../../../../services/queries";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -36,9 +34,9 @@ const UserPage = () => {
   const user_lists = useUsersLists(user_name);
   const user_following = useUserFollowing(user_name);
   const user_likes = useUserLikes(user_name);
-  const user_groups = useUserOwnerGroups(user_name);
+  const user_groups = useAllGroups();
   const [activeTab, setActiveTab] = useState("lists");
-  const [groupsShown, setGroupsShown] = useState('all');
+  const [groupsShown, setGroupsShown] = useState("all");
 
   useEffect(() => {
     user_info.refetch();
@@ -60,9 +58,7 @@ const UserPage = () => {
 
   return (
     <div className="w-screen p-4">
-      <GradientHeader
-        title={user_info.data?.response?.username ?? "..."}
-      />
+      <GradientHeader title={user_info.data?.response?.username ?? "..."} />
       <Tabs
         defaultValue="lists"
         value={activeTab}
@@ -123,12 +119,11 @@ const UserPage = () => {
         <TabsContent value="groups" className="p-6">
           <div className="flex justify-between pt-6">
             <div className="text-3xl font-semibold mb-6">Groups</div>
-            <Select defaultValue="all" onValueChange={setGroupsShown}>
+            <Select defaultValue="owned" onValueChange={setGroupsShown}>
               <SelectTrigger className="w-[300px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All groups</SelectItem>
                 <SelectItem value="owned">Groups I own</SelectItem>
                 <SelectItem value="joined">Groups I've joined</SelectItem>
               </SelectContent>
@@ -139,25 +134,28 @@ const UserPage = () => {
               href={`/group/create_group`}
               className={cn(buttonVariants({ variant: "outline" }))}
             >
-              <BadgePlus className="mr-2 h-4 w-4" />Create a new group
+              <BadgePlus className="mr-2 h-4 w-4" />
+              Create a new group
             </Link>
           </div>
-          <hr/>
+          <hr />
           <div className="grid grid-cols-3 gap-4 mt-4">
             {user_groups.isPending
               ? skel
-              : user_groups.data?.response?.filter((g) => {
-                if (groupsShown === 'all') return true;
-                if (groupsShown === 'owned') return g.ownedby === user_name;
-                if (groupsShown === 'joined') return g.ownedby !== user_name;
-              }).map((g) => (
-                  <GroupCard
-                    key={g.groupname}
-                    group_name={g.groupname}
-                    group_id={g.gid}
-                    owned_by={g.ownedby}
-                  />
-                ))}
+              : user_groups.data?.response
+                  ?.filter((g) => {
+                    if (groupsShown === "joined")
+                      return g.ownedby !== user_name;
+                    return g.ownedby === user_name;
+                  })
+                  .map((g) => (
+                    <GroupCard
+                      key={g.groupname}
+                      group_name={g.groupname}
+                      group_id={g.gid}
+                      owned_by={g.ownedby}
+                    />
+                  ))}
           </div>
         </TabsContent>
         <TabsContent value="account" className="p-6">
@@ -165,11 +163,11 @@ const UserPage = () => {
             <div className="text-3xl font-semibold">Account</div>
             <div>User email: {user_info.data?.response?.email ?? "..."}</div>
             <div>
-              Created on: {user_info.data?.response?.createdat 
-                ? new Date(user_info.data.response.createdat).toLocaleString() 
+              Created on:{" "}
+              {user_info.data?.response?.createdat
+                ? new Date(user_info.data.response.createdat).toLocaleString()
                 : "..."}
             </div>
-
           </div>
         </TabsContent>
       </Tabs>

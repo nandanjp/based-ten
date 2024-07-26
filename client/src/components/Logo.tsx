@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface LogoProps {
   classname?: string;
@@ -10,6 +10,8 @@ interface LogoProps {
 
 const Logo = ({ classname }: LogoProps) => {
   const [mounted, setMounted] = useState(false);
+  const { theme } = useTheme();
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -17,8 +19,6 @@ const Logo = ({ classname }: LogoProps) => {
   if (!mounted) {
     return null;
   }
-
-  const { theme } = useTheme();
 
   return (
     <svg

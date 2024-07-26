@@ -1,10 +1,5 @@
 "use client";
-import {
-  createList,
-  getSongById,
-  getVideoGameById,
-  getSongs,
-} from "@/app/actions";
+import { createList, getSongById, getSongs } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { LoadingSpinner } from "@/components/animated/Spinner";
 import { AddListItem } from "@/components/blocks/AddListItem/AddListItem";
@@ -15,7 +10,7 @@ import { Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { ListItemType, MediaType } from "../../../../../services/api.types";
+import { MediaType } from "../../../../../services/api.types";
 
 const CreateListPage = ({
   searchParams,
@@ -155,6 +150,7 @@ const CreateListPage = ({
         <div className="flex flex-col justify-center items-center gap-4 p-4 min-w-full">
           {selectedItems.map((item, index) => (
             <AddListItem
+              key={`${item?.createdon}-${index}`}
               listItem={item}
               list={all?.response.map((item) => ({
                 createdon: item.createdon,

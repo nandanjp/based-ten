@@ -17,10 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { listType } from "../../../../services/api.types";
-import {
-  useCurrentUsersLikes,
-  useRecommendedLists,
-} from "../../../../services/queries";
+import { useRecommendedLists } from "../../../../services/queries";
 import { UserContext } from "../../context";
 
 const ExplorePage = () => {
@@ -101,7 +98,7 @@ const ExplorePage = () => {
       <Card className="w-full shadow-md py-8 px-3 max-w-3xl lg:max-w-7xl flex self-center flex-col p-4 gap-8 mt-10">
         <CardHeader>
           <div className="w-full flex flex-col gap-y-4 items-center justify-center">
-            <h1 className="text-5xl font-semibold text-blue-200">
+            <h1 className="text-5xl font-semibold text-blue-700">
               Explore Lists
             </h1>
           </div>

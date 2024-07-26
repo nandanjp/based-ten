@@ -1,10 +1,10 @@
-import * as React from "react";
 import Link from "next/link";
+import * as React from "react";
 
 import { MainNavItem } from "@/components/blocks/Navbar/types/index";
-import { cn } from "@/lib/utils";
-import { useLockBody } from "@/hooks/useLockBody";
 import Logo from "@/components/Logo";
+import { useLockBody } from "@/hooks/useLockBody";
+import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
   items: MainNavItem[];

@@ -5,6 +5,7 @@ import { LoadingSpinner } from "@/components/animated/Spinner";
 import { TypewriterEffect } from "@/components/animated/TypeWriter";
 import { ListView } from "@/components/ListView";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   ListAnimeResponseType,
@@ -12,9 +13,6 @@ import {
   ListMovieResponseType,
   ListSongResponseType,
 } from "../../../../../../services/api.types";
-import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
-import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
-import Link from "next/link";
 
 const ViewListPage = ({
   manual_list_name,
@@ -81,7 +79,7 @@ const ViewListPage = ({
     }));
   return (
     <div className="p-8 h-full min-w-full flex flex-col gap-12">
-      <div className="flex flex-col gap-4 w-full items-center justify-center p-8">
+      <div className="flex flex-col gap-4 w-full items-center justify-center">
         <div className="w-full absolute inset-0 h-full">
           <SparklesCore
             id="tsparticlesfullpage"

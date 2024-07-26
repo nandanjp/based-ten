@@ -1,18 +1,9 @@
-import * as React from "react";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { useContext, useState } from "react";
-import { UserContext } from "@/app/context";
 import { createFollow, deleteFollow } from "@/app/actions";
+import { UserContext } from "@/app/context";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { useContext, useState } from "react";
 
 interface UserCardFollowBackProps {
   follower_email: string;

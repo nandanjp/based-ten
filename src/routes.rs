@@ -192,14 +192,14 @@ pub fn create_groups_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
         .nest(
             "/:user_name",
             Router::new()
-            .route("/group_members", get(get_user_member_groups))
-            .nest(
-                "/me",
-                Router::new()
-                    .route("/", post(create_user_group))
-                    .route("/:group_name", delete(delete_user_group))
-                    .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
-            ),
+                .route("/group_members", get(get_user_member_groups))
+                .nest(
+                    "/me",
+                    Router::new()
+                        .route("/", post(create_user_group))
+                        .route("/:group_name", delete(delete_user_group))
+                        .route_layer(axum_middleware::from_fn_with_state(app_state.clone(), auth)),
+                ),
         )
         .route("/:gid/group", get(get_group_by_id))
         .route("/:gid/members", get(get_group_members))

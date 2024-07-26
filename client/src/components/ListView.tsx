@@ -9,8 +9,8 @@ import {
   ListSongResponseType,
   ListType,
 } from "../../services/api.types";
-import { LoadingSpinner } from "./animated/Spinner";
 import { HeroHighlight } from "./animated/HeroHighlight";
+import { LoadingSpinner } from "./animated/Spinner";
 
 interface ListViewProps {
   type: ListType;
@@ -20,7 +20,7 @@ interface ListViewProps {
 
 export function ListView({ type, user_name, list_name }: ListViewProps) {
   return (
-    <HeroHighlight className="min-w-full lg:flex min-h-screen items-center justify-center">
+    <HeroHighlight className="min-w-full lg:flex min-h-screen items-center justify-center p-4">
       <List list_name={list_name} user_name={user_name} type={type} />
     </HeroHighlight>
   );
@@ -44,12 +44,10 @@ function List({ type, user_name, list_name }: ListViewProps) {
           ) : (
             data?.response.map((item, i) => (
               <BentoGridItem
-                key={i}
+                key={`${item.createdon}-${item.rankinginlist}`}
                 title={item.title}
                 description={
-                  <Skeleton
-                    message={`Episode Count: ${item.numepisodes}`}
-                  />
+                  <Skeleton message={`Episode Count: ${item.numepisodes}`} />
                 }
                 header={item.rankinginlist}
                 icon={<IconTableColumn className="h-4 w-4 text-neutral-500" />}

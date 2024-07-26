@@ -1,9 +1,6 @@
-import * as React from "react";
-
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -27,11 +24,9 @@ export function GroupCard({ group_name, owned_by, group_id }: GroupCardProps) {
         <p className="">Owned by {owned_by}</p>
       </CardFooter>
       <CardContent>
-          <Link href={`/group/${group_id}`}>
-            <Button variant={'default'}>
-              View Group
-            </Button>
-          </Link>
+        <Link href={`/group/${group_id}`}>
+          <Button variant={"default"}>View Group</Button>
+        </Link>
       </CardContent>
     </Card>
   );

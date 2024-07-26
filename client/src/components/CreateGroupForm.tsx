@@ -1,24 +1,24 @@
 "use client";
 
+import { createGroup, joinGroup } from "@/app/actions";
+import { UserContext } from "@/app/context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
+import { useFormStatus } from "react-dom";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import CardWrapper from "./CardWrapper";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
 } from "./ui/form";
-import CardWrapper from "./CardWrapper";
-import { useContext, useEffect, useState } from "react";
-import { useFormStatus } from "react-dom";
-import { getCurrentUser, createGroup, joinGroup } from "@/app/actions";
-import { UserContext } from "@/app/context";
-import { useRouter } from "next/navigation";
 
 const createGroupSchema = z.object({
   groupname: z.string().min(2, {

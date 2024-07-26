@@ -1,11 +1,11 @@
 "use client";
+import { getCurrentUser } from "@/app/actions";
+import { UserContext } from "@/app/context";
+import { getQueryClient } from "@/lib/get-query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { getQueryClient } from "@/lib/get-query-client";
 import type * as React from "react";
-import { UserContext } from "@/app/context";
-import { useState, useEffect } from "react";
-import { getCurrentUser } from "@/app/actions";
+import { useEffect, useState } from "react";
 import { UserType } from "../../services/api.types";
 
 export default function Providers({ children }: { children: React.ReactNode }) {

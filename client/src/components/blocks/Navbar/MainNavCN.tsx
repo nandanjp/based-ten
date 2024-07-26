@@ -1,16 +1,16 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
+import * as React from "react";
 
-import { MainNavItem } from "@/components/blocks/Navbar/types/index";
-import { cn } from "@/lib/utils";
-import { MobileNav } from "@/components/blocks/Navbar/MobileNavCN";
 import { UserContext } from "@/app/context";
-import { useContext } from "react";
+import { MobileNav } from "@/components/blocks/Navbar/MobileNavCN";
+import { MainNavItem } from "@/components/blocks/Navbar/types/index";
 import Logo from "@/components/Logo";
 import { ModeToggle } from "@/components/ModeToggleButton";
+import { cn } from "@/lib/utils";
+import { useContext } from "react";
 
 interface MainNavProps {
   isVisible?: boolean;
@@ -74,7 +74,7 @@ export function MainNav({
           >
             {user.username}
           </Link>
-        
+
           <ModeToggle />
           <div></div>
         </div>

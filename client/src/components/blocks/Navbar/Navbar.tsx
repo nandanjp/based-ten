@@ -1,9 +1,9 @@
-import Link from "next/link";
-import { NavbarProps } from "./types";
-import { cn } from "@/lib/utils";
 import { UserContext } from "@/app/context";
-import { useContext } from "react";
 import { ModeToggle } from "@/components/ModeToggleButton";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useContext } from "react";
+import { NavbarProps } from "./types";
 
 const Navbar = ({ className }: NavbarProps) => {
   const { user } = useContext(UserContext);

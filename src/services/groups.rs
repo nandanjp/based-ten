@@ -228,5 +228,4 @@ impl GroupsService {
         .await
         .map_err(|e| GroupsError(format!("failed to join group: {e:#?}")))
     }
-
 }

@@ -8,18 +8,19 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { useAllGroupsMembers } from "../../../../services/queries";
-import { UserContext } from "@/app/context";
-import { useContext } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useAllGroupsMembers } from "../../../../services/queries";
 
 const ExplorePage = () => {
   const router = useRouter();
   const { data: groups, isError, isFetching } = useAllGroupsMembers();
-  const { user } = useContext(UserContext);
-  if (user) {
-    router.push("/explore/groups/me");
-  }
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      router.push("/login");
+    }
+  }, []);
 
   const words = "Explore Groups Page".split(" ").map((word) => ({
     text: word,

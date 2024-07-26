@@ -7,9 +7,13 @@ import {
   CreateLikeType,
   CreateListItemType,
   CreateListType,
+  DeleteLikeType,
   FollowListResponseType,
   FollowMutualListResponseType,
+  FollowResponseType,
   GroupListResposeType,
+  GroupMemberListResponseType,
+  GroupMembersResponseType,
   GroupQueryType,
   GroupResponseType,
   LikeListResponseType,
@@ -25,6 +29,7 @@ import {
   MovieListResponseType,
   MovieQueryType,
   MovieResponseType,
+  PopularItemResponseType,
   RegisterResponseType,
   SongListResponseType,
   SongQueryType,
@@ -34,11 +39,6 @@ import {
   VideoGameListResponseType,
   VideoGameQueryType,
   VideoGameResponseType,
-  DeleteLikeType,
-  FollowResponseType,
-  GroupMemberListResponseType,
-  GroupMembersResponseType,
-  PopularItemResponseType,
 } from "../../services/api.types";
 
 const BASE_URL =
@@ -308,6 +308,11 @@ export const getUserOwnerGroups = async (user_name: string) =>
       ROUTES.groups.get_group_by_ownername(user_name)
     )
   ).data;
+
+export const getUsersGroups = async (user_name: string) => {
+  const groups = await getAllGroups();
+  return groups.response.filter((g) => g.ownedby === user_name);
+};
 
 export const getUserGroups = async (user_name: string) =>
   (

@@ -21,7 +21,7 @@ impl GeneralService for AnimeService {
         query_obj: Self::QueryObject,
     ) -> Result<Self::ListResponse, Self::Error> {
         let (limit, page) = page_limit(NUM_ROWS, query_obj.limit, query_obj.page);
-        
+
         match query_obj {
             AnimeQuery {
                 num_episodes: Some(num_episodes), sort_key: Some(key), ..
@@ -92,19 +92,14 @@ impl GeneralService for AnimeService {
         sqlx::query_as!(Self::Response, r#"SELECT * FROM Anime WHERE id = $1"#, id)
             .fetch_one(pool)
             .await
-            .map_err(|e| {
-                AnimeError(format!(
-                    "failed to retrieve anime with id = {id}: {e:#?}"
-                ))
-            })
+            .map_err(|e| AnimeError(format!("failed to retrieve anime with id = {id}: {e:#?}")))
     }
 
     async fn create(
         pool: &sqlx::PgPool,
         create_obj: Self::CreateObject,
     ) -> Result<Self::Response, Self::Error> {
-        sqlx::query_as!(Self::Response, 
-                r#"INSERT INTO Anime(id, title, mediaimage, numepisodes, createdon) VALUES($1, $2, $3, $4, $5) RETURNING *"#, 
+        sqlx::query_as!(Self::Response, r#"INSERT INTO Anime(id, title, mediaimage, numepisodes, createdon) VALUES($1, $2, $3, $4, $5) RETURNING *"#, 
                 create_obj.id, create_obj.title, create_obj.media_image, create_obj.num_episodes, create_obj.created_on
             )
             .fetch_one(pool)
@@ -121,7 +116,7 @@ impl GeneralService for AnimeService {
         let title = update_obj.title.unwrap_or(anime.title);
         let num_episodes = update_obj.num_episodes.unwrap_or(anime.numepisodes);
         let media_image = update_obj.media_image.unwrap_or(anime.mediaimage);
-        let date =update_obj.created_on.unwrap_or(anime.createdon.unwrap());
+        let date = update_obj.created_on.unwrap_or(anime.createdon.unwrap());
 
         sqlx::query_as!(Self::Response, r#"UPDATE Anime SET title = $1, numepisodes = $2, mediaimage = $3, createdon = $4 WHERE id = $5 RETURNING *"#, title, num_episodes, media_image, date, id)
         .fetch_one(pool)
@@ -130,9 +125,13 @@ impl GeneralService for AnimeService {
     }
 
     async fn delete(pool: &sqlx::PgPool, id: i32) -> Result<Self::Response, Self::Error> {
-        sqlx::query_as!(Self::Response, r#"DELETE FROM Anime WHERE id = $1 RETURNING *"#, id)
-            .fetch_one(pool)
-            .await
-            .map_err(|e| AnimeError(format!("failed to delete anime: {e:#?}")))
+        sqlx::query_as!(
+            Self::Response,
+            r#"DELETE FROM Anime WHERE id = $1 RETURNING *"#,
+            id
+        )
+        .fetch_one(pool)
+        .await
+        .map_err(|e| AnimeError(format!("failed to delete anime: {e:#?}")))
     }
 }

@@ -1,4 +1,3 @@
-import { DiameterIcon, View } from "lucide-react";
 import { joinGroup, unjoinGroup } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -11,9 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { DiameterIcon, View } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 type CardProps = React.ComponentProps<typeof Card> & {
   alreadyFollows: boolean;
@@ -56,7 +56,6 @@ export function ExploreGroupItem({
     setNumberOfMembers(numberOfMembers + (isFollowing ? -1 : 1));
     setIsFollowing(!isFollowing);
   };
-
 
   return (
     <Card

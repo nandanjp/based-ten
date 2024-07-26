@@ -1,5 +1,7 @@
 import { HeartIcon, View } from "lucide-react";
 
+import { createLike, deleteLike } from "@/app/actions";
+import { UserContext } from "@/app/context";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -11,10 +13,8 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { createLike, deleteLike } from "@/app/actions";
-import { UserContext } from "@/app/context";
-import { useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
 import { ListType } from "../../services/api.types";
 
 type CardProps = React.ComponentProps<typeof Card> & {

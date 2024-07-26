@@ -3,12 +3,7 @@ import { getAllGroupsAndMembers, getUserGroups } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { TypewriterEffect } from "@/components/animated/TypeWriter";
 import { ExploreGroupItem } from "@/components/ExploreGroupItem";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

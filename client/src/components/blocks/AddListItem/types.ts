@@ -1,6 +1,4 @@
-import {
-  MediaType,
-} from '@/../services/api.types';
+import { MediaType } from "@/../services/api.types";
 
 export type AddListItemProps = {
   listItem?: MediaType;

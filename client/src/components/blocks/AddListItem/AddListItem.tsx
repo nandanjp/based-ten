@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   CommandDialog,
   CommandEmpty,
@@ -7,12 +7,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Plus } from "lucide-react";
 import { useState } from "react";
 import { AddListItemProps } from "./types";
-import Image from "next/image";
-import { WobbleCard } from "@/components/animated/WobbleCard";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const AddListItem = (props: AddListItemProps) => {
   const { onClick, listItem, list } = props;

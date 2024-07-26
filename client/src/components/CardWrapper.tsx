@@ -3,11 +3,11 @@
 import {
   Card,
   CardContent,
-  CardHeader,
   CardFooter,
+  CardHeader,
 } from "@/components/ui/card";
-import { Button } from "./ui/button";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 interface CardWrapperProps {
   label: string;

@@ -1,26 +1,12 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { createFollow, deleteFollow } from "@/app/actions";
+import { UserContext } from "@/app/context";
+import { GroupCard } from "@/components/blocks/GroupCard";
 import { ListCard } from "@/components/blocks/ListCard";
 import { UserCard } from "@/components/blocks/UserCard";
-import { GroupCard } from "@/components/blocks/GroupCard";
-import { UserCardFollowBack } from "@/components/blocks/UserCardFollowBack";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useParams } from "next/navigation";
-import {
-  useUsersLists,
-  useUser,
-  useUserFollowing,
-  useUserFollowers,
-  useUserLikes,
-  useUserOwnerGroups,
-  useUserListType,
-} from "../../../../services/queries";
-import GradientHeader from "@/components/ui/gradient-header";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { UserContext } from "@/app/context";
-import { createFollow, deleteFollow } from "@/app/actions";
+import GradientHeader from "@/components/ui/gradient-header";
 import {
   Select,
   SelectContent,
@@ -28,6 +14,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import {
+  useAllGroups,
+  useUserFollowers,
+  useUserFollowing,
+  useUserLikes,
+  useUsersLists,
+} from "../../../../services/queries";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -35,10 +32,10 @@ const UserPage = () => {
   const user_following = useUserFollowing(user_name);
   const user_followers = useUserFollowers(user_name);
   const user_likes = useUserLikes(user_name);
-  const user_groups = useUserOwnerGroups(user_name);
+  const user_groups = useAllGroups();
   const logged_in_user = useContext(UserContext);
   const [currentUserFollows, setCurrentUserFollows] = useState(false);
-  const [groupsShown, setGroupsShown] = useState('all');
+  const [groupsShown, setGroupsShown] = useState("all");
 
   console.log(user_groups);
 
@@ -52,7 +49,9 @@ const UserPage = () => {
 
   useEffect(() => {
     if (user_followers.data && logged_in_user) {
-      const isUserFollowing = user_followers.data.response.some(follower => follower.follower == logged_in_user.user?.username);
+      const isUserFollowing = user_followers.data.response.some(
+        (follower) => follower.follower == logged_in_user.user?.username
+      );
       setCurrentUserFollows(isUserFollowing);
     }
   }, [user_following, logged_in_user]);
@@ -79,8 +78,8 @@ const UserPage = () => {
     location.reload();
   };
 
-  const followButtonVariant = currentUserFollows ? "secondary" : "default"
-  const followButtonText = currentUserFollows ? "Following" : "Follow"
+  const followButtonVariant = currentUserFollows ? "secondary" : "default";
+  const followButtonText = currentUserFollows ? "Following" : "Follow";
 
   const skel = (
     <div className="flex items-center space-x-4">
@@ -94,15 +93,17 @@ const UserPage = () => {
 
   return (
     <div className="w-screen p-4">
-      <GradientHeader/>
+      <GradientHeader />
       <div className="flex justify-center pb-4 space-x-6">
-          <div
-            className="text-4xl font-bold"
-            style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)" }}
-          >
-            {user_name}
-          </div>
-        <Button variant={followButtonVariant} onClick={onFollowButtonClick}>{followButtonText}</Button>
+        <div
+          className="text-4xl font-bold"
+          style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)" }}
+        >
+          {user_name}
+        </div>
+        <Button variant={followButtonVariant} onClick={onFollowButtonClick}>
+          {followButtonText}
+        </Button>
       </div>
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
@@ -175,22 +176,25 @@ const UserPage = () => {
               </SelectContent>
             </Select>
           </div>
-          
+
           <div className="grid grid-cols-3 gap-4">
             {user_groups.isPending
               ? skel
-              : user_groups.data?.response?.filter((g) => {
-                if (groupsShown === 'all') return true;
-                if (groupsShown === 'owned') return g.ownedby === user_name;
-                if (groupsShown === 'joined') return g.ownedby !== user_name;
-              }).map((g) => (
-                  <GroupCard
-                    key={g.groupname}
-                    group_name={g.groupname}
-                    group_id={g.gid}
-                    owned_by={g.ownedby}
-                  />
-                ))}
+              : user_groups.data?.response
+                  ?.filter((g) => {
+                    if (groupsShown === "all") return true;
+                    if (groupsShown === "owned") return g.ownedby === user_name;
+                    if (groupsShown === "joined")
+                      return g.ownedby !== user_name;
+                  })
+                  .map((g) => (
+                    <GroupCard
+                      key={g.groupname}
+                      group_name={g.groupname}
+                      group_id={g.gid}
+                      owned_by={g.ownedby}
+                    />
+                  ))}
           </div>
         </TabsContent>
       </Tabs>

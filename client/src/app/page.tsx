@@ -4,7 +4,6 @@ import { LoadingSpinner } from "@/components/animated/Spinner";
 import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
 import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
 import { CardContent, CardHeader } from "@/components/ui/card";
-import { CommandItem } from "@/components/ui/command";
 import { Input } from "@/components/ui/input";
 import {
   Table,
