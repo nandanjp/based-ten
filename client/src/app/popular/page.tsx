@@ -66,7 +66,7 @@ export default function PopularPage() {
                     <span className="sr-only">Media Image</span>
                   </TableHead>
                   <TableHead className="text-center">Title</TableHead>
-                  <TableHead className="text-center">Type</TableHead>
+                  <TableHead className="text-center">Likes</TableHead>
                   <TableHead className="text-center">Created on</TableHead>
                 </TableRow>
               </TableHeader>
