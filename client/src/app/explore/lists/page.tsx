@@ -10,9 +10,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
-import { listType } from "../../../services/api.types";
-import { useAllLists } from "../../../services/queries";
-import { UserContext } from "../context";
+import { listType } from "../../../../services/api.types";
+import { useAllLists } from "../../../../services/queries";
+import { UserContext } from "../../context";
 
 const ExplorePage = () => {
   const { data: lists, isError, isFetching } = useAllLists();
@@ -21,7 +21,8 @@ const ExplorePage = () => {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    if (user) router.push("/explore/me");
+    if (user || localStorage.getItem("token"))
+      router.replace("/explore/lists/me");
   }, []);
 
   const words = "Explore Lists Page".split(" ").map((word) => ({

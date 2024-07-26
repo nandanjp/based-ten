@@ -48,13 +48,19 @@ const BASE_URL =
 const axiosInstance = axios.create({ baseURL: BASE_URL });
 
 // Auth Requests
-export const loginUser = async (username: string, password: string) =>
-  (
-    await axiosInstance.post<LoginResponseType>(ROUTES.auth.login_user, {
-      username,
-      password,
-    })
-  ).data;
+export const loginUser = async (username: string, password: string) => {
+  const res = await axiosInstance.post(ROUTES.auth.login_user, {
+    username,
+    password,
+  });
+  if (res.data.success) {
+    localStorage.setItem(
+      "token",
+      (res.data as LoginResponseType).response.token
+    );
+  }
+  return res.data as LoginResponseType;
+};
 
 export const createUser = async (
   username: string,

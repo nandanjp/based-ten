@@ -185,6 +185,10 @@ pub async fn login_user_handler(
     response
         .headers_mut()
         .insert(header::SET_COOKIE, cookie.to_string().parse().unwrap());
+    response.headers_mut().insert(
+        header::CONTENT_TYPE,
+        "application/json".to_string().parse().unwrap(),
+    );
     Ok(response)
 }
 

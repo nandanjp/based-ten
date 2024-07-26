@@ -31,7 +31,7 @@ const loginFormSchema = z.object({
 
 export default function LoginForm() {
   const router = useRouter();
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
@@ -42,20 +42,18 @@ export default function LoginForm() {
     },
   });
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
-    const loginResult = await loginUser(values.username, values.password);
-    if (loginResult.success) {
-      localStorage.setItem("token", loginResult.response.token);
+    setLoading(true);
+    try {
+      await loginUser(values.username, values.password);
       const userResponse = await getCurrentUser();
       if (userResponse.response) {
         setUser(userResponse.response);
       }
       router.push("/");
-    } else {
-      form.setError("password", {
-        message: "Invalid username or password",
-      });
+    } catch (err) {
+      setLoading(false);
+      router.push("/login");
     }
-    setLoading(true);
   };
 
   const { pending } = useFormStatus();

@@ -8,7 +8,7 @@ export const dashboardConfig: DashboardConfig = {
     },
     {
       title: "Explore Lists",
-      href: "/explore",
+      href: "/explore/lists",
     },
     {
       title: "Explore Groups",

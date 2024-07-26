@@ -12,11 +12,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
   const [user, setUser] = useState<UserType | undefined>(undefined);
   useEffect(() => {
-    getCurrentUser().then((response) => {
-      if (response.success) {
-        setUser(response.response);
+    (async () => {
+      if (localStorage.getItem("token") && !user) {
+        const res = await getCurrentUser();
+        if (res.success) setUser(res.response);
       }
-    });
+    })();
   }, []);
 
   return (

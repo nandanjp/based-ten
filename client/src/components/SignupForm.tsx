@@ -60,7 +60,6 @@ export default function SignupForm() {
       values.password,
       values.email
     );
-    console.log(result);
     if (!result.success) {
       console.error("failed to create user", result.error);
     }

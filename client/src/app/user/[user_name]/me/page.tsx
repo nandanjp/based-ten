@@ -78,9 +78,9 @@ const UserPage = () => {
           <div className="grid grid-cols-3 gap-4">
             {user_lists.isPending
               ? skel
-              : user_lists.data?.response.map((l) => (
+              : user_lists.data?.response.map((l, i) => (
                   <ListCard
-                    key={l.listname}
+                    key={`${l.listname}-${i}`}
                     list_author={l.username!}
                     list_name={l.listname!}
                     list_type={l.list_type!}
@@ -93,9 +93,9 @@ const UserPage = () => {
           <div className="grid grid-cols-3 gap-4">
             {user_likes.isPending
               ? skel
-              : user_likes.data?.response.map((l) => (
+              : user_likes.data?.response.map((l, i) => (
                   <ListCard
-                    key={l.likingname.concat(l.listname)}
+                    key={`${l.likingname}-${l.listname}-${i}`}
                     list_author={l.likingname}
                     list_name={l.listname}
                     list_type="anime" // TODO fix query}
@@ -111,8 +111,11 @@ const UserPage = () => {
             <div className="text-3xl font-semibold">Following</div>
             {user_following.isPending
               ? skel
-              : user_following.data?.response.map((f) => (
-                  <UserCard key={f.following} user_email={f.following} />
+              : user_following.data?.response.map((f, i) => (
+                  <UserCard
+                    key={`${f.follower}-${i}`}
+                    user_email={f.following}
+                  />
                 ))}
           </div>
         </TabsContent>
@@ -148,9 +151,9 @@ const UserPage = () => {
                       return g.ownedby !== user_name;
                     return g.ownedby === user_name;
                   })
-                  .map((g) => (
+                  .map((g, i) => (
                     <GroupCard
-                      key={`g.groupname-${g.ownedby}-${user_name}-${g.gid}`}
+                      key={`${g.groupname}-${g.gid}-${i}`}
                       group_name={g.groupname}
                       group_id={g.gid}
                       owned_by={g.ownedby}

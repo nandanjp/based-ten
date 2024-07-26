@@ -23,12 +23,29 @@ import {
   Tv,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, ReactElement, useState } from "react";
+import {
+  ChangeEvent,
+  ReactElement,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { MediaType } from "../../services/api.types";
-import { getMedia } from "./actions";
+import { getCurrentUser, getMedia } from "./actions";
+import { UserContext } from "./context";
 
 const SearchPage = () => {
   const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
+  useEffect(() => {
+    (async () => {
+      if (localStorage.getItem("token") && !user) {
+        const res = await getCurrentUser();
+        if (res.success) setUser(res.response);
+      }
+    })();
+  }, []);
+
   const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const debouncedSearch = useDebounce(title);

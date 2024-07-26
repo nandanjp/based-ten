@@ -1,5 +1,4 @@
 "use client";
-import ViewListPage from "@/app/(lists)/view-list/[user_name]/[list_name]/page";
 import { getAllLists, getUsersLikes } from "@/app/actions";
 import { Card as AppleCard, Carousel } from "@/components/animated/AppleCards";
 import { TypewriterEffect } from "@/components/animated/TypeWriter";
@@ -11,14 +10,15 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import ViewList from "@/components/ViewList";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
-import { listType } from "../../../../services/api.types";
-import { useRecommendedLists } from "../../../../services/queries";
-import { UserContext } from "../../context";
+import { listType } from "../../../../../services/api.types";
+import { useRecommendedLists } from "../../../../../services/queries";
+import { UserContext } from "../../../context";
 
 const ExplorePage = () => {
   const router = useRouter();
@@ -84,9 +84,9 @@ const ExplorePage = () => {
                 title: list.listname,
                 src: "/howls-1.jpeg",
                 content: (
-                  <ViewListPage
-                    manual_user_name={list.username}
-                    manual_list_name={list.listname}
+                  <ViewList
+                    user_name={list.username}
+                    list_name={list.listname}
                   />
                 ),
               }}

@@ -17,8 +17,8 @@ const ExplorePage = () => {
   const { data: groups, isError, isFetching } = useAllGroupsMembers();
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      router.push("/login");
+    if (localStorage.getItem("token")) {
+      router.push("/explore/groups/me");
     }
   }, []);
 

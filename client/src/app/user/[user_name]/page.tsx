@@ -37,8 +37,6 @@ const UserPage = () => {
   const [currentUserFollows, setCurrentUserFollows] = useState(false);
   const [groupsShown, setGroupsShown] = useState("all");
 
-  console.log(user_groups);
-
   useEffect(() => {
     user_lists.refetch();
     user_following.refetch();
@@ -63,16 +61,12 @@ const UserPage = () => {
         const message = `An error has occurred: ${response.error}`;
         throw new Error(message);
       }
-      console.log("unfollow response");
-      console.log(response);
     } else {
       const response = await createFollow(user_name);
       if (response?.error) {
         const message = `An error has occurred: ${response.error}`;
         throw new Error(message);
       }
-      console.log("follow response");
-      console.log(response);
     }
     setCurrentUserFollows(!currentUserFollows);
     location.reload();
@@ -118,9 +112,9 @@ const UserPage = () => {
           <div className="grid grid-cols-3 gap-4">
             {user_lists.isPending
               ? skel
-              : user_lists.data?.response?.map((l) => (
+              : user_lists.data?.response?.map((l, i) => (
                   <ListCard
-                    key={l.username}
+                    key={`${l.listname}-${i}`}
                     list_author={l.username!}
                     list_name={l.listname!}
                     list_type={l.list_type!}
@@ -133,9 +127,9 @@ const UserPage = () => {
           <div className="grid grid-cols-3 gap-4">
             {user_likes.isPending
               ? skel
-              : user_likes.data?.response?.map((l) => (
+              : user_likes.data?.response?.map((l, i) => (
                   <ListCard
-                    key={l.likingname.concat(l.listname)}
+                    key={`${l.likername}-${i}`}
                     list_author={l.likingname}
                     list_name={l.listname}
                   />
@@ -147,8 +141,11 @@ const UserPage = () => {
             <div className="text-3xl font-semibold">Followers</div>
             {user_followers.isPending
               ? skel
-              : user_followers.data?.response?.map((f) => (
-                  <UserCard key={f.follower} user_email={f.follower} />
+              : user_followers.data?.response?.map((f, i) => (
+                  <UserCard
+                    key={`${f.follower}-${i}`}
+                    user_email={f.follower}
+                  />
                 ))}
           </div>
         </TabsContent>
@@ -157,8 +154,11 @@ const UserPage = () => {
             <div className="text-3xl font-semibold">Following</div>
             {user_following.isPending
               ? skel
-              : user_following.data?.response?.map((f) => (
-                  <UserCard key={f.following} user_email={f.following} />
+              : user_following.data?.response?.map((f, i) => (
+                  <UserCard
+                    key={`${f.following}-${i}`}
+                    user_email={f.following}
+                  />
                 ))}
           </div>
         </TabsContent>
@@ -187,9 +187,9 @@ const UserPage = () => {
                     if (groupsShown === "joined")
                       return g.ownedby !== user_name;
                   })
-                  .map((g) => (
+                  .map((g, i) => (
                     <GroupCard
-                      key={`g.groupname-${g.ownedby}-${user_name}-${g.gid}`}
+                      key={`${g.groupname}-${g.gid}-${i}`}
                       group_name={g.groupname}
                       group_id={g.gid}
                       owned_by={g.ownedby}
