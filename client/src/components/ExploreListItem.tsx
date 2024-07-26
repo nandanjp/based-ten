@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { createLike, deleteLike } from "@/app/actions";
 import { UserContext } from "@/app/context";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { ListType } from "../../services/api.types";
 
 type CardProps = React.ComponentProps<typeof Card> & {
@@ -36,6 +36,11 @@ export function ExploreListItem({
   const { user } = useContext(UserContext);
   const [isLiked, setIsLike] = useState(alreadyLiked);
   const [currentNumLikes, setCurrentNumLikes] = useState(numLikes);
+
+  useEffect(() => {
+    setIsLike(alreadyLiked);
+  }, [alreadyLiked]);
+
   const onLikeClick = async () => {
     if (user) {
       const response = !isLiked

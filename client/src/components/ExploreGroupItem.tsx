@@ -1,5 +1,4 @@
 import { DiameterIcon, View } from "lucide-react";
-
 import { joinGroup, unjoinGroup } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -14,8 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { title } from "process";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 type CardProps = React.ComponentProps<typeof Card> & {
   alreadyFollows: boolean;
@@ -31,6 +29,7 @@ export function ExploreGroupItem({
   className,
   owner,
   numMembers,
+  groupname,
   gid,
 }: CardProps) {
   const router = useRouter();
@@ -38,23 +37,28 @@ export function ExploreGroupItem({
   const [isFollowing, setIsFollowing] = useState(alreadyFollows);
   const [numberOfMembers, setNumberOfMembers] = useState(numMembers);
 
+  useEffect(() => {
+    setIsFollowing(alreadyFollows);
+  }, [alreadyFollows]);
+
   const onLikeClick = async () => {
-    if (!user) router.push("/login");
-    if (user) {
-      const response = !isFollowing
-        ? await joinGroup(gid)
-        : await unjoinGroup(gid);
-      if (response?.error) {
-        const message = `An error has occurred: ${response.error}`;
-        throw new Error(message);
-      }
-      setNumberOfMembers(numberOfMembers + (isFollowing ? -1 : 1));
-      setIsFollowing(!isFollowing);
-    } else {
-      const message = "Trying to (un)like a list without an active user.";
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    const response = !isFollowing
+      ? await joinGroup(gid)
+      : await unjoinGroup(gid);
+    if (response?.error) {
+      const message = `An error has occurred: ${response.error}`;
       throw new Error(message);
     }
+    setNumberOfMembers(numberOfMembers + (isFollowing ? -1 : 1));
+    setIsFollowing(!isFollowing);
   };
+
+  console.log("Already following: " + alreadyFollows);
+  console.log("is following: " + isFollowing);
 
   return (
     <Card
@@ -64,7 +68,7 @@ export function ExploreGroupItem({
       )}
     >
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>{groupname}</CardTitle>
         <CardDescription className="text-md">A Group</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">

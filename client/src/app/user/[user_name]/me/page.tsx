@@ -13,7 +13,7 @@ import {
   useUserFollowing,
   useUserFollowers,
   useUserLikes,
-  useUserGroups,
+  useUserOwnerGroups,
 } from "../../../../../services/queries";
 import GradientHeader from "@/components/ui/gradient-header";
 import { FollowerList } from "@/components/FollowerList";
@@ -32,7 +32,7 @@ const UserPage = () => {
   const user_lists = useUsersLists(user_name);
   const user_following = useUserFollowing(user_name);
   const user_likes = useUserLikes(user_name);
-  const user_groups = useUserGroups(user_name);
+  const user_groups = useUserOwnerGroups(user_name);
   const [activeTab, setActiveTab] = useState("lists");
   const [groupsShown, setGroupsShown] = useState('all');
 

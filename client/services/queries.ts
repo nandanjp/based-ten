@@ -10,7 +10,7 @@ import {
   getUserByUsername,
   getUserFollowers,
   getUserFollowing,
-  getUserGroups,
+  getUserOwnerGroups,
   getUserLikes,
   getUserList,
   getUsersLikes,
@@ -19,6 +19,7 @@ import {
   getAllGroups,
   getAllGroupsAndMembers,
   getPopularItemsByType,
+  getUserGroups,
 } from "@/app/actions";
 import { useQuery } from "@tanstack/react-query";
 import { ListType } from "./api.types";
@@ -98,6 +99,14 @@ export const useCurrentUsersLikes = (username: string) =>
     queryKey: [`users-likes-${username}`],
     queryFn: async () => {
       return await getUsersLikes(username);
+    },
+  });
+
+export const useUserOwnerGroups = (username: string) =>
+  useQuery({
+    queryKey: ["user-groups"],
+    queryFn: async () => {
+      return await getUserOwnerGroups(username);
     },
   });
 

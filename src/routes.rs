@@ -191,7 +191,9 @@ pub fn create_groups_router(app_state: Arc<AppState>) -> Router<Arc<AppState>> {
         )
         .nest(
             "/:user_name",
-            Router::new().route("/groups", get(get_user_groups)).nest(
+            Router::new()
+            .route("/group_members", get(get_user_member_groups))
+            .route("/groups", get(get_user_groups)).nest(
                 "/me",
                 Router::new()
                     .route("/", post(create_user_group))

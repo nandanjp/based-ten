@@ -285,6 +285,13 @@ export const getAllGroupsAndMembers = async () =>
     )
   ).data;
 
+export const getUserOwnerGroups = async (user_name: string) =>
+  (
+    await axiosInstance.get<GroupListResposeType>(
+      ROUTES.groups.get_group_by_ownername(user_name)
+    )
+  ).data;
+
 export const getUserGroups = async (user_name: string) =>
   (
     await axiosInstance.get<GroupListResposeType>(

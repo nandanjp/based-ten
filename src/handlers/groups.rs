@@ -43,6 +43,19 @@ pub async fn get_user_groups(
     )
 }
 
+pub async fn get_user_member_groups(
+    State(pool): State<Arc<AppState>>,
+    Path(user_name): Path<String>,
+) -> impl IntoResponse {
+    get_list_response(
+        GroupsService::get_user_member_groups(&pool.db, user_name)
+            .await
+            .map_err(|e| format!("{e}")),
+        StatusCode::OK,
+        StatusCode::BAD_REQUEST,
+    )
+}
+
 pub async fn get_group_by_id(
     State(pool): State<Arc<AppState>>,
     Path(id): Path<i32>,

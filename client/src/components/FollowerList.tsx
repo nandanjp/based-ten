@@ -5,7 +5,7 @@ import {
     useUserFollowing,
     useUserFollowers,
     useUserLikes,
-    useUserGroups,
+    useUserOwnerGroups,
   } from "../../services/queries";
 import { UserCardFollowBack } from "./blocks/UserCardFollowBack";
 
