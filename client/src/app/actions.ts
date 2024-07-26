@@ -105,6 +105,19 @@ export const getCurrentUser = async () => {
   }
 };
 
+// Create Group Requests
+export const createGroup = async (username: string, groupname: string) =>
+  (
+    await axiosInstance.post<GroupResponseType>(
+      ROUTES.groups.protected.create_group(username),
+      { group_name: groupname },
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+  ).data;
+
 // Anime Requests
 export const getAnime = async (query: AnimeQueryType) =>
   (

@@ -34,7 +34,6 @@ pub struct GroupMember {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateGroups {
-    pub gid: i32,
     pub group_name: String,
 }
 

@@ -177,3 +177,4 @@ pub async fn unjoin_group(
         StatusCode::BAD_REQUEST,
     )
 }
+

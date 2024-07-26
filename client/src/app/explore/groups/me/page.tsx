@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { UserContext } from "@/app/context";
 import { useContext } from "react";
 import { useUserGroups } from "../../../../../services/queries";
+import { Button } from "@/components/ui/button";
 
 const ExplorePage = () => {
   const router = useRouter();
@@ -70,6 +71,8 @@ const ExplorePage = () => {
                 value={"Groups"}
                 className="w-full grid md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-5 justify-center"
               >
+                <div className="flex justify-center items-center">
+                </div>
                 {groups?.response.map((group, index) => (
                   <div className="flex justify-center items-center" key={index}>
                     <ExploreGroupItem

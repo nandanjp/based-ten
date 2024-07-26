@@ -112,8 +112,7 @@ impl GroupsService {
     ) -> Result<Group, GroupsError> {
         sqlx::query_as!(
             Group,
-            r#"INSERT INTO Groups(gid, groupName, ownedBy) VALUES($1, $2, $3) RETURNING *"#,
-            create_obj.gid,
+            r#"INSERT INTO Groups(groupName, ownedBy) VALUES($1, $2) RETURNING *"#,
             create_obj.group_name,
             username
         )
@@ -229,4 +228,5 @@ impl GroupsService {
         .await
         .map_err(|e| GroupsError(format!("failed to join group: {e:#?}")))
     }
+
 }

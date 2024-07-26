@@ -16,7 +16,7 @@ import {
 import CardWrapper from "./CardWrapper";
 import { useContext, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { getCurrentUser, loginUser } from "@/app/actions";
+import { getCurrentUser, createGroup } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { useRouter } from "next/navigation";
 
@@ -26,7 +26,7 @@ const createGroupSchema = z.object({
   }),
 });
 
-export default function LoginForm() {
+export default function GroupForm() {
   const router = useRouter();
   const { user, setUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
@@ -38,25 +38,28 @@ export default function LoginForm() {
     },
   });
   const onSubmit = async (values: z.infer<typeof createGroupSchema>) => {
-    const group = await createGroup(values.groupname);
-    if (group.success) {
-      router.push("/explore/groups");
-    } else {
-      form.setError("groupname", {
-        message: "Invalid group name",
-      });
+    if (user) {
+      const group = await createGroup(user.username, values.groupname);
+      if (group.success) {
+        router.push("/explore/groups");
+      } else {
+        form.setError("groupname", {
+          message: "Invalid group name",
+        });
+      }
+      setLoading(true);
     }
-    setLoading(true);
+    
   };
 
   const { pending } = useFormStatus();
 
   return (
     <CardWrapper
-      label="Login into account"
-      title="Login"
-      backButtonHref={"/signup"}
-      backButtonLabel="Don't have an account? Sign up here"
+      label="Create a new group"
+      title="Create Group"
+      backButtonHref={"/"}
+      backButtonLabel="Home"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -65,7 +68,7 @@ export default function LoginForm() {
             name="groupname"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Group Name</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="naruto" />
                 </FormControl>
@@ -74,7 +77,7 @@ export default function LoginForm() {
             )}
           />
           <Button type="submit" className="w-full" disabled={pending}>
-            {loading ? "Loading..." : "Login"}
+            {loading ? "Loading..." : "Create"}
           </Button>
         </form>
       </Form>
