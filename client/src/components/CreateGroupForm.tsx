@@ -16,7 +16,7 @@ import {
 import CardWrapper from "./CardWrapper";
 import { useContext, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { getCurrentUser, createGroup } from "@/app/actions";
+import { getCurrentUser, createGroup, joinGroup } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { useRouter } from "next/navigation";
 
@@ -41,7 +41,10 @@ export default function GroupForm() {
     if (user) {
       const group = await createGroup(user.username, values.groupname);
       if (group.success) {
-        router.push("/explore/groups");
+        const joinGroupResponse = await joinGroup(group.response.gid);
+        if (joinGroupResponse?.success) {
+          router.push("/explore/groups");
+        }
       } else {
         form.setError("groupname", {
           message: "Invalid group name",

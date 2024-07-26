@@ -93,7 +93,7 @@ export function ExploreGroupItem({
           </Button>
           <div className="flex-1 space-y-1">
             <p className="text-sm font-medium leading-none">
-              {numberOfMembers} Number of Members
+              {`${numberOfMembers} member${numberOfMembers > 1 ? "s" : ""}`}
             </p>
           </div>
         </div>
