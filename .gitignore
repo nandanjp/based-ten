@@ -2,3 +2,6 @@
 .DS_Store
 /node_modules
 .idea
+
+# Local Netlify folder
+.netlify
