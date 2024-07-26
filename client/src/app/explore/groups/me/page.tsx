@@ -55,7 +55,7 @@ const ExplorePage = () => {
     <div className="flex flex-1 flex-col justify-between items-center min-h-full min-w-full">
       <div className="self-start flex justify-center w-full flex-0 py-12 px-8 text-5xl">
         <TypewriterEffect
-          className="text-5xl w-full h-full p-6 sm:text-10xl md:text-12xl"
+          className="text-7xl w-full h-full p-6 sm:text-12xl md:text-14xl"
           words={words}
         ></TypewriterEffect>
       </div>
@@ -63,7 +63,7 @@ const ExplorePage = () => {
         <Card className="min-w-full shadow-md py-8 px-3 max-w-7xl">
           <CardHeader>
             <div className="w-full flex flex-col gap-y-4 items-center justify-center">
-              <h1 className="text-5xl font-semibold text-blue-400">
+              <h1 className="text-5xl font-semibold text-blue-400 text-center">
                 Explore Groups
               </h1>
             </div>
@@ -97,7 +97,6 @@ const ExplorePage = () => {
               </TabsContent>
             </Tabs>
           </CardContent>
-          <CardFooter></CardFooter>
         </Card>
       </div>
     </div>
