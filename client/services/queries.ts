@@ -18,8 +18,10 @@ import {
   getUserListType,
   getAllGroups,
   getAllGroupsAndMembers,
+  getPopularItemsByType,
 } from "@/app/actions";
 import { useQuery } from "@tanstack/react-query";
+import { ListType } from "./api.types";
 
 export const useAllLists = () =>
   useQuery({
@@ -190,5 +192,13 @@ export const useUserListType = (username: string, list_name: string) =>
     queryKey: ["user-list-type"],
     queryFn: async () => {
       return await getUserListType(username, list_name);
+    },
+  });
+
+export const usePopularItemsByType = (list_type: ListType) =>
+  useQuery({
+    queryKey: ["popular-items"],
+    queryFn: async () => {
+      return await getPopularItemsByType(list_type);
     },
   });

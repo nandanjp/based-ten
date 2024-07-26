@@ -5,6 +5,7 @@ import {
   VideoGameQueryType,
   MediaQueryType,
   GroupQueryType,
+  ListType,
 } from "../../services/api.types";
 
 export const ROUTES = {
@@ -100,6 +101,8 @@ export const ROUTES = {
   lists: {
     get_lists: "/lists",
     get_top_lists: "/lists/top",
+    get_popular_items_in_lists: (list_type: ListType) =>
+      `/lists/likes/${list_type}`,
     protected: {
       create_list: (user_name: string) => `/lists/${user_name}`,
       update_list: (user_name: string, list_name: string) =>

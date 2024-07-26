@@ -38,6 +38,7 @@ import {
   FollowResponseType,
   GroupMemberListResponseType,
   GroupMembersResponseType,
+  PopularItemResponseType,
 } from "../../services/api.types";
 
 const BASE_URL = `http://127.0.0.1:5000/api`;
@@ -463,3 +464,10 @@ export const deleteFollow = async (toDelete: string) => {
     )
   ).data;
 };
+
+export const getPopularItemsByType = async (list_type: ListType) =>
+  (
+    await axiosInstance.get<PopularItemResponseType>(
+      ROUTES.lists.get_popular_items_in_lists(list_type)
+    )
+  ).data;

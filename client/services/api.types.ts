@@ -335,3 +335,16 @@ export type LikeListResponseType = ListApiResponseType<
 export type LikeQueryType = z.infer<typeof likeQuerySchema>;
 export type CreateLikeType = z.infer<typeof createLikeSchema>;
 export type DeleteLikeType = z.infer<typeof deleteLikeSchema>;
+
+const popularItemSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  mediaimage: z.string(),
+  createdon: z.date().optional(),
+  listtype: listType,
+  totallikes: z.number(),
+});
+
+export type PopularItemResponseType = ApiResponseType<
+  z.infer<typeof popularItemSchema>[]
+>;
