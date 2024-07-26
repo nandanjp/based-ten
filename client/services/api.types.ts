@@ -159,7 +159,7 @@ export type UserListResponseType = ListApiResponseType<UserType>;
 const listWithLikesSchema = z.object({
   username: z.string(),
   listname: z.string(),
-  listtype: listType,
+  list_type: listType,
   likes: z.number().optional(),
 });
 const listWithItemsSchema = z.object({
@@ -210,7 +210,6 @@ const createListSchema = z.object({
   list_type: listType,
   list_items: z.array(listItemSchema),
 });
-
 
 export type ListResponseType = ApiResponseType<
   z.infer<typeof listWithLikesSchema>

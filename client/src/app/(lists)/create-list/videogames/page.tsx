@@ -43,9 +43,9 @@ const CreateListPage = ({
   });
 
   const [listName, setListName] = useState<string>("");
-  const [selectedItems, setSelectedItems] = useState<Array<MediaType | undefined>>(
-    Array(10)
-  );
+  const [selectedItems, setSelectedItems] = useState<
+    Array<MediaType | undefined>
+  >(Array(10));
 
   useEffect(() => {
     if (single) {
@@ -65,9 +65,7 @@ const CreateListPage = ({
 
   const onItemSelect = (index: number) => {
     return (newItem: MediaType) => {
-      const exisiting = selectedItems.find(
-        (item) => item?.id == newItem.id
-      );
+      const exisiting = selectedItems.find((item) => item?.id == newItem.id);
       if (exisiting) {
         selectedItems[selectedItems.indexOf(exisiting)] = undefined;
       }
@@ -85,14 +83,15 @@ const CreateListPage = ({
         username: user?.username || "Unknown",
         listname: listName,
         rankinginlist: i + 1,
-        itemid: item.id || 1
-      }))
+        itemid: item.id || 1,
+      })),
     });
     if (result.success) {
-      console.log("created list", result.response);
-      router.push(`/view-list/${result.response.username}/${result.response.listname}`);
+      router.push(
+        `/view-list/${result.response.username}/${result.response.listname}`
+      );
     } else {
-      console.log("failed to create list", result.error);
+      console.error("failed to create list", result.error);
     }
   };
 
@@ -132,10 +131,11 @@ const CreateListPage = ({
             Cancel
           </Button>
           <Button
-            className={`rounded-xl gap-2 py-5 w-fit ${done
-              ? "bg-primary hover:bg-gray-700"
-              : "bg-gray-400 hover:bg-gray-400 cursor-default"
-              }`}
+            className={`rounded-xl gap-2 py-5 w-fit ${
+              done
+                ? "bg-primary hover:bg-gray-700"
+                : "bg-gray-400 hover:bg-gray-400 cursor-default"
+            }`}
             disabled={!done}
             onClick={handleClickCreateList}
           >
@@ -151,7 +151,13 @@ const CreateListPage = ({
           {selectedItems.map((item, index) => (
             <AddListItem
               listItem={item}
-              list={all?.response.map((item) => ({ createdon: item.createdon, id: item.id, mediaimage: item.mediaimage, title: item.title, type: "videogames" }))}
+              list={all?.response.map((item) => ({
+                createdon: item.createdon,
+                id: item.id,
+                mediaimage: item.mediaimage,
+                title: item.title,
+                type: "videogames",
+              }))}
               onClick={onItemSelect(index)}
             />
           ))}

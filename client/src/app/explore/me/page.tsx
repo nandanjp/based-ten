@@ -20,6 +20,7 @@ import {
 import { UserContext } from "../../context";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import ViewListPage from "@/app/(lists)/view-list/[user_name]/[list_name]/page";
 
 const ExplorePage = () => {
   const router = useRouter();
@@ -31,28 +32,25 @@ const ExplorePage = () => {
 
   const recommendedLists = useRecommendedLists();
   const listTypes = Object.keys(listType.Enum);
-  const { data: usersLikes, error, isLoading } = useCurrentUsersLikes(user!.username);
+  const {
+    data: usersLikes,
+    error,
+    isLoading,
+  } = useCurrentUsersLikes(user!.username);
 
-  if (isLoading) {
-    console.log("Loading user likes...");
-  }
-  
   if (error) {
     console.error("Error fetching user likes:", error);
   }
-  
+
   if (!isLoading && !error && !usersLikes) {
     console.warn("User likes data is undefined");
   }
-  
-  console.log("User likes data:", usersLikes);
-  console.log(usersLikes);
 
   const words = "Explore Page".split(" ").map((word) => ({
     text: word,
     className: "text-blue-500 dark:text-blue-500",
   }));
-  
+
   return (
     <div className="flex flex-1 flex-col justify-between items-center min-h-full min-w-full">
       <div className="self-start flex justify-center w-full flex-0 py-12 px-8 text-5xl">
@@ -73,7 +71,12 @@ const ExplorePage = () => {
                 category: list.list_type,
                 title: list.listname,
                 src: "/howls-1.jpeg",
-                content: list.likes,
+                content: (
+                  <ViewListPage
+                    manual_user_name={list.username}
+                    manual_list_name={list.listname}
+                  />
+                ),
               }}
               index={index}
             />

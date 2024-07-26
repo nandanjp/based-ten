@@ -16,11 +16,21 @@ import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
 import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
 import Link from "next/link";
 
-const ViewListPage = () => {
-  const { list_name, user_name } = useParams<{
-    list_name: string;
-    user_name: string;
-  }>();
+const ViewListPage = ({
+  manual_list_name,
+  manual_user_name,
+}: {
+  manual_list_name?: string;
+  manual_user_name?: string;
+}) => {
+  const { list_name: params_list_name, user_name: params_user_name } =
+    useParams<{
+      list_name: string;
+      user_name: string;
+    }>();
+
+  let list_name = params_list_name ?? manual_list_name;
+  let user_name = params_user_name ?? manual_user_name;
 
   const { data, isFetching, isError } = useQuery({
     queryKey: ["list-by-name"],
@@ -73,12 +83,6 @@ const ViewListPage = () => {
     <div className="p-8 h-full min-w-full flex flex-col gap-12">
       <div className="flex flex-col gap-4 w-full items-center justify-center p-8">
         <div className="w-full absolute inset-0 h-full">
-          <div className="flex flex-col items-center">
-              <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }} className="p-4">
-                <MainNav isVisible items={dashboardConfig.mainNav}/>
-                <MainNav items={dashboardConfig.sidebarNav}/>
-              </div>
-          </div>
           <SparklesCore
             id="tsparticlesfullpage"
             background="transparent"

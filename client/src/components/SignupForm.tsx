@@ -61,12 +61,9 @@ export default function SignupForm() {
       values.email
     );
     console.log(result);
-    if (result.success) {
-      console.log("user created", result.response);
-    } else {
-      console.log("failed to create user", result.error);
+    if (!result.success) {
+      console.error("failed to create user", result.error);
     }
-    console.log(`user registered`);
     router.push("/login");
   };
 

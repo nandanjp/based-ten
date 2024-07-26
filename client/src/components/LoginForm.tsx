@@ -43,7 +43,6 @@ export default function LoginForm() {
   });
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     const loginResult = await loginUser(values.username, values.password);
-    console.log(loginResult);
     if (loginResult.success) {
       localStorage.setItem("token", loginResult.response.token);
       const userResponse = await getCurrentUser();
@@ -57,7 +56,6 @@ export default function LoginForm() {
       });
     }
     setLoading(true);
-    console.log("user logged in");
   };
 
   const { pending } = useFormStatus();
