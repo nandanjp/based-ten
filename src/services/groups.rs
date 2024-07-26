@@ -49,7 +49,9 @@ impl GroupsService {
     ) -> Result<Vec<Group>, GroupsError> {
         sqlx::query_as!(
             Group,
-            r#"SELECT * FROM GROUPS WHERE ownedby = $1"#,
+            r#"SELECT gm.gid AS gid, g.groupName AS groupName, g.ownedBy AS ownedBy 
+            FROM GroupMembers gm JOIN Groups g ON gm.gid = g.gid
+            WHERE gm.username = $1"#,
             username
         )
         .fetch_all(pool)
