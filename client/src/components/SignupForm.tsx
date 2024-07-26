@@ -55,15 +55,16 @@ export default function SignupForm() {
   });
   const onSubmit = async (values: z.infer<typeof SignupFormSchema>) => {
     setLoading(true);
-    const result = await createUser(
-      values.username,
-      values.password,
-      values.email
-    );
-    if (!result.success) {
-      console.error("failed to create user", result.error);
+    try {
+      const result = await createUser(
+        values.username,
+        values.password,
+        values.email
+      );
+      router.push("/login");
+    } catch (err) {
+      router.refresh();
     }
-    router.push("/login");
   };
 
   const { pending } = useFormStatus();
