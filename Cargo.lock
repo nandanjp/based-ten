@@ -1667,9 +1667,11 @@ dependencies = [
 name = "seed"
 version = "0.1.0"
 dependencies = [
+ "argon2",
  "clap",
  "csv",
  "dotenvy",
+ "rand_core",
  "serde",
  "sqlx",
  "thiserror",

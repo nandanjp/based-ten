@@ -1,4 +1,9 @@
+use argon2::{
+    password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
+    Argon2,
+};
 use serde::Deserialize;
+use std::fmt::Error;
 
 use super::traits::Commit;
 
@@ -26,8 +31,16 @@ impl Commit for User {
             .collect::<Vec<String>>();
         let passwords = values
             .iter()
-            .map(|u| u.password.clone())
-            .collect::<Vec<String>>();
+            .map(|u| {
+                let salt = SaltString::generate(&mut OsRng);
+                let password = u.password.clone();
+                Argon2::default()
+                    .hash_password(password.as_bytes(), &salt)
+                    .map(|e| "failed to hash password".into())
+                    .map_err(|e| Box::new(e) as Box<dyn Error>)
+            })
+            .collect::<Result<Vec<String>, Box<dyn std::error::Error>>>()
+            .map_err(|e| "failed to hash password".into())?;
         let _ = sqlx::query!(
             r#"
             INSERT INTO Users(email, username, userpassword)
@@ -127,10 +140,6 @@ impl Commit for Group {
         pool: &sqlx::PgPool,
         values: Vec<Self::Value>,
     ) -> Result<(), Box<dyn std::error::Error>> {
-        let group_ids = values
-            .iter()
-            .map(|g| g.group_id as i64)
-            .collect::<Vec<i64>>();
         let group_names = values
             .iter()
             .map(|g| g.name.clone())
@@ -141,10 +150,9 @@ impl Commit for Group {
             .collect::<Vec<String>>();
         let _ = sqlx::query!(
             r#"
-            INSERT INTO Groups(gid, groupname, ownedby)
-            SELECT * FROM UNNEST($1::int8[], $2::text[], $3::text[])
+            INSERT INTO Groups(groupname, ownedby)
+            SELECT * FROM UNNEST($1::text[], $2::text[])
         "#,
-            &group_ids[..],
             &group_names[..],
             &owners[..]
         )
