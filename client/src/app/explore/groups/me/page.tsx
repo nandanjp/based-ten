@@ -26,12 +26,22 @@ const ExplorePage = () => {
     data: userGroups,
     isError: err,
     isFetching: fetching,
-  } = useUserGroups(user?.username!);
+  } = useUserGroups(user!.username);  
 
   const words = "Explore Groups Page".split(" ").map((word) => ({
     text: word,
     className: "text-blue-500 dark:text-blue-500",
   }));
+
+  // Log the values before the return statement
+  groups?.response.forEach((group, index) => {
+    const alreadyFollows = userGroups?.response
+      .map((g) => g.gid)
+      .includes(group.gid) ?? false;
+    console.log(`Group ${index}:`, group);
+    console.log(`alreadyFollows for group ${index}:`, alreadyFollows);
+  });
+
   return (
     <div className="flex flex-1 flex-col justify-between items-center min-h-full min-w-full">
       <div className="self-start flex justify-center w-full flex-0 py-12 px-8 text-5xl">

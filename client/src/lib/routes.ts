@@ -138,7 +138,8 @@ export const ROUTES = {
   groups: {
     get_groups: "/groups",
     get_groups_members: "/groups/all",
-    get_group_by_username: (user_name: string) => `/groups/${user_name}/groups`,
+    get_group_by_ownername: (user_name: string) => `/groups/${user_name}/groups`,
+    get_group_by_username: (user_name: string) => `/groups/${user_name}/group_members`,
     get_group_by_gid: (gid: string) => `/groups/${gid}/group`,
     get_group_members: (gid: string) => `/groups/${gid}/members`,
     get_group_lists: (gid: string) => `/groups/${gid}/lists`,

@@ -57,6 +57,20 @@ impl GroupsService {
         .map_err(|e| GroupsError(format!("failed to retrieve user's groups: {e:#?}")))
     }
 
+    pub async fn get_user_member_groups(
+        pool: &sqlx::PgPool,
+        username: String,
+    ) -> Result<Vec<Group>, GroupsError> {
+        sqlx::query_as!(
+            Group,
+            r#"SELECT GROUPS.gid, GROUPS.groupname, GROUPS.ownedby FROM GROUPS JOIN GROUPMEMBERS ON GROUPS.gid = GROUPMEMBERS.gid WHERE GROUPMEMBERS.username = $1"#,
+            username
+        )
+        .fetch_all(pool)
+        .await
+        .map_err(|e| GroupsError(format!("failed to retrieve user's groups: {e:#?}")))
+    }
+
     pub async fn get_circles_by_id(
         pool: &sqlx::PgPool,
         gid: i32,
