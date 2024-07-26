@@ -41,11 +41,10 @@ const GroupPage = () => {
   });
   const recommended_groups = useRecommendedGroups(group_id);
   useEffect(() => {
-    group_member_lists.refetch()
+    group_member_lists.refetch();
   }, [orderByAuthor]);
 
   const handleChangeListOrdering = (value: string) => {
-    console.log("handled")
     setOrdering(value == "usernames");
   };
 
@@ -56,8 +55,6 @@ const GroupPage = () => {
   if (group_info.isError || group_member_lists.isError) {
     return <span>there was an error!</span>;
   }
-
-  console.log(group_member_lists.data);
 
   return (
     <div className="min-w-full min-h-full p-4">

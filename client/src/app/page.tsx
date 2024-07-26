@@ -102,8 +102,8 @@ const SearchPage = () => {
                         <span className="sr-only">Media Image</span>
                       </TableHead>
                       <TableHead>Title</TableHead>
-                      <TableHead>Created On</TableHead>
                       <TableHead>Type</TableHead>
+                      <TableHead>Created on</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -134,6 +134,9 @@ const SearchPage = () => {
                               className="aspect-square rounded-md object-cover"
                               height="64"
                               src={item.mediaimage}
+                              onError={(event) => {
+                                event.currentTarget.src = "/eepy.png";
+                              }}
                               width="64"
                             />
                           </TableCell>

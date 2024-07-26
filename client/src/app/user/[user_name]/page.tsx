@@ -42,7 +42,9 @@ const UserPage = () => {
 
   useEffect(() => {
     if (user_followers.data && logged_in_user) {
-      const isUserFollowing = user_followers.data.response.some(follower => follower.follower == logged_in_user.user?.username);
+      const isUserFollowing = user_followers.data.response.some(
+        (follower) => follower.follower == logged_in_user.user?.username
+      );
       setCurrentUserFollows(isUserFollowing);
     }
   }, [user_following, logged_in_user]);
@@ -54,23 +56,19 @@ const UserPage = () => {
         const message = `An error has occurred: ${response.error}`;
         throw new Error(message);
       }
-      console.log("unfollow response");
-      console.log(response);
     } else {
       const response = await createFollow(user_name);
       if (response?.error) {
         const message = `An error has occurred: ${response.error}`;
         throw new Error(message);
       }
-      console.log("follow response");
-      console.log(response);
     }
     setCurrentUserFollows(!currentUserFollows);
     location.reload();
   };
 
-  const followButtonVariant = currentUserFollows ? "secondary" : "default"
-  const followButtonText = currentUserFollows ? "Following" : "Follow"
+  const followButtonVariant = currentUserFollows ? "secondary" : "default";
+  const followButtonText = currentUserFollows ? "Following" : "Follow";
 
   const skel = (
     <div className="flex items-center space-x-4">
@@ -84,15 +82,17 @@ const UserPage = () => {
 
   return (
     <div className="w-screen p-4">
-      <GradientHeader/>
+      <GradientHeader />
       <div className="flex justify-center pb-4 space-x-6">
-          <div
-            className="text-4xl font-bold"
-            style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)" }}
-          >
-            {user_name}
-          </div>
-        <Button variant={followButtonVariant} onClick={onFollowButtonClick}>{followButtonText}</Button>
+        <div
+          className="text-4xl font-bold"
+          style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)" }}
+        >
+          {user_name}
+        </div>
+        <Button variant={followButtonVariant} onClick={onFollowButtonClick}>
+          {followButtonText}
+        </Button>
       </div>
       <Tabs defaultValue="lists" className="border-b">
         <TabsList className="flex">
