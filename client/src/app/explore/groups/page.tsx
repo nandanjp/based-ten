@@ -33,8 +33,8 @@ const ExplorePage = () => {
           words={words}
         ></TypewriterEffect>
       </div>
-      <div className="flex self-center flex-col p-4 gap-8 min-w-full flex-1 mt-10">
-        <Card className="min-w-full shadow-md py-8 px-3 max-w-7xl">
+      <div className="flex self-center flex-col p-4 gap-8 max-w-7xl flex-1 mt-10">
+        <Card className="shadow-md py-8 px-3">
           <CardHeader>
             <div className="w-full flex flex-col gap-y-4 items-center justify-center">
               <h1 className="text-5xl font-semibold text-blue-400">

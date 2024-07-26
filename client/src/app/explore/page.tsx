@@ -37,7 +37,7 @@ const ExplorePage = () => {
         ></TypewriterEffect>
       </div>
       <div className="flex self-center flex-col p-4 gap-8 min-w-full flex-1 mt-10">
-        <Card className="min-w-full shadow-md py-8 px-3 max-w-7xl">
+        <Card className="w-full shadow-md py-8 px-3 max-w-3xl lg:max-w-7xl flex self-center flex-col p-4 gap-8 mt-10">
           <CardHeader>
             <div className="w-full flex flex-col gap-y-4 items-center justify-center">
               <h1 className="text-5xl font-semibold text-blue-400">

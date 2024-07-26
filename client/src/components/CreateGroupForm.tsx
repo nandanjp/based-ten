@@ -52,7 +52,6 @@ export default function GroupForm() {
       }
       setLoading(true);
     }
-    
   };
 
   const { pending } = useFormStatus();

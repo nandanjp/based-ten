@@ -1,11 +1,25 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import React from "react";
+import { useTheme } from "next-themes";
+import React, { useEffect, useState } from "react";
 
 interface LogoProps {
   classname?: string;
 }
 
 const Logo = ({ classname }: LogoProps) => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  const { theme } = useTheme();
+
   return (
     <svg
       height="100%"
@@ -29,8 +43,14 @@ const Logo = ({ classname }: LogoProps) => {
           y1="0"
           y2="0"
         >
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="1" stopColor="#e2e2e2" />
+          <stop
+            offset="0"
+            stopColor={theme === "light" ? "#353535" : "#ffffff"}
+          />
+          <stop
+            offset="1"
+            stopColor={theme === "light" ? "#000000" : "#e2e2e2"}
+          />
         </linearGradient>
         <linearGradient
           gradientTransform="matrix(176.278 261.299 -73.3546 192.07 222.255 459.983)"
@@ -41,14 +61,20 @@ const Logo = ({ classname }: LogoProps) => {
           y1="0"
           y2="0"
         >
-          <stop offset="0" stopColor="#353535" />
-          <stop offset="1" stopColor="#000000" />
+          <stop
+            offset="0"
+            stopColor={theme === "dark" ? "#ffffff" : "#353535"}
+          />
+          <stop
+            offset="1"
+            stopColor={theme === "light" ? "#000000" : "#e2e2e2"}
+          />
         </linearGradient>
       </defs>
       <g id="Layer-1">
         <path
           d="M452.874 371.652C424.818 371.652 402.074 394.395 402.074 422.451L402.074 655.869L402.074 669.431L402.074 721.072L447.365 721.072L576.635 721.072L621.926 721.072L621.926 669.431L621.926 655.869L621.926 422.451C621.926 394.395 599.182 371.652 571.126 371.652L452.874 371.652Z"
-          fill="#333333"
+          fill={theme === "light" ? "#353535" : "#ffffff"}
           fillRule="nonzero"
           opacity="1"
           stroke="#007aff"
