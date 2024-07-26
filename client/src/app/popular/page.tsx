@@ -13,6 +13,7 @@ import { usePopularItemsByType } from "../../../services/queries";
 import { LoadingSpinner } from "@/components/animated/Spinner";
 import { ListType, listType } from "../../../services/api.types";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function PopularPage() {
   const [mediaType, setMediaType] = useState<ListType>("anime");
@@ -42,13 +43,15 @@ export default function PopularPage() {
         <CardHeader>
           <CardTitle>{mediaType.toUpperCase()}</CardTitle>
           <div className="flex gap-4 justify-center">
-            {Object.keys(listType.Enum).map((lt) => (
-              <button
+            {Object.keys(listType.Enum).map((lt, index) => (
+              <Button
+                variant={"outline"}
                 className={`border-b-2 ${mediaType == lt && "border-black"} `}
                 onClick={() => setMediaType(lt as ListType)}
+                key={index}
               >
                 {lt}
-              </button>
+              </Button>
             ))}
           </div>
         </CardHeader>
