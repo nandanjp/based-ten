@@ -1,5 +1,6 @@
 "use client";
 import { Card, CardTitle } from "@/components/animated/GoodCard";
+import { HeroHighlight } from "@/components/animated/HeroHighlight";
 import { LoadingSpinner } from "@/components/animated/Spinner";
 import { MainNav } from "@/components/blocks/Navbar/MainNavCN";
 import { dashboardConfig } from "@/components/blocks/Navbar/dashboard";
@@ -68,15 +69,7 @@ const SearchPage = () => {
   };
 
   return (
-    <div
-      style={{
-        background:
-          "linear-gradient(to right, #d4e1f5, #ffcbb9, #ffe29e) dark:linear-gradient(to left bottom, #051937, #00476e, #007b9f, #00b2c3, #12ebd6)",
-        backgroundSize: "200% 200%",
-        animation: "gradientFlow 10s ease infinite",
-      }}
-      className="h-screen w-screen flex items-center flex-col"
-    >
+    <HeroHighlight className="min-h-screen min-w-screen flex items-center flex-col">
       <div className="w-screen flex flex-col items-center">
         <div className="flex min-w-full justify-between p-4">
           <MainNav isVisible items={dashboardConfig.mainNav} />
@@ -85,12 +78,7 @@ const SearchPage = () => {
       </div>
       <div className="w-full flex flex-col flex-auto justify-center items-center">
         <div className="min-w-full flex flex-col justify-center items-center text-center p-10 gap-3">
-          <h1
-            style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.2)" }}
-            className="mb-5 text-5xl"
-          >
-            Let's Rank It.
-          </h1>
+          <h1 className="mb-5 text-5xl">Let's Rank It.</h1>
           <span className="w-1/2 max-w-3xl flex justify-center items-center gap-3">
             <Input
               placeholder="Pokemon"
@@ -105,7 +93,7 @@ const SearchPage = () => {
           ) : (
             <Card
               x-chunk="dashboard-06-chunk-0"
-              className="max-w-5xl md:max-w-5xl lg:max-w-9xl"
+              className="max-w-5xl md:max-w-5xl lg:max-w-9xl dark:bg-gray-900 bg-gray-200"
             >
               <CardHeader>
                 <CardTitle>Media</CardTitle>
@@ -173,7 +161,7 @@ const SearchPage = () => {
           )}
         </div>
       </div>
-    </div>
+    </HeroHighlight>
   );
 };
 

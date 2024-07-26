@@ -38,7 +38,7 @@ export default function PopularPage() {
       </h1>
       <Card
         x-chunk="dashboard-06-chunk-0"
-        className="max-w-5xl md:max-w-5xl lg:max-w-9xl"
+        className="max-w-5xl md:max-w-5xl lg:max-w-9xl dark:bg-gray-900 bg-gray-200"
       >
         <CardHeader>
           <CardTitle>{mediaType.toUpperCase()}</CardTitle>
