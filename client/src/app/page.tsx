@@ -51,39 +51,6 @@ const SearchPage = () => {
     };
   };
 
-  const mediaItems = (
-    <>
-      {data?.response.map((item) => {
-        let icon: ReactElement;
-        switch (item.type) {
-          case "anime":
-            icon = <Tv />;
-            break;
-          case "movies":
-            icon = <Clapperboard />;
-            break;
-          case "songs":
-            icon = <AudioLines />;
-            break;
-          case "videogames":
-            icon = <LucideGamepad />;
-        }
-        return (
-          <CommandItem
-            className="flex gap-4 p-4 hover:bg-gray-200 cursor-pointer"
-            onSelect={onItemSelect(item)}
-            key={`${item.id}-${item.type}`}
-          >
-            {icon}
-            <span className="whitespace-nowrap overflow-hidden text-ellipsis">
-              {item.title}
-            </span>
-          </CommandItem>
-        );
-      })}
-    </>
-  );
-
   return (
     <div
       style={{
@@ -140,7 +107,7 @@ const SearchPage = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {data?.response.map((item) => {
+                    {data?.response.map((item, index) => {
                       let icon: ReactElement;
                       switch (item.type) {
                         case "anime":
@@ -157,6 +124,7 @@ const SearchPage = () => {
                       }
                       return (
                         <TableRow
+                          key={index}
                           className="cursor-pointer"
                           onClick={onItemSelect(item)}
                         >

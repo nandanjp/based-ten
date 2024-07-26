@@ -1,25 +1,32 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { useSelectedLayoutSegment } from "next/navigation"
+import * as React from "react";
+import Link from "next/link";
+import { useSelectedLayoutSegment } from "next/navigation";
 
-import { MainNavItem } from "@/components/blocks/Navbar/types/index"
-import { cn } from "@/lib/utils"
-import { MobileNav } from "@/components/blocks/Navbar/MobileNavCN"
+import { MainNavItem } from "@/components/blocks/Navbar/types/index";
+import { cn } from "@/lib/utils";
+import { MobileNav } from "@/components/blocks/Navbar/MobileNavCN";
 import { UserContext } from "@/app/context";
 import { useContext } from "react";
+import Logo from "@/components/Logo";
+import { ModeToggle } from "@/components/ModeToggleButton";
 
 interface MainNavProps {
-  isVisible?: boolean
-  items?: MainNavItem[]
-  children?: React.ReactNode
-  classname?: string
+  isVisible?: boolean;
+  items?: MainNavItem[];
+  children?: React.ReactNode;
+  classname?: string;
 }
 
-export function MainNav({ isVisible, items, children, classname }: MainNavProps) {
-  const segment = useSelectedLayoutSegment()
-  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false)
+export function MainNav({
+  isVisible,
+  items,
+  children,
+  classname,
+}: MainNavProps) {
+  const segment = useSelectedLayoutSegment();
+  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
   const userContext = useContext(UserContext);
   const user = userContext?.user;
 
@@ -28,7 +35,10 @@ export function MainNav({ isVisible, items, children, classname }: MainNavProps)
       {isVisible && ( // Use isVisible for conditional rendering
         <Link href="/" className="hidden items-center space-x-2 md:flex">
           <span className="hidden font-bold sm:inline-block">
-            Based Ten
+            <span className="flex items-center justify-center">
+              <Logo classname="w-12 h-12" />
+              Based Ten
+            </span>
           </span>
         </Link>
       )}
@@ -54,16 +64,17 @@ export function MainNav({ isVisible, items, children, classname }: MainNavProps)
         ) : null
       ) : null}
       {user && !isVisible ? (
-              <Link
-                href={`/user/${user.username}/me`}
-                className={cn(
-                  "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
-                  "text-foreground",
-                )}
-              >
-                {user.username}
-              </Link>
+        <Link
+          href={`/user/${user.username}/me`}
+          className={cn(
+            "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
+            "text-foreground"
+          )}
+        >
+          {user.username}
+        </Link>
       ) : null}
+      <ModeToggle />
       <button
         className="flex items-center space-x-2 md:hidden"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
@@ -74,5 +85,5 @@ export function MainNav({ isVisible, items, children, classname }: MainNavProps)
         <MobileNav items={items}>{children}</MobileNav>
       )}
     </div>
-  )
+  );
 }

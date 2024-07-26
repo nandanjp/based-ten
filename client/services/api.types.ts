@@ -1,4 +1,3 @@
-import { createList } from "@/app/actions";
 import { z } from "zod";
 
 export const listType = z.enum(["anime", "songs", "movies", "videogames"]);
@@ -211,7 +210,6 @@ const createListSchema = z.object({
   list_items: z.array(listItemSchema),
 });
 
-
 export type ListResponseType = ApiResponseType<
   z.infer<typeof listWithLikesSchema>
 >;
@@ -271,6 +269,12 @@ const groupSchema = z.object({
   groupname: z.string(),
   ownedby: z.string(),
 });
+const groupAndMemberSchema = z.object({
+  gid: z.number(),
+  groupname: z.string(),
+  ownedby: z.string(),
+  nummembers: z.number().optional(),
+});
 const groupQuerySchema = z.object({
   order_by_author: z.boolean().optional(),
 });
@@ -290,6 +294,12 @@ const createGroupSchema = z.object({
 export type GroupResponseType = ApiResponseType<z.infer<typeof groupSchema>>;
 export type GroupListResposeType = ListApiResponseType<
   z.infer<typeof groupSchema>
+>;
+export type GroupMemberResponseType = ApiResponseType<
+  z.infer<typeof groupAndMemberSchema>
+>;
+export type GroupMemberListResponseType = ListApiResponseType<
+  z.infer<typeof groupAndMemberSchema>
 >;
 export type GroupQueryType = z.infer<typeof groupQuerySchema>;
 export type CreateGroupType = z.infer<typeof createGroupSchema>;

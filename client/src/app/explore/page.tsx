@@ -23,7 +23,7 @@ const ExplorePage = () => {
     router.push("/explore/me");
   }
 
-  const words = "Explore Page".split(" ").map((word) => ({
+  const words = "Explore Lists Page".split(" ").map((word) => ({
     text: word,
     className: "text-blue-500 dark:text-blue-500",
   }));
@@ -39,7 +39,7 @@ const ExplorePage = () => {
         <Card className="min-w-full shadow-md py-8 px-3 max-w-7xl">
           <CardHeader>
             <div className="w-full flex flex-col gap-y-4 items-center justify-center">
-              <h1 className="text-5xl font-semibold text-blue-200">
+              <h1 className="text-5xl font-semibold text-blue-400">
                 Explore Lists
               </h1>
             </div>

@@ -36,6 +36,8 @@ import {
   VideoGameResponseType,
   DeleteLikeType,
   FollowResponseType,
+  GroupMemberListResponseType,
+  GroupMembersResponseType,
 } from "../../services/api.types";
 
 const BASE_URL = `http://127.0.0.1:5000/api`;
@@ -271,6 +273,17 @@ export const getUserFollowers = async (user_name: string) =>
   ).data;
 
 // Groups Routes
+export const getAllGroups = async () =>
+  (await axiosInstance.get<GroupListResposeType>(ROUTES.groups.get_groups))
+    .data;
+
+export const getAllGroupsAndMembers = async () =>
+  (
+    await axiosInstance.get<GroupMemberListResponseType>(
+      ROUTES.groups.get_groups_members
+    )
+  ).data;
+
 export const getUserGroups = async (user_name: string) =>
   (
     await axiosInstance.get<GroupListResposeType>(
@@ -344,6 +357,38 @@ export const getRecommendedLists = async () => {
       }
     )
   ).data.response;
+};
+
+export const joinGroup = async (gid: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return undefined;
+  }
+  return await axiosInstance.post<GroupMembersResponseType>(
+    ROUTES.groups.protected.join_group(gid),
+    {},
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }
+  );
+};
+
+export const unjoinGroup = async (gid: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return undefined;
+  }
+  return await axiosInstance.post<GroupMembersResponseType>(
+    ROUTES.groups.protected.unjoin_group(gid),
+    {},
+    {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    }
+  );
 };
 
 export const createLike = async (create: CreateLikeType) => {

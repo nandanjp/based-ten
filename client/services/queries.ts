@@ -16,6 +16,8 @@ import {
   getUsersLikes,
   getUsersLists,
   getUserListType,
+  getAllGroups,
+  getAllGroupsAndMembers,
 } from "@/app/actions";
 import { useQuery } from "@tanstack/react-query";
 
@@ -102,6 +104,22 @@ export const useUserGroups = (username: string) =>
     queryKey: ["user-groups"],
     queryFn: async () => {
       return await getUserGroups(username);
+    },
+  });
+
+export const useAllGroups = () =>
+  useQuery({
+    queryKey: ["all-groups"],
+    queryFn: async () => {
+      return await getAllGroups();
+    },
+  });
+
+export const useAllGroupsMembers = () =>
+  useQuery({
+    queryKey: ["all-groups-members"],
+    queryFn: async () => {
+      return await getAllGroupsAndMembers();
     },
   });
 
