@@ -14,6 +14,7 @@ import Link from "next/link";
 import { createLike, deleteLike } from "@/app/actions";
 import { UserContext } from "@/app/context";
 import { useContext, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ListType } from "../../services/api.types";
 
 type CardProps = React.ComponentProps<typeof Card> & {
@@ -33,6 +34,7 @@ export function ExploreListItem({
   numLikes,
   ...props
 }: CardProps) {
+  const router = useRouter();
   const { user } = useContext(UserContext);
   const [isLiked, setIsLike] = useState(alreadyLiked);
   const [currentNumLikes, setCurrentNumLikes] = useState(numLikes);
@@ -42,26 +44,25 @@ export function ExploreListItem({
   }, [alreadyLiked]);
 
   const onLikeClick = async () => {
-    if (user) {
-      const response = !isLiked
-        ? await createLike({
-            list_name: title,
-            liking_name: author,
-          })
-        : await deleteLike({
-            list_name: title,
-            liking_name: author,
-          });
-      if (response?.error) {
-        const message = `An error has occurred: ${response.error}`;
-        throw new Error(message);
-      }
-      setCurrentNumLikes(currentNumLikes + (isLiked ? -1 : 1));
-      setIsLike(!isLiked);
-    } else {
-      const message = "Trying to (un)like a list without an active user.";
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    const response = !isLiked
+      ? await createLike({
+          list_name: title,
+          liking_name: author,
+        })
+      : await deleteLike({
+          list_name: title,
+          liking_name: author,
+        });
+    if (response?.error) {
+      const message = `An error has occurred: ${response.error}`;
       throw new Error(message);
     }
+    setCurrentNumLikes(currentNumLikes + (isLiked ? -1 : 1));
+    setIsLike(!isLiked);
   };
 
   return (

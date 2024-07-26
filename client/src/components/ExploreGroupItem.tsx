@@ -57,8 +57,6 @@ export function ExploreGroupItem({
     setIsFollowing(!isFollowing);
   };
 
-  console.log("Already following: " + alreadyFollows);
-  console.log("is following: " + isFollowing);
 
   return (
     <Card
