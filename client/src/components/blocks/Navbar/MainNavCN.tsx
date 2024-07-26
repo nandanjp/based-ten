@@ -64,17 +64,21 @@ export function MainNav({
         ) : null
       ) : null}
       {user && !isVisible ? (
-        <Link
-          href={`/user/${user.username}/me`}
-          className={cn(
-            "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
-            "text-foreground"
-          )}
-        >
-          {user.username}
-        </Link>
+        <div className="flex items-center justify-center gap-6 ">
+          <Link
+            href={`/user/${user.username}/me`}
+            className={cn(
+              "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
+              "text-foreground"
+            )}
+          >
+            {user.username}
+          </Link>
+        
+          <ModeToggle />
+          <div></div>
+        </div>
       ) : null}
-      <ModeToggle />
       <button
         className="flex items-center space-x-2 md:hidden"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
