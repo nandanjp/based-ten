@@ -25,6 +25,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button, buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { BadgePlus } from "lucide-react";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -117,7 +121,7 @@ const UserPage = () => {
           </div>
         </TabsContent>
         <TabsContent value="groups" className="p-6">
-        <div className="flex justify-between py-6">
+          <div className="flex justify-between pt-6">
             <div className="text-3xl font-semibold mb-6">Groups</div>
             <Select defaultValue="all" onValueChange={setGroupsShown}>
               <SelectTrigger className="w-[300px]">
@@ -130,7 +134,16 @@ const UserPage = () => {
               </SelectContent>
             </Select>
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="mb-4">
+            <Link
+              href={`/group/create_group`}
+              className={cn(buttonVariants({ variant: "outline" }))}
+            >
+              <BadgePlus className="mr-2 h-4 w-4" />Create a new group
+            </Link>
+          </div>
+          <hr/>
+          <div className="grid grid-cols-3 gap-4 mt-4">
             {user_groups.isPending
               ? skel
               : user_groups.data?.response?.filter((g) => {
