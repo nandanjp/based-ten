@@ -1,11 +1,9 @@
+use super::traits::Commit;
 use argon2::{
     password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
     Argon2,
 };
 use serde::Deserialize;
-use std::fmt::Error;
-
-use super::traits::Commit;
 
 #[derive(Debug, Deserialize)]
 pub struct User {
@@ -36,11 +34,15 @@ impl Commit for User {
                 let password = u.password.clone();
                 Argon2::default()
                     .hash_password(password.as_bytes(), &salt)
-                    .map(|e| "failed to hash password".into())
-                    .map_err(|e| Box::new(e) as Box<dyn Error>)
+                    .map(|_| password.to_string())
+                    .map_err(|_| {
+                        <&str as Into<Box<dyn std::error::Error>>>::into("failed to hash password")
+                    })
             })
             .collect::<Result<Vec<String>, Box<dyn std::error::Error>>>()
-            .map_err(|e| "failed to hash password".into())?;
+            .map_err(|_| {
+                <&str as Into<Box<dyn std::error::Error>>>::into("failed to hash password")
+            })?;
         let _ = sqlx::query!(
             r#"
             INSERT INTO Users(email, username, userpassword)
