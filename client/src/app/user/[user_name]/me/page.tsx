@@ -18,6 +18,13 @@ import {
 import GradientHeader from "@/components/ui/gradient-header";
 import { FollowerList } from "@/components/FollowerList";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -27,6 +34,7 @@ const UserPage = () => {
   const user_likes = useUserLikes(user_name);
   const user_groups = useUserGroups(user_name);
   const [activeTab, setActiveTab] = useState("lists");
+  const [groupsShown, setGroupsShown] = useState('all');
 
   useEffect(() => {
     user_info.refetch();
@@ -109,11 +117,27 @@ const UserPage = () => {
           </div>
         </TabsContent>
         <TabsContent value="groups" className="p-6">
-          <div className="text-3xl font-semibold mb-6">Groups</div>
+        <div className="flex justify-between py-6">
+            <div className="text-3xl font-semibold mb-6">Groups</div>
+            <Select defaultValue="all" onValueChange={setGroupsShown}>
+              <SelectTrigger className="w-[300px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All groups</SelectItem>
+                <SelectItem value="owned">Groups I own</SelectItem>
+                <SelectItem value="joined">Groups I've joined</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="grid grid-cols-3 gap-4">
             {user_groups.isPending
               ? skel
-              : user_groups.data?.response?.map((g) => (
+              : user_groups.data?.response?.filter((g) => {
+                if (groupsShown === 'all') return true;
+                if (groupsShown === 'owned') return g.ownedby === user_name;
+                if (groupsShown === 'joined') return g.ownedby !== user_name;
+              }).map((g) => (
                   <GroupCard
                     key={g.groupname}
                     group_name={g.groupname}

@@ -87,7 +87,7 @@ const GroupPage = () => {
               key={l.username.concat(l.listname)}
               list_author={l.username!}
               list_name={l.listname!}
-              list_type={l.listtype!}
+              list_type={l.list_type!}
             />
           ))}
         </div>

@@ -64,7 +64,7 @@ const ExplorePage = () => {
                   className="w-full grid md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-5 justify-center"
                 >
                   {lists
-                    ?.filter((list) => list.listtype === lt)
+                    ?.filter((list) => list.list_type === lt)
                     .map((list, index) => (
                       <div
                         className="flex justify-center items-center"
@@ -72,7 +72,7 @@ const ExplorePage = () => {
                       >
                         <ExploreListItem
                           alreadyLiked={false}
-                          type={list.listtype}
+                          type={list.list_type}
                           author={list.username}
                           title={list.listname}
                           numLikes={list.likes ?? 0}
