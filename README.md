@@ -81,81 +81,77 @@ Now, you can make normal HTTP requests to our backend server, with the following
 - `DELETE /api/videogames/:id`
 
 - `GET /api/media`
-- `GET /api/:type`
 
 - `GET /api/lists`
-- `POST /api/lists`
-- `GET /api/lists/:email`
-- `GET /api/lists/:email/:list_name`
-- `GET /api/lists/:email/:list_name/items`
-- `PATCH /api/lists/:email/:list_name`
-- `DELETE /api/lists/:email/:list_name`
 - `GET /api/lists/top`
-
-- `GET /api/listitems/:email/:listname/:item_id`
-- `POST /api/listitems/:email/:listname/:item_id`
-- `PATCH /api/listitems/:email/:listname/:item_id`
-- `DELETE /api/listitems/:email/:listname/:item_id`
+- `GET /api/lists/likes/:list_type`
 
 - `GET /api/users`
 - `POST /api/users`
-- `GET /api/users/:email`
-- `PATCH /api/users/:email`
-- `DELETE /api/users/:email`
+- `GET /api/users/:user_name`
+- `GET /api/users/:user_name/info`
+- `GET /api/users/:user_name/:list_name`
+- `GET /api/users/:user_name/:list_name/type`
+- `GET /api/users/:user_name/likes`
 
 - `GET /api/likes`
-- `POST /api/likes`
-- `GET /api/likes/:email`
-- `DELETE /api/likes/:likeremail/:likingemail/:listname`
+- `GET /api/likes/:user_name`
 
 - `GET /api/follow`
-- `POST /api/follow`
-- `GET /api/follow/:email`
-- `DELETE /api/follow/:followeremail/:followingemail`
-- `GET /api/follow/mutual/:useremail`
+- `GET /api/follow/:user_name/following`
+- `GET /api/follow/:user_name/mutual`
 
 - `GET /api/groups`
-- `POST /api/groups/:gid/:groupName/:ownedBy`
-- `GET /api/groups/:gid`
-- `DELETE /api/groups/:gid`
+- `GET /api/groups/all`
+- `GET /api/groups/:user_name/group_members`
+- `GET /api/groups/:gid/group`
+- `GET /api/groups/:gid/members`
+- `GET /api/groups/:gid/lists`
+- `GET /api/groups/:gid/circles`
 
-- `GET /api/explore/:user_name`
+- `POST /api/auth/register`
+- `POST /api/auth/login`
 
 #### Protected Routes
 
+#### To Do with Authentication
+
+- `GET /api/auth/logout`
+- `GET /api/auth/user`
+
 #### To Do with Lists
 
-- `GET /api/explore/user`
-- `GET /api/lists/user`
-- `POST /api/lists/user`
-- `GET /api/lists/user/:list_name`
-- `GET /api/lists/user/:list_name/items`
-- `PATCH /api/lists/user/:list_name`
-- `DELETE /api/lists/user/:list_name`
+- `GET /api/explore/:user_name`
+- `POST /api/lists/:user_name`
+- `PATCH /api/lists/:user_name/:list_name`
+- `DELETE /api/lists/:user_name/:list_name`
+- `GET /api/listitems/:list_name/:item_id`
+- `POST /api/listitems/:list_name/:item_id`
+- `PATCH /api/listitems/:list_name/:item_id`
+- `DELETE /api/listitems/:list_name/:item_id`
 
 #### To Do with Users
 
-- `GET /api/users/user`
-- `PATCH /api/users/user`
-- `DELETE /api/users/user`
+- `GET /api/users/:user_name/me`
+- `PATCH /api/users/:user_name/me`
+- `DELETE /api/users/:user_name/me`
 
 #### To Do with Likes
 
-- `GET /api/likes/user`
-- `GET /api/likes/user/:liking/:list_name`
+- `POST /api/likes/`
+- `DELETE /api/likes/:liking/:list_name`
 
 #### To Do With Follow
 
-- `GET /api/follow/user`
-- `POST /api/follow/user`
-- `DELETE /api/follow/user/:following`
-- `GET /api/follow/user/mutual`
+- `POST /api/follow`
+- `DELETE /api/follow/:following`
 
 #### To Do With Groups
 
-- `GET /api/groups/user`
-- `POST /api/groups/user`
-- `POST /api/groups/user/:group_name`
+- `POST /api/groups/:gid/join`
+- `DELETE /api/groups/:gid/unjoin`
+- `POST /api/groups/:user_name/me`
+- `DELETE /api/groups/:user_name/me/:group_name`
 
 #### Website Pages
 
