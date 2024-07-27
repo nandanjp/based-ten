@@ -1,7 +1,8 @@
 import { createFollow, deleteFollow } from "@/app/actions";
 import { UserContext } from "@/app/context";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useContext, useState } from "react";
 
@@ -36,22 +37,25 @@ export function UserCardFollowBack({
   const buttonText = followBack ? "Following" : "Follow back";
 
   return (
-    <Card className="w-[500px]">
+    <Card className="min-w-96">
       <CardHeader>
-        <div className="flex p-4 justify-between">
-          <CardTitle className="text-lg overflow-ellipsis font-normal">
-            {follower_email}
-          </CardTitle>
-          <div className="flex space-x-3">
-            <Button variant={buttonVariant} onClick={onFollowerButtonClick}>
-              {buttonText}
-            </Button>
-            <Link href={`/user/${follower_email}`}>
-              <Button variant={"default"}>View Profile</Button>
-            </Link>
-          </div>
-        </div>
+        <CardTitle className="text-lg overflow-ellipsis font-normal text-center">
+          {follower_email}
+        </CardTitle>
       </CardHeader>
+      <CardContent>
+        <div className="flex gap-3 items-center justify-center">
+          <Button variant={buttonVariant} onClick={onFollowerButtonClick}>
+            {buttonText}
+          </Button>
+          <Link
+            href={`/user/${follower_email}`}
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            View Profile
+          </Link>
+        </div>
+      </CardContent>
     </Card>
   );
 }

@@ -9,7 +9,7 @@ interface UserCardProps {
 
 export function UserCard({ user_email }: UserCardProps) {
   return (
-    <Card className="min-w-96">
+    <Card className="min-w-64">
       <CardHeader>
         <div className="flex p-4 justify-between">
           <CardTitle className="text-lg overflow-ellipsis font-normal">

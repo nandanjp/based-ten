@@ -27,6 +27,7 @@ import {
   useUserLikes,
   useUsersLists,
 } from "../../../../../services/queries";
+import { HeroHighlight } from "@/components/animated/HeroHighlight";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -57,7 +58,7 @@ const UserPage = () => {
   );
 
   return (
-    <div className="w-screen p-4">
+    <HeroHighlight className="min-w-screen min-h-screen p-4">
       <GradientHeader title={user_info.data?.response?.username ?? "..."} />
       <Tabs
         defaultValue="lists"
@@ -73,12 +74,17 @@ const UserPage = () => {
           <TabsTrigger value="groups">Groups</TabsTrigger>
           <TabsTrigger value="account">Account</TabsTrigger>
         </TabsList>
-        <TabsContent value="lists" className="p-6">
-          <div className="text-3xl font-semibold mb-6">Lists</div>
-          <div className="grid grid-cols-3 gap-4">
+        <TabsContent
+          value="lists"
+          className="flex flex-col items-center justify-center min-w-full min-h-full"
+        >
+          <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
+            Lists
+          </h1>
+          <div className="grid lg:grid-cols-3 gap-6 md:grid-cols-2 grid-cols-1">
             {user_lists.isPending
               ? skel
-              : user_lists.data?.response.map((l, i) => (
+              : user_lists.data?.response?.map((l, i) => (
                   <ListCard
                     key={`${l.listname}-${i}`}
                     list_author={l.username!}
@@ -88,40 +94,59 @@ const UserPage = () => {
                 ))}
           </div>
         </TabsContent>
-        <TabsContent value="likes" className="p-6">
-          <div className="text-3xl font-semibold mb-6">Liked Lists</div>
-          <div className="grid grid-cols-3 gap-4">
+        <TabsContent
+          value="likes"
+          className="flex flex-col items-center justify-center min-w-full min-h-full"
+        >
+          <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
+            Liked Lists
+          </h1>
+          <div className="grid lg:grid-cols-3 gap-6 max-w-8xl md:grid-cols-2 grid-cols-1">
             {user_likes.isPending
               ? skel
-              : user_likes.data?.response.map((l, i) => (
+              : user_likes.data?.response?.map((l, i) => (
                   <ListCard
-                    key={`${l.likingname}-${l.listname}-${i}`}
+                    key={`${l.likername}-${i}`}
                     list_author={l.likingname}
                     list_name={l.listname}
-                    list_type="anime" // TODO fix query}
+                    list_type={"anime"} //TODO: fix-query
                   />
                 ))}
           </div>
         </TabsContent>
-        <TabsContent value="followers" className="p-6">
+        <TabsContent
+          value="followers"
+          className="flex flex-col gap-4 items-center justify-center min-w-full min-h-full"
+        >
+          <h1 className="text-5xl font-semibold self-start">Followers</h1>
           <FollowerList username={user_name} activeTab={activeTab} />
         </TabsContent>
-        <TabsContent value="following" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Following</div>
+        <TabsContent
+          value="following"
+          className="flex flex-col gap-4 justify-center items-center"
+        >
+          <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
+            Following
+          </h1>
+          <div className="grid lg:grid-cols-3 gap-6 max-w-8xl md:grid-cols-2 grid-cols-1">
             {user_following.isPending
               ? skel
-              : user_following.data?.response.map((f, i) => (
+              : user_following.data?.response?.map((f, i) => (
                   <UserCard
-                    key={`${f.follower}-${i}`}
+                    key={`${f.following}-${i}`}
                     user_email={f.following}
                   />
                 ))}
           </div>
         </TabsContent>
-        <TabsContent value="groups" className="p-6">
-          <div className="flex justify-between pt-6">
-            <div className="text-3xl font-semibold mb-6">Groups</div>
+        <TabsContent
+          value="groups"
+          className="flex flex-col items-center justify-center min-w-full min-h-full"
+        >
+          <div className="flex md:flex-row sm:justify-between min-w-full flex-col justify-start">
+            <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
+              Groups
+            </h1>
             <Select defaultValue="owned" onValueChange={setGroupsShown}>
               <SelectTrigger className="w-[300px]">
                 <SelectValue />
@@ -142,7 +167,7 @@ const UserPage = () => {
             </Link>
           </div>
           <hr />
-          <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="grid lg:grid-cols-3 gap-6 max-w-8xl md:grid-cols-2 grid-cols-1">
             {user_groups.isPending
               ? skel
               : user_groups.data?.response
@@ -174,7 +199,7 @@ const UserPage = () => {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </HeroHighlight>
   );
 };
 export default UserPage;

@@ -29,8 +29,7 @@ export function FollowerList({ username, activeTab }: FollowerListProps) {
     return <span></span>;
   }
   return (
-    <div className="grid gap-4">
-      <div className="text-3xl font-semibold">Followers</div>
+    <div className="min-w-full flex-1 grid lg:grid-cols-3 gap-6 max-w-8xl md:grid-cols-2 grid-cols-1">
       {user_followers.data.response?.map((f) => (
         <UserCardFollowBack
           key={f.follower}

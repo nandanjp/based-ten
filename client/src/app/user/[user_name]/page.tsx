@@ -2,11 +2,11 @@
 
 import { createFollow, deleteFollow } from "@/app/actions";
 import { UserContext } from "@/app/context";
+import { HeroHighlight } from "@/components/animated/HeroHighlight";
 import { GroupCard } from "@/components/blocks/GroupCard";
 import { ListCard } from "@/components/blocks/ListCard";
 import { UserCard } from "@/components/blocks/UserCard";
 import { Button } from "@/components/ui/button";
-import GradientHeader from "@/components/ui/gradient-header";
 import {
   Select,
   SelectContent,
@@ -25,7 +25,6 @@ import {
   useUserLikes,
   useUsersLists,
 } from "../../../../services/queries";
-import { HeroHighlight } from "@/components/animated/HeroHighlight";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -128,7 +127,7 @@ const UserPage = () => {
         </TabsContent>
         <TabsContent
           value="likes"
-          className="flex flex-col items-start justify-start min-w-full min-h-full"
+          className="flex flex-col items-center justify-center min-w-full min-h-full"
         >
           <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
             Liked Lists
@@ -186,7 +185,7 @@ const UserPage = () => {
           className="flex flex-col gap-6 justify-center items-center"
         >
           <div className="flex md:flex-row sm:justify-between py-6 min-w-full flex-col justify-start">
-            <div className="text-3xl font-semibold mb-6">Groups</div>
+            <h1 className="text-5xl font-semibold mb-6">Groups</h1>
             <Select defaultValue="all" onValueChange={setGroupsShown}>
               <SelectTrigger className="w-[300px]">
                 <SelectValue />
