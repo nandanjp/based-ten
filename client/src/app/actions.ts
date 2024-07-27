@@ -41,11 +41,8 @@ import {
   VideoGameResponseType,
 } from "../../services/api.types";
 
-const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ? "127.0.0.1:5000/api"
-    : process.env.NEXT_PUBLIC_BACKEND_URL;
-const axiosInstance = axios.create({ baseURL: BASE_URL });
+const BASE_URL = "127.0.0.1:5000/api";
+const axiosInstance = axios.create({ baseURL: "http://127.0.0.1:5000/api" });
 
 // Auth Requests
 export const loginUser = async (username: string, password: string) => {

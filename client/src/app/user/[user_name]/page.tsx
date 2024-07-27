@@ -25,6 +25,7 @@ import {
   useUserLikes,
   useUsersLists,
 } from "../../../../services/queries";
+import { HeroHighlight } from "@/components/animated/HeroHighlight";
 
 const UserPage = () => {
   const { user_name } = useParams<{ user_name: string }>();
@@ -86,30 +87,33 @@ const UserPage = () => {
   );
 
   return (
-    <div className="w-screen p-4">
-      <GradientHeader />
-      <div className="flex justify-center pb-4 space-x-6">
-        <div
-          className="text-4xl font-bold"
-          style={{ textShadow: "0 2px 4px rgba(0, 0, 0, 0.3)" }}
+    <HeroHighlight className="min-w-screen min-h-screen p-4">
+      <div className="flex flex-col gap-5 items-center justify-center pb-4 space-x-6">
+        <h1 className="text-5xl font-bold p-4">{user_name}</h1>
+        <Button
+          variant={followButtonVariant}
+          onClick={onFollowButtonClick}
+          className="max-w-40"
         >
-          {user_name}
-        </div>
-        <Button variant={followButtonVariant} onClick={onFollowButtonClick}>
           {followButtonText}
         </Button>
       </div>
       <Tabs defaultValue="lists" className="border-b">
-        <TabsList className="flex">
+        <TabsList className="flex justify-evenly min-w-full">
           <TabsTrigger value="lists">Lists</TabsTrigger>
           <TabsTrigger value="likes">Liked Lists</TabsTrigger>
           <TabsTrigger value="followers">Followers</TabsTrigger>
           <TabsTrigger value="following">Following</TabsTrigger>
           <TabsTrigger value="groups">Groups</TabsTrigger>
         </TabsList>
-        <TabsContent value="lists" className="p-6">
-          <div className="text-3xl font-semibold mb-6">Lists</div>
-          <div className="grid grid-cols-3 gap-4">
+        <TabsContent
+          value="lists"
+          className="flex flex-col items-center justify-center min-w-full min-h-full"
+        >
+          <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
+            Lists
+          </h1>
+          <div className="grid lg:grid-cols-3 gap-6 md:grid-cols-2 grid-cols-1">
             {user_lists.isPending
               ? skel
               : user_lists.data?.response?.map((l, i) => (
@@ -122,9 +126,14 @@ const UserPage = () => {
                 ))}
           </div>
         </TabsContent>
-        <TabsContent value="likes" className="p-6">
-          <div className="text-3xl font-semibold mb-6">Liked Lists</div>
-          <div className="grid grid-cols-3 gap-4">
+        <TabsContent
+          value="likes"
+          className="flex flex-col items-start justify-start min-w-full min-h-full"
+        >
+          <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
+            Liked Lists
+          </h1>
+          <div className="grid lg:grid-cols-3 gap-6 max-w-8xl md:grid-cols-2 grid-cols-1">
             {user_likes.isPending
               ? skel
               : user_likes.data?.response?.map((l, i) => (
@@ -136,9 +145,14 @@ const UserPage = () => {
                 ))}
           </div>
         </TabsContent>
-        <TabsContent value="followers" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Followers</div>
+        <TabsContent
+          value="followers"
+          className="flex flex-col gap-6 justify-center items-center"
+        >
+          <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
+            Followers
+          </h1>
+          <div className="grid lg:grid-cols-3 gap-6 max-w-8xl md:grid-cols-2 grid-cols-1">
             {user_followers.isPending
               ? skel
               : user_followers.data?.response?.map((f, i) => (
@@ -149,9 +163,14 @@ const UserPage = () => {
                 ))}
           </div>
         </TabsContent>
-        <TabsContent value="following" className="p-6">
-          <div className="grid gap-4">
-            <div className="text-3xl font-semibold">Following</div>
+        <TabsContent
+          value="following"
+          className="flex flex-col gap-6 justify-center items-center"
+        >
+          <h1 className="font-semibold px-3 py-2 text-5xl self-start text-center">
+            Following
+          </h1>
+          <div className="grid lg:grid-cols-3 gap-6 max-w-8xl md:grid-cols-2 grid-cols-1">
             {user_following.isPending
               ? skel
               : user_following.data?.response?.map((f, i) => (
@@ -162,8 +181,11 @@ const UserPage = () => {
                 ))}
           </div>
         </TabsContent>
-        <TabsContent value="groups" className="p-6">
-          <div className="flex justify-between py-6">
+        <TabsContent
+          value="groups"
+          className="flex flex-col gap-6 justify-center items-center"
+        >
+          <div className="flex md:flex-row sm:justify-between py-6 min-w-full flex-col justify-start">
             <div className="text-3xl font-semibold mb-6">Groups</div>
             <Select defaultValue="all" onValueChange={setGroupsShown}>
               <SelectTrigger className="w-[300px]">
@@ -177,7 +199,7 @@ const UserPage = () => {
             </Select>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid lg:grid-cols-3 gap-6 max-w-8xl md:grid-cols-2 grid-cols-1">
             {user_groups.isPending
               ? skel
               : user_groups.data?.response
@@ -198,7 +220,7 @@ const UserPage = () => {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </HeroHighlight>
   );
 };
 export default UserPage;
